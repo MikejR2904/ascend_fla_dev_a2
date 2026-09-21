@@ -16,10 +16,15 @@ Nothing here is filtered or truncated. Redirect the whole run to a file for the 
 from __future__ import annotations
 
 import hashlib
+import os
 import pathlib
 import traceback
 
 import torch
+
+#: Ascend install root — taken from the environment so no machine path is written into the
+#: repository; only paths relative to it are printed (AGENTS.md §5 / §10).
+ASCEND_HOME = pathlib.Path(os.environ.get("ASCEND_HOME", "/usr/local/Ascend"))
 
 
 def _print_environment() -> None:
@@ -29,22 +34,22 @@ def _print_environment() -> None:
     print("device_name:", torch.npu.get_device_name(0))
     print("resolve_soc:", platform.resolve_soc())
 
-    print("== CANN version.info (full sha256) ==")
-    cann = sorted(pathlib.Path("/usr/local/Ascend").glob("cann-*"))
-    infos = [pathlib.Path("/usr/local/Ascend/driver/version.info")]
+    print("== CANN version.info (full sha256; paths relative to ASCEND_HOME) ==")
+    cann = sorted(ASCEND_HOME.glob("cann-*"))
+    infos = [ASCEND_HOME / "driver/version.info"]
     if cann:
         infos += [cann[-1] / "compiler/version.info", cann[-1] / "opp/version.info"]
     for info in infos:
         if info.is_file():
             raw = info.read_bytes()
             first = raw.decode("utf-8", "replace").splitlines()[0]
-            print(f"{info}: {first} sha256={hashlib.sha256(raw).hexdigest()}")
+            print(f"{info.relative_to(ASCEND_HOME)}: {first} sha256={hashlib.sha256(raw).hexdigest()}")
 
-    print("== built-in op-package ascend910b ==")
+    print("== built-in op-package ascend910b (relative to ASCEND_HOME) ==")
     for root in cann:
         soc_dir = root / "opp/built-in/op_impl/ai_core/tbe/kernel/ascend910b"
         if soc_dir.is_dir():
-            print(f"{soc_dir}:", sorted(p.name for p in soc_dir.iterdir()))
+            print(f"{soc_dir.relative_to(ASCEND_HOME)}:", sorted(p.name for p in soc_dir.iterdir()))
 
 
 def _print_gating() -> None:

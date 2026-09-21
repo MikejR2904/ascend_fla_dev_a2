@@ -1,29 +1,31 @@
+# 路径前缀已按此替换：<REPO>=工作副本临时目录, <ASCEND_HOME>=Ascend 安装根, <PYTHON_HOME>=Python 安装根；其余（哈希/设备名/异常文本/行序）未改。
 ============================= test session starts ==============================
-platform linux -- Python 3.11.15, pytest-8.3.2, pluggy-1.6.0 -- /usr/local/python3.11.15/bin/python3
+platform linux -- Python 3.11.15, pytest-8.3.2, pluggy-1.6.0 -- <PYTHON_HOME>/bin/python3
 cachedir: .pytest_cache
-rootdir: /tmp/a202r
+rootdir: <REPO>
 configfile: pyproject.toml
 plugins: forked-1.7.5, cov-7.1.0, xdist-3.6.1, anyio-4.14.0
-collecting ... collected 13 items
+collecting ... collected 14 items
 
 tests/test_platform.py::test_a5_capability_values_are_frozen PASSED      [  7%]
-tests/test_platform.py::test_a5_accessors_match_ops_kda_constants PASSED [ 15%]
-tests/test_platform.py::test_unqualified_socs_raise_on_use[a2] PASSED    [ 23%]
-tests/test_platform.py::test_unqualified_socs_raise_on_use[a3] PASSED    [ 30%]
-tests/test_platform.py::test_require_qualified_passes_for_a5 PASSED      [ 38%]
-tests/test_platform.py::test_resolve_from_env PASSED                     [ 46%]
-tests/test_platform.py::test_explicit_wins_and_is_not_cached PASSED      [ 53%]
-tests/test_platform.py::test_resolution_is_memoized PASSED               [ 61%]
-tests/test_platform.py::test_unknown_soc_rejected PASSED                 [ 69%]
-tests/test_platform.py::test_unresolvable_raises_with_how_to_set PASSED  [ 76%]
-tests/test_platform.py::test_unit_root_points_under_soc PASSED           [ 84%]
-tests/test_platform.py::test_a5_compile_signature_unchanged PASSED       [ 92%]
+tests/test_platform.py::test_a5_accessors_match_ops_kda_constants PASSED [ 14%]
+tests/test_platform.py::test_unqualified_socs_raise_on_use[a2] PASSED    [ 21%]
+tests/test_platform.py::test_unqualified_socs_raise_on_use[a3] PASSED    [ 28%]
+tests/test_platform.py::test_require_qualified_passes_for_a5 PASSED      [ 35%]
+tests/test_platform.py::test_resolve_from_env PASSED                     [ 42%]
+tests/test_platform.py::test_explicit_wins_and_is_not_cached PASSED      [ 50%]
+tests/test_platform.py::test_resolution_is_memoized PASSED               [ 57%]
+tests/test_platform.py::test_unknown_soc_rejected PASSED                 [ 64%]
+tests/test_platform.py::test_unresolvable_raises_with_how_to_set PASSED  [ 71%]
+tests/test_platform.py::test_unit_root_points_under_soc PASSED           [ 78%]
+tests/test_platform.py::test_a5_compile_signature_unchanged PASSED       [ 85%]
+tests/test_platform.py::test_compile_signature_frozen_literals PASSED    [ 92%]
 tests/test_platform.py::test_op_entries_gate_before_compile_on_unqualified_soc PASSED [100%]
 
 =============================== warnings summary ===============================
 tests/test_platform.py: 14 warnings
-  /usr/local/python3.11.15/lib/python3.11/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  <PYTHON_HOME>/lib/python3.11/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
     warnings.warn(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================= 13 passed, 14 warnings in 9.17s ========================
+======================= 14 passed, 14 warnings in 9.49s ========================

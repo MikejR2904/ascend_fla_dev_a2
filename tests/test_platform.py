@@ -121,6 +121,26 @@ def test_a5_compile_signature_unchanged(monkeypatch):
     assert sig_resolved == sig_explicit
 
 
+def test_compile_signature_frozen_literals(monkeypatch):
+    """Pin the compile signature to literals computed on base main (before A2-02), so a future
+    change to the signing logic is caught, not just a self-consistency between two new codepaths.
+    The first two freeze a5; the third keeps device in the key (a2 differs). Synthetic kernel so
+    a real kernel's source edits never touch this test.
+    """
+    from ascend_fla.runtime import compile as _compile
+
+    monkeypatch.setattr(_compile, "_kernel_source",
+                        lambda kernel: "def pm_sig_probe():\n    return 0\n")
+
+    def pm_sig_probe():
+        return 0
+
+    pm_sig_probe.name = "pm_sig_probe"
+    assert _compile._signature(pm_sig_probe, "a5", 1, {}, "cce") == "986f4a15e1a1dd05"
+    assert _compile._signature(pm_sig_probe, "a5", 4, {"T": 64}, "cce") == "d79923b948b20af3"
+    assert _compile._signature(pm_sig_probe, "a2", 1, {}, "cce") == "63c73523d216ea41"
+
+
 def test_op_entries_gate_before_compile_on_unqualified_soc(monkeypatch):
     """Every device-taking KDA op entry must raise "未验收" before any compile when the SoC is
     unqualified. Runs on the host (no NPU): the gate is the first statement, before the tensors

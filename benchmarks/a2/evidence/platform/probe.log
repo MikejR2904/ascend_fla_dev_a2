@@ -1,49 +1,50 @@
+# 路径前缀已按此替换：<REPO>=工作副本临时目录, <ASCEND_HOME>=Ascend 安装根, <PYTHON_HOME>=Python 安装根；其余（哈希/设备名/异常文本/行序）未改。
 == SoC ==
 device_name: Ascend910B3
 resolve_soc: a2
-== CANN version.info (full sha256) ==
-/usr/local/Ascend/driver/version.info: Version=25.5.1 sha256=075eed44c97e4194125ffb9855cab7069bb74ddf4e4279a83233580fa4cc861d
-/usr/local/Ascend/cann-9.2.0-beta.1/compiler/version.info: Version=9.2.0-beta.1 sha256=fafbca50579f6d146db93d27ef5c739e6633c6552a3743abb84362e56abcff0e
-/usr/local/Ascend/cann-9.2.0-beta.1/opp/version.info: Version=9.2.0-beta.1 sha256=529d6c96f5aa7d06004b9bb7befd8e86df1d1b35e52610a2524700e3217e75be
-== built-in op-package ascend910b ==
-/usr/local/Ascend/cann-9.2.0-beta.1/opp/built-in/op_impl/ai_core/tbe/kernel/ascend910b: ['ops_cv', 'ops_legacy', 'ops_math', 'ops_nn', 'ops_oam', 'ops_transformer']
+== CANN version.info (full sha256; paths relative to ASCEND_HOME) ==
+driver/version.info: Version=25.5.1 sha256=075eed44c97e4194125ffb9855cab7069bb74ddf4e4279a83233580fa4cc861d
+cann-9.2.0-beta.1/compiler/version.info: Version=9.2.0-beta.1 sha256=fafbca50579f6d146db93d27ef5c739e6633c6552a3743abb84362e56abcff0e
+cann-9.2.0-beta.1/opp/version.info: Version=9.2.0-beta.1 sha256=529d6c96f5aa7d06004b9bb7befd8e86df1d1b35e52610a2524700e3217e75be
+== built-in op-package ascend910b (relative to ASCEND_HOME) ==
+cann-9.2.0-beta.1/opp/built-in/op_impl/ai_core/tbe/kernel/ascend910b: ['ops_cv', 'ops_legacy', 'ops_math', 'ops_nn', 'ops_oam', 'ops_transformer']
 == op-entry gating (must raise before compile) ==
 prepare raised:
 Traceback (most recent call last):
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 68, in _print_gating
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 73, in _print_gating
     call()
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 57, in <lambda>
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 62, in <lambda>
     "prepare": lambda: prepare(),
                        ^^^^^^^^^
-  File "/tmp/a202r/ascend_fla/ops/kda/__init__.py", line 65, in prepare
+  File "<REPO>/ascend_fla/ops/kda/__init__.py", line 65, in prepare
     require_qualified(device)
-  File "/tmp/a202r/ascend_fla/platform.py", line 129, in require_qualified
+  File "<REPO>/ascend_fla/platform.py", line 129, in require_qualified
     raise RuntimeError(
 RuntimeError: 该 SoC 未验收：a2 —— A2 的真机能力尚未测定/验收：A2-01 的 910B3 读数只是观察（D-PM-30），能力测定在 A2-10、验收在 A2-11。当前只有 a5 通过真机验收；a2 的验收门是 A2-11。
 
 chunk_kda raised:
 Traceback (most recent call last):
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 68, in _print_gating
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 73, in _print_gating
     call()
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 58, in <lambda>
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 63, in <lambda>
     "chunk_kda": lambda: chunk_kda(
                          ^^^^^^^^^^
-  File "/tmp/a202r/ascend_fla/ops/kda/autograd.py", line 259, in chunk_kda
+  File "<REPO>/ascend_fla/ops/kda/autograd.py", line 259, in chunk_kda
     require_qualified(device)
-  File "/tmp/a202r/ascend_fla/platform.py", line 129, in require_qualified
+  File "<REPO>/ascend_fla/platform.py", line 129, in require_qualified
     raise RuntimeError(
 RuntimeError: 该 SoC 未验收：a2 —— A2 的真机能力尚未测定/验收：A2-01 的 910B3 读数只是观察（D-PM-30），能力测定在 A2-10、验收在 A2-11。当前只有 a5 通过真机验收；a2 的验收门是 A2-11。
 
 fused_recurrent_kda raised:
 Traceback (most recent call last):
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 68, in _print_gating
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 73, in _print_gating
     call()
-  File "/tmp/a202r/benchmarks/a2/probe_platform.py", line 61, in <lambda>
+  File "<REPO>/benchmarks/a2/probe_platform.py", line 66, in <lambda>
     "fused_recurrent_kda": lambda: fused_recurrent_kda(
                                    ^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/a202r/ascend_fla/ops/kda/fused_recurrent.py", line 174, in fused_recurrent_kda
+  File "<REPO>/ascend_fla/ops/kda/fused_recurrent.py", line 174, in fused_recurrent_kda
     require_qualified(device)
-  File "/tmp/a202r/ascend_fla/platform.py", line 129, in require_qualified
+  File "<REPO>/ascend_fla/platform.py", line 129, in require_qualified
     raise RuntimeError(
 RuntimeError: 该 SoC 未验收：a2 —— A2 的真机能力尚未测定/验收：A2-01 的 910B3 读数只是观察（D-PM-30），能力测定在 A2-10、验收在 A2-11。当前只有 a5 通过真机验收；a2 的验收门是 A2-11。
 

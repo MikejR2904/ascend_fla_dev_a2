@@ -103,3 +103,19 @@ def test_unit_root_points_under_soc(monkeypatch):
     root = platform.unit_root("a2")
     assert root.name == "a2"
     assert root.parent.name == "projects"
+
+
+def test_a5_compile_signature_unchanged(monkeypatch):
+    """``device=None`` 解析成 a5 后，编译签名必须与显式 ``device="a5"`` 逐字相同 ——
+    否则所有 a5 缓存失效，也让"改没改算式"变得难判（A2-02：只搬家不改值）。"""
+    from ascend_fla.runtime import compile as _compile
+
+    def _sig_probe():  # 一个有源码可读的假 kernel
+        return None
+
+    _sig_probe.name = "a2_02_sig_probe"
+    sig_explicit = _compile._signature(_sig_probe, "a5", 1, {}, "cce")
+    monkeypatch.setenv(platform.SOC_ENV, "a5")
+    platform._reset_cache()
+    sig_resolved = _compile._signature(_sig_probe, platform.resolve_soc(), 1, {}, "cce")
+    assert sig_resolved == sig_explicit

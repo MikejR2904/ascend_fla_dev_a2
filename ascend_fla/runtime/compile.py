@@ -134,7 +134,7 @@ class CompiledKernel:
 def compile_kernel(
     kernel: Any,
     *,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int | None = None,
     bindings: dict[str, int] | None = None,
     backend: str = "cce",
@@ -145,9 +145,12 @@ def compile_kernel(
 
     Args:
         kernel: ascriptor ``@kernel`` 装饰的函数。
-        device: ascriptor 设备名。``"a5"`` → 950 profile（32 cube / 64 vec）。
-            注意 Ascend950PR 实际只有 28 cube / 56 vec —— ``block_dim`` 超过物理
-            核数会在硬件 barrier 上死锁，详见 ascriptor boards.json 的 ``cube_cores``。
+        device: ascriptor 设备名。``None``（默认）走 :func:`ascend_fla.platform.resolve_soc`
+            按 SoC 解析（``ASCEND_FLA_SOC`` 环境变量 → 设备探测 → 报错，不再悄悄默认
+            ``"a5"``）。显式传 ``"a5"`` / ``"a2"`` / ``"a3"`` 时按传入值编译。
+            ``"a5"`` → 950 profile（32 cube / 64 vec）；注意 Ascend950PR 实际只有
+            28 cube / 56 vec —— ``block_dim`` 超过物理核数会在硬件 barrier 上死锁，
+            详见 ascriptor boards.json 的 ``cube_cores``。
         block_dim: 启动的核组数。不传则用 kernel 自带的声明。
         bindings: 整型标量的绑定值，参与编译签名。
         backend: ``"cce"``（默认）或 ``"pto_isa"``。
@@ -158,8 +161,18 @@ def compile_kernel(
         :class:`CompiledKernel`。
 
     Raises:
-        RuntimeError: 编译未产出 vendor 树，或 vendor 树里找不到 ``libcust_opapi.so``。
+        RuntimeError: 编译未产出 vendor 树，或 vendor 树里找不到 ``libcust_opapi.so``；
+            或 ``device=None`` 且 SoC 无法解析。
+
+    Note:
+        本函数只解析 device，不做 SoC 验收门控 —— 验收检查（未验收 SoC 报错）由各算子
+        入口（``ops/kda`` 的 ``chunk_kda`` / ``prepare`` / ``fused_recurrent_kda``）在编译
+        之前调 :func:`ascend_fla.platform.require_qualified` 完成。直接指定 ``device``
+        编译任意 SoC 的 kernel（如 a2 的 GDN-2 单元）不受门控影响。
     """
+    if device is None:
+        from ascend_fla.platform import resolve_soc
+        device = resolve_soc()
     bindings = dict(bindings or {})
     sig = _signature_memoized(kernel, device, block_dim, bindings, backend)
 

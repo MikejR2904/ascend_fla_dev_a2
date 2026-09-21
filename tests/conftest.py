@@ -15,11 +15,17 @@ decode 的服务，必须在启动时调一次 ``prepare(decode=True)``。
 from __future__ import annotations
 
 import pathlib
+import os
 import sys
 
 import pytest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+
+# 主机侧没有 NPU，SoC 解析探不到设备名。显式声明本仓测试跑在 a5（当前唯一已验收的
+# SoC），不靠 platform 的设备探测或悄悄默认（A2-02 / AGENTS.md §7）。setdefault —— 真机上
+# 调用方若已设别的 SoC 就尊重它，不覆盖。
+os.environ.setdefault("ASCEND_FLA_SOC", "a5")
 
 
 @pytest.fixture(scope="session", autouse=True)

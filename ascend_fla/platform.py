@@ -23,9 +23,9 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 #: 解析用环境变量。主机侧无 NPU 时必须显式设。
 SOC_ENV = "ASCEND_FLA_SOC"
 
-#: a5 的实测能力。数字全部从 ``ops/kda/{chunk,fused_recurrent}.py`` 原样搬来 ——
-#: A2-02 只搬家不改值。``supported_block_dim`` 分 chunk / decode 两条路；``max_gate_span``
-#: 是二维的 ``[impl][direction]``（见 ``ops/kda/chunk.py`` 的 ``MAX_GATE_SPAN``）。
+#: a5 的实测能力，是这些数字的**唯一真值源**：``ops/kda/{chunk,fused_recurrent}.py`` 的
+#: ``SUPPORTED_BLOCK_DIM`` / ``MAX_GATE_SPAN`` 现在从这里读（a5 的别名），A2-02 只搬家不改值。
+#: ``supported_block_dim`` 分 chunk / decode 两条路；``max_gate_span`` 是二维的 ``[impl][direction]``。
 _A5_CAPABILITY: dict[str, Any] = {
     "qualified": True,
     "supported_block_dim": {"chunk": (1, 2, 3, 4), "decode": (1, 2, 4, 8, 16, 28)},

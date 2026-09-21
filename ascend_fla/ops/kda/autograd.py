@@ -195,7 +195,7 @@ def chunk_kda(
     use_gate_in_kernel: bool = False,
     use_beta_sigmoid_in_kernel: bool = False,
     check_domain: bool = True,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int = 1,
     layout_device: str = "auto",
     check_gate_range: bool = True,
@@ -252,6 +252,10 @@ def chunk_kda(
     Raises:
         ValueError: 任何定尺/dtype/设备约束不满足。绝不静默降级（AGENTS.md §7）。
     """
+    from ascend_fla.platform import require_qualified, resolve_soc
+    device = resolve_soc(device)
+    require_qualified(device)
+
     # Choose before preparation; gate-parameter-only training must keep its graph.
     train_inputs = (q, k, v, g, beta, initial_state)
     if use_gate_in_kernel:

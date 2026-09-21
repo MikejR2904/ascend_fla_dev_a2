@@ -27,7 +27,7 @@ __all__ = [
 ]
 
 
-def prepare(device: str = "a5", block_dim: int = 1, *, backward: bool = True,
+def prepare(device: str | None = None, block_dim: int = 1, *, backward: bool = True,
             impl: str = "stable", decode: bool = False,
             decode_block_dim: int | None = None) -> None:
     """把本进程要用到的 kernel 全部编译好（并注册 vendor 树）。
@@ -58,8 +58,11 @@ def prepare(device: str = "a5", block_dim: int = 1, *, backward: bool = True,
             实测它的声明域比 chunk 宽（到 28），不过总时长几乎不随它变
             —— 见 ``gaps.json`` 的 ``decode-call-overhead``。
     """
+    from ascend_fla.platform import require_qualified, resolve_soc
     from .chunk import _compiled_chain as _fwd_chain
 
+    device = resolve_soc(device)
+    require_qualified(device)
     _fwd_chain(device, block_dim, impl)
     if backward:
         from .chunk_bwd import _compiled_chain as _bwd_chain

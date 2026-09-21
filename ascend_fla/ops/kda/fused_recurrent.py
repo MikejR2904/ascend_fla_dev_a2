@@ -12,12 +12,14 @@ from typing import Any
 
 import torch
 
+from ascend_fla.platform import capability
+
 from .chunk import HEAD_DIM, VALUE_DIM, _load_kernel, _prepare_kernel_inputs, _prep_runtime
 
-#: 本单元声明的 block_dim。**比 chunk 路径的 4 宽** —— 这个 kernel 只用向量核、
-#: 不碰 cube，而 ``GetVecNum() == 2 * block_dim``，物理上有 56 个向量核。
+#: a5 decode 路径的 block_dim，从能力表读（a5 的别名）。真值住在 ``platform.CAPABILITIES``。
+#: 这个 kernel 只用向量核、不碰 cube，``GetVecNum() == 2 * block_dim``，比 chunk 的 4 宽；
 #: 上限仍要实测（超过物理核数会在硬件 barrier 死锁，见 AGENTS.md §5）。
-SUPPORTED_BLOCK_DIM = (1, 2, 4, 8, 16, 28)
+SUPPORTED_BLOCK_DIM = capability("a5")["supported_block_dim"]["decode"]
 
 
 def _unit_root() -> pathlib.Path:
@@ -143,7 +145,7 @@ def fused_recurrent_kda(
     use_gate_in_kernel: bool = False,
     use_beta_sigmoid_in_kernel: bool = False,
     check_domain: bool = True,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int = 1,
 ) -> tuple[torch.Tensor, torch.Tensor | None]:
     """逐 token 递推的 KDA 前向（decode）。
@@ -167,6 +169,10 @@ def fused_recurrent_kda(
         ``(o, final_state)``，``o`` 为 ``[B,T,HV,128]``（与输入同 dtype），
         ``final_state`` 为 ``[B,HV,128,128]`` float32 或 ``None``。
     """
+    from ascend_fla.platform import require_qualified, resolve_soc
+    device = resolve_soc(device)
+    require_qualified(device)
+
     b, t, h, hv = _check(q, k, v, g, beta, initial_state, block_dim)
     q, k, g, beta = _prepare_kernel_inputs(
         q, k, g, beta, A_log=A_log, dt_bias=dt_bias,

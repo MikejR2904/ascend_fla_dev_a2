@@ -26,6 +26,8 @@ from typing import Any
 
 import torch
 
+from ascend_fla.platform import capability
+
 __all__ = ["chunk_kda_fwd", "kda_fwd_kernels"]
 
 L_PER_CHUNK = 64
@@ -194,7 +196,8 @@ def _check_input_domain(q, k, g, beta, *, use_qk_l2norm_in_kernel=False,
 # ascriptor kda_fwd contract.json 的 shapes.block_dim 声明；只有这几个值被 cases 覆盖过。
 # 契约的 core_ownership 说明分区方式：gate 按向量核切 B*HV*C，scores/WY/inverse 按 cube
 # 组切，融合尾部按 B*HV 头对切（两个 V=64 tile 必须留在同一组）。
-SUPPORTED_BLOCK_DIM = (1, 2, 3, 4)
+#: a5 chunk 路径的 block_dim，从能力表读（a5 的别名）。真值住在 ``platform.CAPABILITIES``。
+SUPPORTED_BLOCK_DIM = capability("a5")["supported_block_dim"]["chunk"]
 
 #: Stable uses the local gate/scores/WY kernels for gate-span stability and the
 #: repaired recurrent kernel for continuous Aqk slot rotation across heads.
@@ -459,11 +462,9 @@ def _from_bhcld(x: torch.Tensor, *, on_cpu: bool = False, dtype=None,
 #: 于是：纯推理（``chunk_kda_fwd``）可以用到 155，训练（``chunk_kda_fwd_with_caches`` /
 #: ``chunk_kda``）到 105。
 #: 数字全部是**实测点**，不是推算：见两个单元 contract.json 的 ``domain.gate_span``。
-MAX_GATE_SPAN = {
-    # upstream 两条链都受 ~87/88.7 那条硬线约束（前向下溢、反向上溢），取 80 留余量
-    "upstream": {"forward": 80.0, "backward": 80.0},
-    "stable": {"forward": 155.0, "backward": 105.0},
-}
+#: a5 的门控跨度上限，从能力表读（a5 的别名）。真值住在 ``platform.CAPABILITIES``：
+#: upstream 两条链都受 ~87/88.7 那条硬线约束（前向下溢、反向上溢），取 80 留余量。
+MAX_GATE_SPAN = capability("a5")["max_gate_span"]
 
 #: 两条链的名字。``_check_gate_range`` 的 ``path`` 只接受这两个。
 GATE_PATHS = ("forward", "backward")

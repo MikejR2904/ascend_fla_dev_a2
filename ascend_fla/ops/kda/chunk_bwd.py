@@ -37,6 +37,8 @@ from typing import Any
 
 import torch
 
+from ascend_fla.platform import require_qualified, resolve_soc
+
 from .chunk import (
     BWD_CACHE_NAMES,
     IMPLS,
@@ -213,7 +215,7 @@ def chunk_kda_bwd(
     dht: torch.Tensor,
     caches: dict[str, torch.Tensor],
     *,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int = 1,
     impl: str = "stable",
     layout_device: str = "auto",
@@ -240,6 +242,8 @@ def chunk_kda_bwd(
         ``dq``/``dk`` 为 ``[B,T,H,128]``（已按分组规约回 H 维），``dv``/``dg`` 为
         ``[B,T,HV,128]``，``dbeta`` 为 ``[B,T,HV]``，``dh0`` 为 ``[B,HV,128,128]``。
     """
+    device = resolve_soc(device)
+    require_qualified(device)
     b, h, hv, c = _check(q, k, v, beta, do, dht, caches, block_dim)
     _resolve_layout(layout_device)
     compiled = _compiled_chain(device, block_dim, impl)

@@ -84,7 +84,7 @@ class _RawBeta(torch.autograd.Function):
 
 def _prepare_training_inputs(q, k, g, beta, *, A_log=None, dt_bias=None,
                              use_qk_l2norm_in_kernel=False, use_gate_in_kernel=False,
-                             use_beta_sigmoid_in_kernel=False, device='a5', block_dim=1,
+                             use_beta_sigmoid_in_kernel=False, device=None, block_dim=1,
                              impl='stable'):
     """Retain graph edges at each enabled native preparation boundary."""
     _validate_raw_inputs(q, k, g, beta, A_log=A_log, dt_bias=dt_bias,
@@ -93,6 +93,8 @@ def _prepare_training_inputs(q, k, g, beta, *, A_log=None, dt_bias=None,
                         use_beta_sigmoid_in_kernel=use_beta_sigmoid_in_kernel)
     if not (use_qk_l2norm_in_kernel or use_gate_in_kernel or use_beta_sigmoid_in_kernel):
         return q, k, g, beta
+    from ascend_fla.platform import resolve_soc
+    device = resolve_soc(device)
     runtime = _prep_runtime()
     sources = []
     if use_qk_l2norm_in_kernel:

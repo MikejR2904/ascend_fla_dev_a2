@@ -38,7 +38,12 @@ def _module_consts(path: pathlib.Path) -> dict:
 
 
 def _op_consts() -> dict:
-    return _module_consts(ROOT / "ascend_fla/ops/kda/fused_recurrent.py")
+    # SUPPORTED_BLOCK_DIM is no longer a module-level literal (它从 platform 能力表读，A2-02)，
+    # 所以走 import 取值；T_MAX 等仍是字面量，继续走 ast。import 在无 torch_npu 的主机上可用。
+    consts = _module_consts(ROOT / "ascend_fla/ops/kda/fused_recurrent.py")
+    import ascend_fla.ops.kda.fused_recurrent as fused_recurrent
+    consts["SUPPORTED_BLOCK_DIM"] = fused_recurrent.SUPPORTED_BLOCK_DIM
+    return consts
 
 
 def _kernel_calls() -> set[str]:

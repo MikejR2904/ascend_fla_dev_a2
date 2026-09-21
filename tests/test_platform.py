@@ -119,3 +119,35 @@ def test_a5_compile_signature_unchanged(monkeypatch):
     platform._reset_cache()
     sig_resolved = _compile._signature(_sig_probe, platform.resolve_soc(), 1, {}, "cce")
     assert sig_resolved == sig_explicit
+
+
+def test_op_entries_gate_before_compile_on_unqualified_soc(monkeypatch):
+    """Every device-taking KDA op entry must raise "未验收" before any compile when the SoC is
+    unqualified. Runs on the host (no NPU): the gate is the first statement, before the tensors
+    are touched, so zero CPU inputs reach it. A5 resolution is covered by the signature test above.
+    """
+    import torch
+
+    from ascend_fla.ops.kda import prepare
+    from ascend_fla.ops.kda.autograd import chunk_kda
+    from ascend_fla.ops.kda.chunk import chunk_kda_fwd, chunk_kda_fwd_with_caches
+    from ascend_fla.ops.kda.chunk_bwd import chunk_kda_bwd
+    from ascend_fla.ops.kda.fused_recurrent import fused_recurrent_kda
+
+    monkeypatch.setenv(platform.SOC_ENV, "a2")
+    platform._reset_cache()
+    z = lambda *shape: torch.zeros(*shape)
+    q_k_v_g_beta = (z(1, 64, 1, 128), z(1, 64, 1, 128), z(1, 64, 1, 128), z(1, 64, 1, 128), z(1, 64, 1))
+    entries = {
+        "prepare": lambda: prepare(),
+        "chunk_kda": lambda: chunk_kda(*q_k_v_g_beta),
+        "chunk_kda_fwd": lambda: chunk_kda_fwd(*q_k_v_g_beta),
+        "chunk_kda_fwd_with_caches": lambda: chunk_kda_fwd_with_caches(*q_k_v_g_beta),
+        "fused_recurrent_kda": lambda: fused_recurrent_kda(*q_k_v_g_beta),
+        "chunk_kda_bwd": lambda: chunk_kda_bwd(
+            z(1, 64, 1, 128), z(1, 64, 1, 128), z(1, 64, 1, 128), z(1, 64, 1),
+            z(1, 64, 1, 128), z(1, 1, 128, 128), {}),
+    }
+    for name, call in entries.items():
+        with pytest.raises(RuntimeError, match="未验收"):
+            call()

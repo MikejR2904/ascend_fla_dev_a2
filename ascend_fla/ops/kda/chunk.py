@@ -26,7 +26,7 @@ from typing import Any
 
 import torch
 
-from ascend_fla.platform import capability
+from ascend_fla.platform import capability, require_qualified, resolve_soc
 
 __all__ = ["chunk_kda_fwd", "kda_fwd_kernels"]
 
@@ -123,7 +123,7 @@ def _prep_runtime():
 def _prepare_kernel_inputs(q, k, g, beta, *, A_log=None, dt_bias=None,
                            use_qk_l2norm_in_kernel=False, use_gate_in_kernel=False,
                            use_beta_sigmoid_in_kernel=False, qk_dtype=torch.bfloat16,
-                           device="a5", block_dim=1, namespace="chunk", impl="stable"):
+                           device=None, block_dim=1, namespace="chunk", impl="stable"):
     """Validate, precompile dependencies, then prepare enabled inputs on NPU."""
     _validate_raw_inputs(q, k, g, beta, A_log=A_log, dt_bias=dt_bias,
                         use_qk_l2norm_in_kernel=use_qk_l2norm_in_kernel,
@@ -132,6 +132,7 @@ def _prepare_kernel_inputs(q, k, g, beta, *, A_log=None, dt_bias=None,
                         qk_dtype=qk_dtype)
     if not (use_qk_l2norm_in_kernel or use_gate_in_kernel or use_beta_sigmoid_in_kernel):
         return q, k, g, beta
+    device = resolve_soc(device)
     runtime = _prep_runtime()
     sources = []
     if use_qk_l2norm_in_kernel:
@@ -408,10 +409,11 @@ def _layout_runtime():
 
 
 def _to_bhcld(x: torch.Tensor, heads: int, *, on_cpu: bool = False,
-              device="a5", block_dim=1) -> torch.Tensor:
+              device=None, block_dim=1) -> torch.Tensor:
     """Token-major → head/chunk-major, entirely in the owned layout kernel."""
     if on_cpu:
         raise ValueError("CPU layout conversion is prohibited by D-PM-37")
+    device = resolve_soc(device)
     b, t = x.shape[:2]
     c = t // L_PER_CHUNK
     if x.dim() == 3:
@@ -429,10 +431,11 @@ def _to_bhcld(x: torch.Tensor, heads: int, *, on_cpu: bool = False,
 
 
 def _from_bhcld(x: torch.Tensor, *, on_cpu: bool = False, dtype=None,
-                device="a5", block_dim=1, multiply=False, factor=1.0) -> torch.Tensor:
+                device=None, block_dim=1, multiply=False, factor=1.0) -> torch.Tensor:
     """Head/chunk-major → token-major, optionally narrowing in the same launch."""
     if on_cpu:
         raise ValueError("CPU layout conversion is prohibited by D-PM-37")
+    device = resolve_soc(device)
     b, hv, c, l, d = x.shape
     result = _layout_runtime().move(
         x, (b, c, l, hv, d), (hv*c*l*d, l*d, d, c*l*d, 1),
@@ -615,7 +618,7 @@ def chunk_kda_fwd(
     initial_state: torch.Tensor | None = None,
     output_final_state: bool = False,
     *,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int = 1,
     layout_device: str = "auto",
     check_gate_range: bool = True,
@@ -656,6 +659,8 @@ def chunk_kda_fwd(
         ``(o, final_state)``，``o`` 为 ``[B, T, HV, 128]`` bfloat16；
         ``final_state`` 为 ``[B, HV, 128, 128]`` float32 或 ``None``。
     """
+    device = resolve_soc(device)
+    require_qualified(device)
     b, h, hv, c = _check(q, k, v, g, beta, initial_state, block_dim, impl)
     on_cpu = _resolve_layout(layout_device)
     if check_gate_range:
@@ -727,7 +732,7 @@ def chunk_kda_fwd_with_caches(
     scale: float | None = None,
     initial_state: torch.Tensor | None = None,
     *,
-    device: str = "a5",
+    device: str | None = None,
     block_dim: int = 1,
     layout_device: str = "auto",
     check_gate_range: bool = True,
@@ -757,6 +762,8 @@ def chunk_kda_fwd_with_caches(
         ``(o, final_state, caches)``。``caches`` 的键正是 :data:`BWD_CACHE_NAMES`，
         全部 bfloat16、token-major（``h`` 为 ``[B,C,HV,128,128]``），可直接喂 ``kda_bwd``。
     """
+    device = resolve_soc(device)
+    require_qualified(device)
     b, h_q, hv, c = _check(q, k, v, g, beta, initial_state, block_dim, impl)
     on_cpu = _resolve_layout(layout_device)
     # ⚠️ 门控必须在编译**之前**查。两个理由：

@@ -57,7 +57,7 @@ CAPABILITIES: dict[str, dict[str, Any]] = {
     "a5": _A5_CAPABILITY,
     "a2": _unqualified(
         "a2",
-        "A2-01 仅静态验证（library 90cfcdc / kernels b3b3f9c）；真机能力待 A2-10/A2-11",
+        "A2 的真机能力尚未测定/验收：A2-01 的 910B3 读数只是观察（D-PM-30），能力测定在 A2-10、验收在 A2-11",
     ),
     "a3": _unqualified("a3", "A3 尚未开工；能力待 A3 波次"),
 }

@@ -1,0 +1,609 @@
+{
+ "schema": "ascriptor.kernel-unit/1",
+ "id": "a5.gdn2_chunk_fwd_bf16",
+ "kind": "project",
+ "description": "A5 GDN-2 chunk forward with a BF16 public surface: BF16 q/k/v in, BF16 o out, FP32 gates, w and state. Derived from a5.gdn2_chunk_fwd; the domain is identical and the internal precision is unchanged. Every dtype conversion happens inside the compiled kernels (D-PM-35 / D-PM-37); the host only allocates, takes non-copying views, validates and launches.",
+ "inputs": {
+  "q": {
+   "dtype": "bfloat16",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ]
+  },
+  "k": {
+   "dtype": "bfloat16",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ]
+  },
+  "v": {
+   "dtype": "bfloat16",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ]
+  },
+  "g": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ],
+   "note": "Already-activated non-positive per-key-channel log decay."
+  },
+  "erase_gate": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ],
+   "note": "Activated erase gate in [0,2]."
+  },
+  "w": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ],
+   "note": "Already-activated write gate in [0,1]."
+  },
+  "initial_state": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "H",
+    128,
+    128
+   ],
+   "note": "K-major, read-only and never aliased with final_state."
+  }
+ },
+ "outputs": {
+  "o": {
+   "dtype": "bfloat16",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ],
+   "initialization": "NaN poison; every element must be overwritten."
+  },
+  "final_state": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "H",
+    128,
+    128
+   ],
+   "initialization": "NaN poison; every element must be overwritten."
+  }
+ },
+ "domain": {
+  "B": [
+   1
+  ],
+  "T": "1..4096",
+  "H": [
+   1,
+   16
+  ],
+  "K": 128,
+  "V": 128,
+  "block_dim": [
+   1,
+   2,
+   4,
+   8
+  ],
+  "layout": "Token-major BTHD inputs/output; K-major BHKV state; all tensors contiguous.",
+  "gate_domain": "Finite g<=0, erase_gate in [0,2], w in [0,1].",
+  "normalization": "q and k are normalized in FP32 with eps=1e-6; q is then scaled by 128^-0.5.",
+  "ownership": "Independent complete chunk/head tiles; scan owns complete heads across chunks.",
+  "aliasing": "Inputs are read-only; o and final_state are fresh complete-overwrite outputs with disjoint storage.",
+  "dtype": {
+   "q_k_v_o": "bfloat16",
+   "g_erase_gate_w_state": "float32"
+  },
+  "batch_note": "B=1 exactly, the same domain as a5.gdn2_chunk_fwd: the BF16 path neither widens nor narrows it, and the public entry raises on B>=2 naming the constraint.",
+  "gate_span": {
+   "measured_to": 2541.7,
+   "status": "upper limit not established",
+   "note": "Measured at gate_scale 3..64 on one A5 host: finite and within budget throughout, with no degradation trend. No failure point was reached, so no gate is declared. GD2-01's 1520.9 is an FP32 observation and is not inherited."
+  }
+ },
+ "dependencies": {
+  "python": ">=3.10",
+  "ascriptor": "==0.1.0",
+  "host": [
+   "torch>=2.9.0",
+   "numpy"
+  ]
+ },
+ "comparison": {
+  "default": {
+   "mode": "allclose",
+   "rtol": 0.001,
+   "atol": 0.001,
+   "max_relative_l2": 0.0052354,
+   "reason": "Calibrated before the kernel was written, on CPU with a BF16-input-rounding, FP32-recurrence simulator over all twelve contract cases (docs/research/gdn2_chunk_fwd_bf16.md). The BF16 storage floor for o is F = 1.7451e-03, worst at t1_h1_small; the budget is min(1e-2, 3F) = 5.2354e-03 and does not move afterwards. final_state is FP32 and has no storage floor, so it is held to the same number and is expected to land far below it. Judged against both the pinned fla GDN-2 naive and this unit's own CPU reference, each fed the same BF16-rounded inputs."
+  },
+  "outputs": {
+   "o": {
+    "max_relative_l2": 0.0052354,
+    "reason": "Calibrated before the kernel was written, on CPU with a BF16-input-rounding, FP32-recurrence simulator over all twelve contract cases (docs/research/gdn2_chunk_fwd_bf16.md). The BF16 storage floor for o is F = 1.7451e-03, worst at t1_h1_small; the budget is min(1e-2, 3F) = 5.2354e-03 and does not move afterwards. final_state is FP32 and has no storage floor, so it is held to the same number and is expected to land far below it. Judged against both the pinned fla GDN-2 naive and this unit's own CPU reference, each fed the same BF16-rounded inputs."
+   },
+   "final_state": {
+    "max_relative_l2": 0.0052354,
+    "reason": "Calibrated before the kernel was written, on CPU with a BF16-input-rounding, FP32-recurrence simulator over all twelve contract cases (docs/research/gdn2_chunk_fwd_bf16.md). The BF16 storage floor for o is F = 1.7451e-03, worst at t1_h1_small; the budget is min(1e-2, 3F) = 5.2354e-03 and does not move afterwards. final_state is FP32 and has no storage floor, so it is held to the same number and is expected to land far below it. Judged against both the pinned fla GDN-2 naive and this unit's own CPU reference, each fed the same BF16-rounded inputs."
+   }
+  }
+ },
+ "cases": [
+  {
+   "id": "t1_h1_small",
+   "seed": 62,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 1,
+    "H": 1,
+    "state_scale": 0,
+    "gate_scale": 3,
+    "erase_scale": 2,
+    "N": 1
+   }
+  },
+  {
+   "id": "t2_h1_strong",
+   "seed": 63,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 2,
+    "H": 1,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 1
+   }
+  },
+  {
+   "id": "t63_h1_tail",
+   "seed": 124,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 63,
+    "H": 1,
+    "state_scale": 0.1,
+    "gate_scale": 0.1,
+    "erase_scale": 2,
+    "N": 1
+   }
+  },
+  {
+   "id": "t64_h16_real",
+   "seed": 125,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 64,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 1
+   }
+  },
+  {
+   "id": "t65_h16_tail",
+   "seed": 126,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 65,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 2
+   }
+  },
+  {
+   "id": "t128_h16_even",
+   "seed": 189,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 128,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 0.1,
+    "erase_scale": 2,
+    "N": 2
+   }
+  },
+  {
+   "id": "t192_h16_odd",
+   "seed": 253,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 192,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 3
+   }
+  },
+  {
+   "id": "t320_h16_odd",
+   "seed": 381,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 320,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 0.1,
+    "erase_scale": 2,
+    "N": 5
+   }
+  },
+  {
+   "id": "t1024_h16_prefill",
+   "seed": 1085,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 1024,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 16
+   }
+  },
+  {
+   "id": "t4096_h16_prefill",
+   "seed": 4157,
+   "block_dim": 8,
+   "parameters": {
+    "B": 1,
+    "T": 4096,
+    "H": 16,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2,
+    "N": 64
+   }
+  },
+  {
+   "id": "t65_h1_diagnostic_tail",
+   "seed": 126,
+   "block_dim": 1,
+   "parameters": {
+    "B": 1,
+    "T": 65,
+    "H": 1,
+    "N": 2,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2
+   }
+  },
+  {
+   "id": "t2_h16_diagnostic_heads",
+   "seed": 126,
+   "block_dim": 1,
+   "parameters": {
+    "B": 1,
+    "T": 2,
+    "H": 16,
+    "N": 1,
+    "state_scale": 0.1,
+    "gate_scale": 60,
+    "erase_scale": 2
+   }
+  }
+ ],
+ "support": [
+  {
+   "device": "a5",
+   "backend": "cce",
+   "stage": "reference",
+   "status": "passed",
+   "scope": "All 12 contract cases on CPU."
+  },
+  {
+   "device": "a5",
+   "backend": "cce",
+   "stage": "sim",
+   "status": "passed",
+   "scope": "All 12 contract cases; the BF16 path needs a raised --timeout because A5 has no tile-level cast and each conversion is a per-token vf call."
+  },
+  {
+   "device": "a5",
+   "backend": "cce",
+   "stage": "compile",
+   "status": "passed",
+   "scope": "All five kernels pass the physical address allocation and build for ascend950."
+  },
+  {
+   "device": "a5",
+   "backend": "cce",
+   "stage": "board",
+   "status": "passed",
+   "scope": "All 12 contract cases on an Ascend950PR (CANN 9.2.0, op packages including ascend950). block_dim 1/2/4/8 bitwise equal on three shapes; the FP32 path bitwise unchanged after its host conversions were removed; the host operator audit clean on both dtype paths. Gate span measured to 2541.7, still finite and in budget, on the second A5 host whose compiler build differs; the upper limit is NOT established. See evidence/ and README.md."
+  }
+ ],
+ "measured": {
+  "static": "All five optimized stages emitted; zero static errors/warnings. Surface operations: prepare 174, scores 128, WY 199, scan 153, output 122.",
+  "simulation": "Paired-row WY source passes fresh sim T=1/H=1 and pipesim T=2/H=1 plus T=65/H=16 at block_dim=1, checking all 13 stage outputs and synchronization diagnostics.",
+  "board_cce": "Paired-row WY kernel SHA256 803c45093dd21b7d5af196ae76e1df207fde7d7261e3fa574934b8cb90519bb4 passes a fresh canonical source check at T=4096/H=16/FP32/block_dim=8 on 950PR_9589 V100/CANN compiler+OPP 9.2.0, against CPU Torch 2.12.0 references: output relative L2 2.400727462e-6/max abs 1.345761120e-7; state relative L2 4.140812156e-6/max abs 4.950910807e-6. All 13 intermediate comparisons also pass. The original 9ba48cd WY failure is retained. Remaining canonical board-launcher cases are untested; see native_inprocess for separate bridge evidence.",
+  "latency": "Same-process Torch NPU synchronized baseline-candidate-baseline, 3 rounds, warmup=10/repeat=50, FP32/B=1/H=16/K=V=128/block_dim=8, 950PR_9589 V100/CANN compiler+OPP 9.2.0. Against accepted GD2-01: T1024 candidate medians 3288.7785..3294.6695 us, latency reduction 21.839..21.964%; T4096 medians 11995.0925..12134.4565 us, reduction 23.253..24.016%. Separate incremental comparison against 690f420: T1024 reduction 14.513..14.663%, T4096 15.109..15.855%. Each reduction uses the faster same-round baseline. CPU goldens and final byte equality pass before timing; public validation/allocation/launches are included. Cumulative receipt SHA256 595c2c24d85a6d99d8b13772f5f56d4d40b4b33140093b023ab51409cceb4e4d.",
+  "whole_model": "CPU real-checkpoint gate replay passes both random and natural-text samples at T=4096, all 18 layers and reset sizes 4/8/16/32/64 (180 rows), against both CPU oracles. Native whole-model logit/cache qualification remains pending.",
+  "reproduce": "run.py check --launcher board --board a5 --case t4096_h16_prefill --block-dim 8; see docs/research/gdn2_chunk_fwd_gate_range.md",
+  "native_inprocess": "All 12 contract cases pass all 13 CPU-golden stage comparisons at block_dim=1 and 8; every stage output is byte-identical between these block counts and versus both preweight 690f420 and accepted GD2-01. Kernel SHA256 803c45093dd21b7d5af196ae76e1df207fde7d7261e3fa574934b8cb90519bb4. Maximum final output/state relative L2 across cases: 3.348794618e-6/5.677315394e-6. This NPU in-process bridge evidence is separate from the canonical board launcher above. Other block counts remain unqualified.",
+  "optimization": {
+   "baseline_kernel_sha256": "82dd3fec13edee5c358a336721bd8d45ef7238fb1a62a05eca668b5fbae47e66",
+   "candidate_kernel_sha256": "803c45093dd21b7d5af196ae76e1df207fde7d7261e3fa574934b8cb90519bb4",
+   "change": "FP32 vector scan/output preweights plus paired-row WY reuse; unchanged per-row arithmetic order, GM workspace, five launches and public ABI.",
+   "native_grid_bd1_sha256": "a4ad747902abadde699fe67e12a15f5d19a005ffaf393ded95db10cab5a43874",
+   "native_grid_bd8_sha256": "272923c81eea1292e2bf2192cad0ca675056e26eb6977514a7e36776e90aff3d",
+   "peak_torch_allocated_bytes": {
+    "t1024_baseline_and_candidate": 72351744,
+    "t4096_baseline_and_candidate": 286261248
+   },
+   "reproduce": "benchmark.py --baseline <0397aa1-or-690f420-stages.py> --output tmp/gdn2-wy/sandwich.json; see research document for exact commands and retained candidate receipts.",
+   "incremental_baseline_kernel_sha256": "a1f305eb5209420e026a1a6c82d7147f00a00c0588ea7f7f331805993d1cce5b",
+   "board_redacted_receipt_sha256": "b9360522b23b69405ff804a0faacb9bfb6af9bbf3d4b1abe3f34008d1e8e6fa0",
+   "incremental": {
+    "baseline": "690f420",
+    "receipt_sha256": "5cc541d699c84ef2cb86d2baadd5ff369e8da1d1ffacf279299bf399676497ba",
+    "cases": {
+     "4096": {
+      "candidate_median_us_range": [
+       12108.2505,
+       12201.6705
+      ],
+      "latency_reduction_percent_range": [
+       15.108990177750314,
+       15.8549971424092
+      ]
+     },
+     "1024": {
+      "candidate_median_us_range": [
+       3297.7309999999998,
+       3299.593
+      ],
+      "latency_reduction_percent_range": [
+       14.51304413163057,
+       14.662726184601615
+      ]
+     }
+    }
+   },
+   "cumulative": {
+    "baseline": "0397aa1",
+    "receipt_sha256": "595c2c24d85a6d99d8b13772f5f56d4d40b4b33140093b023ab51409cceb4e4d",
+    "cases": {
+     "4096": {
+      "candidate_median_us_range": [
+       11995.092499999999,
+       12134.4565
+      ],
+      "latency_reduction_percent_range": [
+       23.252704902003185,
+       24.0157815375863
+      ]
+     },
+     "1024": {
+      "candidate_median_us_range": [
+       3288.7785,
+       3294.6695
+      ],
+      "latency_reduction_percent_range": [
+       21.838581309789397,
+       21.96362940271116
+      ]
+     }
+    }
+   }
+  },
+  "gate_range": {
+   "source": "Real 95B checkpoint; CPU Torch 2.12.0, BF16 model, FP32 captured core tensors; sample qualification only",
+   "random_max_chunk64_decay": 1520.91455078125,
+   "natural_max_chunk64_decay": 1423.757568359375,
+   "historical_exact_value_reproduced": false,
+   "max_relative_l2": 4.48764785687672e-06,
+   "receipt_sha256": "2be57fcfed201a5a8f58e0b83af398d6d63bfb05324e1d26f84c5574ccebd5f6"
+  }
+ },
+ "provenance": [
+  {
+   "source": "FLA fla/ops/gdn2 at e52dbc0ea19d3a40d7ab7f9eed855d2b473994d2",
+   "disposition": "Independent FP32 equations and causal score construction; no Triton dependency."
+  },
+  {
+   "source": "Repository gdn2_fused_recurrent reference",
+   "disposition": "Independent recurrence oracle and runtime input generator adapted to long sequences."
+  }
+ ],
+ "profile": {
+  "warmup": 10,
+  "repeat": 50
+ },
+ "release_scope": {
+  "version": "0.0.1.dev0",
+  "hardware": [
+   "a5"
+  ],
+  "note": "Repository-owned experimental unit; scoped A5 native correctness and FP32 performance qualification only, as listed in support/measured."
+ },
+ "stages": {
+  "qn": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "kn": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "gc": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "bk": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "wv": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "u": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "wy": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "delta": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    128
+   ]
+  },
+  "lower": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    64
+   ]
+  },
+  "score": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    64,
+    64
+   ]
+  },
+  "states": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "N",
+    "H",
+    128,
+    128
+   ]
+  },
+  "o": {
+   "dtype": "bfloat16",
+   "shape": [
+    "B",
+    "T",
+    "H",
+    128
+   ],
+   "initialization": "NaN poison; every element must be overwritten."
+  },
+  "final_state": {
+   "dtype": "float32",
+   "shape": [
+    "B",
+    "H",
+    128,
+    128
+   ],
+   "initialization": "NaN poison; every element must be overwritten."
+  }
+ },
+ "workspace": {
+  "N": "ceil(T/64)",
+  "lifetime": "One public call; each stage output has a unique producer, separate storage and launch-ordered consumers."
+ },
+ "saved_state": {
+  "training": "None; forward inference only.",
+  "states": "Incoming K-major FP32 state per chunk, consumed by output stage."
+ },
+ "validation": {
+  "source_identity": "Ascriptor library 90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5; kernels runner b3b3f9c16df7c4626ed3c081032a1be5a753d0b1.",
+  "host": "Python 3.11.16, Torch 2.14.0 CPU.",
+  "numerics": "Independent FP32 chunk-vs-recurrent tests cover T=1,16,63,64,65,127,128,192,320,1024,4096 at H=16 for zero/strong decay, budget 1e-4. FLA naive recurrence is separately checked. These host tests do not promote unexecuted CCE cases.",
+  "synchronization": "Reduced block_dim=1 pipesim diagnostics compare all 13 stage outputs; event balance, hazards and deadlock checks pass for the explicitly scoped cases.",
+  "hardware": "Paired-row WY source: fresh canonical board T4096/H16/FP32/bd8 and in-process all 12 cases/bd1+8 pass on 950PR_9589 V100, CANN compiler and OPP 9.2.0; OPP contains ascend950, ascend910b and ascend910_93. CPU Torch goldens, Torch NPU performance. Every stage is byte-identical across bd1/bd8 and versus 690f420. Other block counts and native whole-model qualification remain untested.",
+  "reproduce": "run.py reference/check with the scoped case IDs; tests/test_gdn2_chunk_fwd.py; ref/survey.py."
+ }
+}

@@ -1,0 +1,37 @@
+[W922 14:25:58.536213755 NPUCachingAllocator.cpp:201] Warning: The current CANN and Soc versions require processing for 32 padding size, with memory allocation. (function operator())
+torch.float32: 2 distinct aten ops, verdict PASS
+   alloc   empty x18
+   alloc   zeros x1
+torch.bfloat16: 2 distinct aten ops, verdict PASS
+   alloc   empty x18
+   alloc   zeros x1
+{
+ "float32": {
+  "ops": {
+   "empty": {
+    "count": 18,
+    "class": "alloc"
+   },
+   "zeros": {
+    "count": 1,
+    "class": "alloc"
+   }
+  },
+  "failing": [],
+  "verdict": "PASS"
+ },
+ "bfloat16": {
+  "ops": {
+   "empty": {
+    "count": 18,
+    "class": "alloc"
+   },
+   "zeros": {
+    "count": 1,
+    "class": "alloc"
+   }
+  },
+  "failing": [],
+  "verdict": "PASS"
+ }
+}

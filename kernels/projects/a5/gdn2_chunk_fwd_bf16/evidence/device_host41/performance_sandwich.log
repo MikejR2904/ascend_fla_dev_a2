@@ -1,0 +1,45 @@
+path string is NULLpath string is NULLround 1 baseline_fp32   median 43.060 ms  min 41.853  p90 43.478
+round 2 candidate_bf16  median 43.996 ms  min 42.991  p90 44.066
+round 3 baseline_fp32   median 42.953 ms  min 41.789  p90 43.026
+
+baseline FP32 median of the two rounds: 43.007 ms
+candidate BF16: 43.996 ms   ratio candidate/baseline: 1.023
+{
+ "rounds": [
+  {
+   "median_ms": 43.059809831902385,
+   "min_ms": 41.85281111858785,
+   "p90_ms": 43.47757017239928,
+   "reps": 20,
+   "round": 1,
+   "label": "baseline_fp32",
+   "dtype": "float32",
+   "T": 1024,
+   "H": 16
+  },
+  {
+   "median_ms": 43.99589844979346,
+   "min_ms": 42.990694055333734,
+   "p90_ms": 44.06556696631014,
+   "reps": 20,
+   "round": 2,
+   "label": "candidate_bf16",
+   "dtype": "bfloat16",
+   "T": 1024,
+   "H": 16
+  },
+  {
+   "median_ms": 42.95321740210056,
+   "min_ms": 41.78890702314675,
+   "p90_ms": 43.02556812763214,
+   "reps": 20,
+   "round": 3,
+   "label": "baseline_fp32",
+   "dtype": "float32",
+   "T": 1024,
+   "H": 16
+  }
+ ],
+ "baseline_median_ms": 43.006513617001474,
+ "candidate_median_ms": 43.99589844979346
+}

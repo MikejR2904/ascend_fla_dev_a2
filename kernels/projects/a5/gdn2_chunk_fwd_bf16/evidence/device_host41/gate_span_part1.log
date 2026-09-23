@@ -1,0 +1,39 @@
+gate_scale       span  finite     o relL2  state relL2   verdict
+       3.0      119.1    True   3.652e-05    1.024e-06        ok
+       8.0      317.7    True   4.818e-05    1.988e-06        ok
+      16.0      635.4    True   8.564e-05    2.948e-06        ok
+      24.0      953.1    True   4.036e-05    2.975e-06        ok
+path string is NULLpath string is NULLTraceback (most recent call last):
+  File "<task-dir>/gate_span.py", line 36, in <module>
+    got = UN.execute(x, opts)
+          ^^^^^^^^^^^^^^^^^^^
+  File "<task-dir>/repo/kernels/projects/a5/gdn2_chunk_fwd_bf16/unit.py", line 23, in execute
+    stages = execute_stages(inputs, options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<task-dir>/repo/kernels/projects/a5/gdn2_chunk_fwd_bf16/unit.py", line 19, in execute_stages
+    return run(inputs, launch)
+           ^^^^^^^^^^^^^^^^^^^
+  File "<task-dir>/repo/kernels/projects/a5/gdn2_chunk_fwd_bf16/kernels/pipeline.py", line 45, in run
+    got = launch(entry, {name: values[name] for name in names}, fresh, scalars)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<task-dir>/repo/kernels/projects/a5/gdn2_chunk_fwd_bf16/unit.py", line 15, in launch
+    result = launch_kernel(entry, tuple(sources.values()) + tuple(outputs.values())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<task-dir>/repo/kernels/projects/a5/gdn2_chunk_fwd_bf16/_unit_runner.py", line 412, in launch_kernel
+    result = executor(*args)
+             ^^^^^^^^^^^^^^^
+  File "<task-dir>/lib/ascriptor/runtime/opexec.py", line 310, in __call__
+    _build.run_harness(self.test_dir, self.cann_path, self._vendor, mode="npu" if self.launcher == "aclnn" else "cannsim",
+  File "<task-dir>/lib/ascriptor/runtime/build.py", line 171, in run_harness
+    _bash(script, Path(test_dir), log, env, timeout)
+  File "<task-dir>/lib/ascriptor/runtime/build.py", line 60, in _bash
+    raise BuildError(f"{script.splitlines()[-1] if script else 'command'} failed (exit {r.returncode}); log: {log}\n"
+ascriptor.runtime.build.BuildError: ./test_aclnnop . failed (exit 2); log: <task-dir>/tmp/span/s32.0/gdn2_chunk_prepare_bf16/aclnn_test/run.log
+# cwd <task-dir>/tmp/span/s32.0/gdn2_chunk_prepare_bf16/aclnn_test
+# set -e
+if [ -f "<path>" ]; then source "<path>"; fi
+if [ -f "<task-dir>/tmp/span/s32.0/gdn2_chunk_prepare_bf16/custom_op/vendors/customize/bin/set_env.bash" ]; then source "<task-dir>/tmp/span/s32.0/gdn2_chunk_prepare_bf16/custom_op/vendors/customize/bin/set_env.bash"; fi
+export LD_LIBRARY_PATH="<task-dir>/tmp/span/s32.0/gdn2_chunk_prepare_bf16/custom_op/vendors/customize/op_api/lib:${LD_LIBRARY_PATH:-}"
+./test_aclnnop .
+test.cpp:16 aclrtSetDevice(deviceId) failed: 507033
+[ERROR] 2026-09-23-08:49:44 (PID:646819, Device:-1, RankID:-1) ERR99999 UNKNOWN applicaiton exception

@@ -1,0 +1,4 @@
+t64_h16_real         o=bitwise(5f74a36e30b43237) final_state=bitwise(5379c65bb6551811)
+t65_h16_tail         o=bitwise(0d09d0ffd1179654) final_state=bitwise(ae3de50381a1a997)
+t192_h16_odd         o=bitwise(e2d4ae0c2011d478) final_state=bitwise(a687bc73b2a39bef)
+ALL BITWISE EQUAL

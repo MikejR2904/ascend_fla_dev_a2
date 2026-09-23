@@ -1,0 +1,5 @@
+gate_scale       span  finite     o relL2  state relL2   verdict
+      32.0     1270.8    True   5.487e-05    4.119e-06        ok
+      48.0     1906.2    True   3.719e-05    3.765e-06        ok
+      64.0     2541.7    True   5.256e-05    4.995e-06        ok
+path string is NULLpath string is NULL

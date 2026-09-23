@@ -1,0 +1,17 @@
+{
+ "builtin_op_packages": [
+  "ascend910_93",
+  "ascend910b",
+  "ascend950"
+ ],
+ "cann": "9.2.0",
+ "compiler": "2026-08-04T16:57:23+08:00 clang 15.0.5 (clang-5c68a1cb1231)",
+ "compiler_note": "The first A5 host used 2026-05-09T12:45:09+08:00. Different toolchain builds, so machine_specs.md forbids carrying kernel qualification between them.",
+ "device_selection": "Physical card 1, the health-confirmed one; both device locks were verified unheld and no live container job was running. No npu-smi exists on this host, so health was probed with a minimal torch matmul. No shared device was reset.",
+ "host": "the second A5 machine in machine_specs.md (results are NOT interchangeable with the first)",
+ "python": "3.12.13",
+ "soc": "Ascend950PR",
+ "torch": "2.12.0+cpu",
+ "torch_npu": "2.12.0",
+ "transient_fault": "The first sweep died at gate_scale=32 with aclrtSetDevice failed: 507033. Both cards then passed a minimal matmul probe, so it was transient; the raw log is kept in gate_span_part1.log and the sweep was resumed from 32."
+}

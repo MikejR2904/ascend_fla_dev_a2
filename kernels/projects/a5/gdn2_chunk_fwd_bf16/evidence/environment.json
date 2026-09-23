@@ -1,0 +1,17 @@
+{
+ "ascriptor_kernels_sha": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+ "ascriptor_library_sha": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+ "builtin_op_packages": [
+  "ascend910_93",
+  "ascend910b",
+  "ascend950"
+ ],
+ "cann": "9.2.0",
+ "compiler": "2026-05-09T12:45:09+08:00 clang 15.0.5 (clang-5c68a1cb1231)",
+ "fla_sha": "864a87f6ce5be8828bef81eb22baafd41937cdf2",
+ "note": "Machine coordinates (hostname, serial numbers, PCIe ids, chip UUIDs) are not collected. Cards were selected per run: only Health=OK and process-free, holding that card's lock.",
+ "python": "3.12.14",
+ "soc": "Ascend950PR",
+ "torch": "2.12.0+cu130",
+ "torch_npu": "2.12.0"
+}

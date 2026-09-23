@@ -17,10 +17,16 @@ import torch
 from .gdn2.fused_recurrent import ATTENTION_SCALE, QK_NORM_EPS
 
 
-@functools.lru_cache(maxsize=1)
-def _pipeline():
-    path = Path(__file__).resolve().parents[2] / 'kernels/projects/a5/gdn2_chunk_fwd/kernels'
-    name = '_afla_gdn2_chunk_kernels'
+#: Public dtype -> derived unit. The BF16 unit takes BF16 q/k/v and writes BF16 o; everything
+#: between stays FP32. Neither path converts dtype on the host (D-PM-35 / D-PM-37).
+_UNITS = {torch.float32: ('gdn2_chunk_fwd', '_afla_gdn2_chunk_kernels'),
+          torch.bfloat16: ('gdn2_chunk_fwd_bf16', '_afla_gdn2_chunk_bf16_kernels')}
+
+
+@functools.lru_cache(maxsize=2)
+def _pipeline(dtype=torch.float32):
+    unit, name = _UNITS[dtype]
+    path = Path(__file__).resolve().parents[2] / 'kernels/projects/a5' / unit / 'kernels'
     spec = importlib.util.spec_from_file_location(name, path / '__init__.py', submodule_search_locations=[str(path)])
     module = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
@@ -29,17 +35,22 @@ def _pipeline():
     return import_module(name + '.pipeline')
 
 
-@functools.lru_cache(maxsize=4)
-def _compiled(block_dim):
+@functools.lru_cache(maxsize=8)
+def _compiled(block_dim, dtype=torch.float32):
     from ..runtime.compile import compile_kernel
     return tuple(compile_kernel(entry, device='a5', block_dim=block_dim, backend='cce')
-                 for entry in _pipeline().entries())
+                 for entry in _pipeline(dtype).entries())
 
 
-def prepare(*, device='a5', block_dim=8):
-    """Compile every chunk stage before CANN first resolves an operator."""
+def prepare(*, device='a5', block_dim=8, dtypes=(torch.float32, torch.bfloat16)):
+    """Compile every chunk stage before CANN first resolves an operator.
+
+    Both dtype paths are separate operator sets, so a process that will use both must compile
+    both here: CANN resolves the vendor tree once, on the first execution.
+    """
     _check_options(device, block_dim)
-    _compiled(block_dim)
+    for dtype in dtypes:
+        _compiled(block_dim, dtype)
 
 
 def _check_options(device, block_dim):
@@ -107,10 +118,13 @@ def chunk_gdn2(q, k, v, g, b, w, *, initial_state=None, output_final_state=False
               device=device, block_dim=block_dim, launcher=launcher)
     state = initial_state
     if state is None:
-        state = torch.zeros(q.shape[0], q.shape[2], 128, 128, dtype=torch.float32, device='cpu').to(q.device)
-    inputs = dict(q=q.float(), k=k.float(), v=v.float(), g=g, erase_gate=b, w=w, initial_state=state)
+        # Allocation on the caller's device: building on the CPU and moving it is a host-side copy.
+        state = torch.zeros(q.shape[0], q.shape[2], 128, 128, dtype=torch.float32, device=q.device)
+    # q/k/v go to the kernel in the caller's dtype; the kernel widens and narrows internally.
+    inputs = dict(q=q, k=k, v=v, g=g, erase_gate=b, w=w, initial_state=state)
+    pipeline = _pipeline(q.dtype)
     if launcher == 'inprocess':
-        compiled = dict(zip((entry.name for entry in _pipeline().entries()), _compiled(block_dim)))
+        compiled = dict(zip((entry.name for entry in pipeline.entries()), _compiled(block_dim, q.dtype)))
         def launch(entry, sources, outputs, scalars):
             # The compiler includes only scalar names consumed by its ABI.
             op = compiled[entry.name]
@@ -124,5 +138,6 @@ def chunk_gdn2(q, k, v, g, b, w, *, initial_state=None, output_final_state=False
                         block_dim=block_dim, board=board, out_dir=root, timeout=timeout)
             result = ex(*(tuple(sources.values()) + tuple(outputs.values()) + tuple(scalars.values())))
             return dict(zip(outputs, (result,) if len(outputs) == 1 else result))
-    checkpoints = _pipeline().run(inputs, launch, retain_stages=False)
-    return checkpoints['o'].to(q.dtype), checkpoints['final_state'] if output_final_state else None
+    checkpoints = pipeline.run(inputs, launch, retain_stages=False)
+    # The kernel already wrote o in the caller's dtype: no cast on the way out.
+    return checkpoints['o'], checkpoints['final_state'] if output_final_state else None

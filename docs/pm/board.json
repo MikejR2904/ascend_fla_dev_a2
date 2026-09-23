@@ -2747,7 +2747,9 @@
       ],
       "write_set": [
         "tests/test_kda_fwd_npu.py",
-        "benchmarks/verify_real_shapes.py"
+        "benchmarks/verify_real_shapes.py",
+        "ascend_fla/platform.py",
+        "benchmarks/a2/evidence/kda_fwd/**"
       ],
       "needs": {
         "npu": true,
@@ -2763,10 +2765,10 @@
         "socs": [
           "a2"
         ],
-        "soc_details": "自述（APPLY 03:13Z / 03:22Z）：a2，Ascend 910B3（20 AI cores / 40 vector cores、UB 192KB、AIV 1.8GHz）、CANN 9.2.0-beta.1、内置算子包含 910B3 平台、torch 2.10.0 / torch_npu 2.10.0.post2、Python 3.11（机器与卡归 assignee 管理，D-PM-28）；A2 真机数字在 A2-11 之前只是观测记录",
+        "soc_details": "自述（APPLY 10:20Z，本 session 自己的环境，不是模板残留）：a2，910B3，Docker 内可访问；npu-smi 显示健康卡且有无进程占用的卡；CANN toolkit 9.0.0（V100R001C10SPC001B250）；内置算子包含 ascend910b/ascend910_93（不含 ascend950）；仅完成只读设备/安装信息核实，正式执行前重查占用/健康、取共享锁。另有 a5 通道（沿用 BF-03 时的 Ascend950PR_9589V100/CANN 9.2），本任务不用。A2 真机数字现在可以算数（A2-11 已获用户裁定），仍需带 SoC/CANN/算子包一行。",
         "ascriptor": "A2-07 期间已按自述固定到 library 90cfcdc / kernels b3b3f9c；A2-10 每份回执带这两个修订，对不上先发 RISK",
         "fla": "有（自述）",
-        "fork": "MikejR2904/ascend_fla_dev_a2（真 fork，parent ddddwee1；APPLY 里原写的同名非 fork 仓跨仓 PR 不认）",
+        "fork": "limjiunnbin/ascend_fla_dev",
         "availability": "异步",
         "note": "本次 APPLY（10:20Z）实查确认 a2 访问：910B3，CANN 9.0.0（V100R001C10SPC001B250），opp 含 ascend910b/ascend910_93；正式执行前会重查占用/健康、取共享锁。A2-11 的新约束已读（BF16/FP16 splitk@M<64 永久拒绝、barrier 纪律）。",
         "session": "dev-20260923T071242Z-cc710a24"
@@ -2785,6 +2787,18 @@
         {
           "at": "2026-09-23T10:28",
           "summary": "ASSIGN（PM，规格已补全，session dev-20260923T071242Z-cc710a24）：规格 docs/pm/tasks/A2-12.md。范围：真实 Kimi-Linear 形状 + 门控跨度重测（方法论借 A5 的双边约束校准，阈值不沿用 155）+ (C,HV) 网格补 HV=32 边界 + 把实测数字填进 platform.py 的 CAPABILITIES[\"a2\"]（qualified 仍留 False，PM 审过再改）。写集：tests/test_kda_fwd_npu.py、benchmarks/verify_real_shapes.py（均扩展现有 A5 文件，不删不改既有断言）、ascend_fla/platform.py（只改 CAPABILITIES[\"a2\"] 字面量）。"
+        },
+        {
+          "at": "2026-09-23T13:29",
+          "summary": "ACK（13:23Z，自述，session dev-20260923T071242Z-cc710a24，ETA 16h）：计划分五步，含 T64 的 C1 多头组合按明确条款验证拒绝——这条按下面的更正是错的，PM 已回复澄清。"
+        },
+        {
+          "at": "2026-09-23T13:29",
+          "summary": "RISK contradicts-handoff ×2 + RISK write-set-expansion（13:23-13:24Z，自述，#39）：① 看板 assignee_caps 的 soc_details/fork 字段残留上一个申领人（MikejR2904）的模板数据，与本 session 实际 APPLY 环境（CANN 9.0.0、fork limjiunnbin/ascend_fla_dev）不符——PM 核实属实，已直接改正；顶层 write_set 漏列 ASSIGN 消息与规格里明确提到的 ascend_fla/platform.py——已补齐。② 请求新增 benchmarks/a2/evidence/kda_fwd/**（纯文本回执，无二进制/输入张量/机器身份）——PM 批准（属于常规证据目录模式，不需要问用户，D-PM-33 的 write-set-expansion 由 PM 批准不算争议项）。③ 读源码指出 A2-12.md 第 3 条「C=1 预期报错」写错了：_check_recurrent_heads 只对 impl==\"upstream\" 生效，impl==\"stable\" 直接跳过；A2 的 kda_fwd_stable 架构上不共享 L1 环，README 明写\"A5K-01 修的 Aqk L1 轮转信用在这个设计里不存在\"，A2-03 已验证 C=1 多头/奇数 C 逐位正确。PM 核实属实，已改正规格：C=1 且 HV=32 现在按正常数值 case（正例）处理，不预期报错，upstream 路径不在本任务写集内不需要专门测。"
+        },
+        {
+          "at": "2026-09-23T13:29",
+          "summary": "PM 更正 docs/pm/tasks/A2-12.md 第 3 条：C=1 且 HV=32 不预期报错，按正例处理并单独报数字（A2-03 只测过 HV≤4，HV=32 是新组合，值得单列，不要和其它形状混在一批平均里）。"
         }
       ],
       "result": null
@@ -3793,6 +3807,10 @@
         {
           "at": "2026-09-23T13:07",
           "summary": "ASSIGN（PM，GD2-01 已 done，依赖满足；申领人用 BF-05 的已合入证据证明 A5 真机访问已配好，不是自述）：规格 docs/pm/tasks/GD2-02.md，写集 benchmarks/bench_gdn2_chunk_fwd_a5.py。提醒：BF-05 的两条负结果与本任务相关但不冲突——BF16 比 FP32 慢 2.3%（本任务测 FP32 路径为主）、门控跨度上限未确立（本任务若涉及需沿用同一诚实标注方式，不得虚报）。"
+        },
+        {
+          "at": "2026-09-23T13:29",
+          "summary": "ACK（13:24Z，自述，session gd202-a5-realdevice-1，头 e494f8d）：opp 普查完成，两台 A5 都有 ascend950（意味着 torch_npu 计算算子可用，不需要 AGENTS.md §5 的 D2H 绕行）；两台编译器 build 仍不同、分开记；主用机器 B（争用小），A 作为需要时第二来源。计划：GD2-01 契约全集 → bd 逐位比对 → 95B 端到端（FP32 预算 1e-3、BF16 预算 1e-2）→ 性能三明治（吸取 BF-05 算子名教训）→ 证据出包。BF-05 两条负结果已确认不冲突，会标清路径。"
         }
       ],
       "result": null
@@ -5370,6 +5388,10 @@
         {
           "at": "2026-09-23T13:24",
           "summary": "ACK（13:23Z，自述，#120，session 01a0b7ce-…，ETA 24h）：读了规格与协议文档。计划：新工作树、重跑完整 workload；至少两张健康共享卡各 N≥50 固定输入重放，记录四输出哈希/失败张量/零失败概率上界，补 CANN 9.2 对照；从真实失败边界查事件/信用/槽位、先记录可证伪预测再做单变量干预与负对照；不改上游/生产调度/预算。"
+        },
+        {
+          "at": "2026-09-23T13:29",
+          "summary": "STATUS（13:24Z，自述，session 01a0b7ce-…）：新工作树已建，五份历史原始失败/输入张量 SHA 核验一致；两张历史复现设备（dev-A/dev-B）当前健康异常，暂不能在原卡复测，继续用其它健康卡与 CANN 9.2 对照，不申请复位、不影响他人作业；估计 4-8h 获得首批跨卡/跨环境重放，12-24h 形成首轮机制结论或明确未定位边界。"
         }
       ],
       "result": null,

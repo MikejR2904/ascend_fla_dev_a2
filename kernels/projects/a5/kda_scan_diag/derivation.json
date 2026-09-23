@@ -1,0 +1,38 @@
+{
+  "upstream_source": "projects/a5/kda_bwd/kernels/scan_fused.py",
+  "upstream_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+  "upstream_sha256": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+  "variants": {
+    "baseline": {
+      "source_sha256": "b562c387e60316617e743ebd1019a25e65a81fca93c749ea2a66758d178bdd8d",
+      "entry": "a5k03_scan_baseline_kernel"
+    },
+    "ring": {
+      "source_sha256": "7374942b20ba7c215e857e2f9ba3d2f5bb7b4665f9b39386dfa0463e33b84c72",
+      "entry": "a5k03_scan_ring_kernel"
+    },
+    "negative": {
+      "source_sha256": "6eb59c03cb126e6b18efa6d355c2095f280960dca0e8f67e55b9381311aee239",
+      "entry": "a5k03_scan_negative_kernel"
+    }
+  },
+  "common_change": "Unique entry names for simultaneous vendor registration; no arithmetic change.",
+  "intervention": "Only seed_ub indexing carries its modulo-two phase across BHV.",
+  "negative_control": "Comment-only change after normalizing unique entry name.",
+  "production_dispatch": false,
+  "stress_variants": {
+    "baseline": {
+      "entry": "a5k03_scan_stress_baseline_kernel",
+      "source_sha256": "d69cbc060cff6867dd20fe01bfd83b7f3587e015b8c7ccf5a0421ae26559e11d"
+    },
+    "ring": {
+      "entry": "a5k03_scan_stress_ring_kernel",
+      "source_sha256": "26dfaddba99157a3c1068ce75f3c15ac8655c918f8a183d5072df4b061fbc9ee"
+    },
+    "negative": {
+      "entry": "a5k03_scan_stress_negative_kernel",
+      "source_sha256": "c81465f0ba93a88b4ff766f7eb182faf20116cd4020fafa9a50a1dfc31f5b6bb"
+    }
+  },
+  "stress_scope": "Common bounded identity VF timing perturbation, experimental only; no production dispatch."
+}

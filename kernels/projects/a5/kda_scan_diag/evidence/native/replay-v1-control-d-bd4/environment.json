@@ -1,0 +1,52 @@
+{
+  "python": "3.12.14",
+  "torch": "2.12.0+cu130",
+  "torch_npu": "2.12.0",
+  "ascriptor": "0.1.0",
+  "device_sharing_authorized": true,
+  "device_lock_scope": "task",
+  "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+  "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+  "cann_version_records": {
+    "compiler": {
+      "raw_lines": [
+        "Version=9.1.0-beta.1",
+        "version_dir=cann",
+        "required_package_runtime_version=\"9.1\"",
+        "required_package_ge-executor_version=\"9.1\"",
+        "required_package_metadef_version=\"9.1\"",
+        "required_package_opbase_version=\"9.1\"",
+        "required_package_bisheng-compiler_version=\"9.1\"",
+        "required_package_tbe-tik_version=\"9.1\"",
+        "timestamp=20260509_173000235"
+      ],
+      "sha256": "0f982a259247cdd06df4fa5bdaf526b57b6ad15f7d27a33f23b3c70a381c2fe5"
+    },
+    "opp": {
+      "raw_lines": [
+        "Version=9.1.0-beta.1",
+        "version_dir=cann",
+        "required_package_runtime_version=\">=8.5\"",
+        "required_package_ge-executor_version=\">=8.5\"",
+        "required_package_metadef_version=\">=8.5\"",
+        "required_package_asc-devkit_version=\">=8.5\"",
+        "required_package_bisheng-compiler_version=\">=8.5\"",
+        "timestamp=20260509_173000235"
+      ],
+      "sha256": "377b05dab3a2dfc87dfaa92affd69a9aa5795a54d423cbe629d3495ad20370ef"
+    }
+  },
+  "opp_directories": [
+    "ascend910_93",
+    "ascend910b",
+    "ascend950"
+  ],
+  "source_manifest": {
+    "file": "sources/2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e.json",
+    "canonical_json_sha256": "2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e",
+    "files": 426
+  },
+  "driver_sha256": "9b532b62f9e4c2b9148f71c793e25b04ecccee766ccfe05c28de6d10368ded61",
+  "statistics_sha256": "feb67a41af98d9f4ca56f18687d6ffc61f1d31d8bc027731f8b7d1c74d4aa5a1",
+  "raw_receipt_sha256": "c07e96739521eb8f8a26027eb6714b5dc343d4998ec178b17ed5a60076cf488a"
+}

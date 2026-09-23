@@ -1,0 +1,43 @@
+{
+  "environment": {
+    "python": "3.11.15",
+    "torch": "2.10.0+cpu",
+    "ascriptor": "0.1.0",
+    "stage": "pipesim",
+    "variant": "original",
+    "capture_sha256": "835adb71e947ffd8df9a9a9165bee5f924c0fcda73975003f20cfdba1b45f52e",
+    "source_before": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+    "driver_sha256": "4fc308fffc0aea2e86a7ea39903db0c4c9078d972c09177599fa693c749554c6",
+    "runtime_manifest_sha256": "5cdd9b7600c14440489b26ab45f4042e38d07fee05a5342d558155ed755d136e",
+    "verified_runtime_files": 259,
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1"
+  },
+  "complete": true,
+  "case": {
+    "B": 1,
+    "HV": 2,
+    "C": 2,
+    "T": 128,
+    "block_dim": 1
+  },
+  "event_balance": [],
+  "hazards": [],
+  "deadlock": null,
+  "cycles": 50341,
+  "output_hashes": {
+    "dAqk": "c0c630d61526662bb8ad0cd6a7e649c53d547f86249f8c5dd0c48ddb6ad0834e",
+    "dh": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+    "dv": "14cd572aeb806009ae79eff3b8bce4c330e97d0db3dd13d9d11aea06b0a9802a",
+    "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+  },
+  "finite": {
+    "dAqk": true,
+    "dh": true,
+    "dv": true,
+    "dh0": true
+  },
+  "source_after": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+  "scope": "Executed-trace event diagnostic; not native validation or a fix claim",
+  "raw_receipt_sha256": "45584f4fc4d7d34953c6a5224b0d8fe85c1f2f3ee5de4d72439499605dc1a327"
+}

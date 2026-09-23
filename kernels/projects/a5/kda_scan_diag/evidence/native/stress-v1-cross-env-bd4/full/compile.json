@@ -1,0 +1,1007 @@
+{
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.12.0+cpu",
+    "torch_npu": "2.12.0",
+    "ascriptor": "0.1.0",
+    "device_sharing_authorized": true,
+    "device_lock_scope": "task",
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "cann_version_records": {
+      "compiler": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\"9.2\"",
+          "required_package_ge-executor_version=\"9.2\"",
+          "required_package_metadef_version=\"9.2\"",
+          "required_package_bisheng-compiler_version=\"9.2\"",
+          "required_package_tbe-tik_version=\"9.2\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "604198c1934cf29ad9566ba130465921b80c8a9c15c6620678498d290fdd7ce0"
+      },
+      "opp": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\">=8.5\"",
+          "required_package_ge-executor_version=\">=8.5\"",
+          "required_package_metadef_version=\">=8.5\"",
+          "required_package_asc-devkit_version=\">=8.5\"",
+          "required_package_bisheng-compiler_version=\">=8.5\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "abd4979cb7af44675c08c3dc04bbc68589e9a388778e057e365f820273717e58"
+      }
+    },
+    "opp_directories": [
+      "ascend910_93",
+      "ascend910b",
+      "ascend950"
+    ],
+    "driver_sha256": "fc14fdfca0095ba05c68b4a9279ae11fdc95ade2b76f0337b30d930610d2eeae",
+    "source_manifest": {
+      "file": "sources/83df35ae16bbab2ada1c372071394076d4f964e4ca749cce6300fa0fd2ad9cd4.json",
+      "canonical_json_sha256": "83df35ae16bbab2ada1c372071394076d4f964e4ca749cce6300fa0fd2ad9cd4",
+      "files": 438
+    },
+    "helper_sha256": "808b3d2c778ea577489ef966db72f38375d5a4d609190a63a63704757ae4f880"
+  },
+  "complete": true,
+  "entries": [
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_norm_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "97469908b8d7d4c9",
+      "seconds": 0.10767356399446726,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "9cef89bd5460b7277bf4d08d1bf9024c5255e576d94e56861e227471a9e9ad1a",
+        "framework/tensorflow/npu_supported_ops.json": "6036703629e1c212c1a709b05bdd380d3b164d6d2e464d069755cf482d003754",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "ec53254fd322090fbc8816bf4e1584fe3840758d563fadc251e9ab720bd0d17c",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "68e147573f5b43ba002143b017a69164f8cd56f7ac1eb91f465c2e9824502c14",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_norm_bf16_bf16_kernel.json": "570af64a2b475a507f7d399abf76b871fdeff0907842f52537e690e65bef71e2",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_bf16_bf16_kernel/KdaPrepChunkNormBf16Bf16Kernel_63ac2f27babd518e2531978e45826053.json": "6f2b1f0e241af66dcff04fe00ed33a73563c0effd9e087cab02bd01bdc77481c",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_bf16_bf16_kernel/KdaPrepChunkNormBf16Bf16Kernel_63ac2f27babd518e2531978e45826053.o": "6a9467868254c07f481cff096b9eae0546689a29331554b5788739f32c884cf5",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "ec53254fd322090fbc8816bf4e1584fe3840758d563fadc251e9ab720bd0d17c",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "b13e5bc2e6b5a6c1413bd0d5f81294f0060ba8364eafce9a99d575774f8ebf3d",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "1c98268fe2676ac1e3a9dc2911f9c10399aa42cfe3f61de37fdf3ad6da2aa998"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_norm_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "555f497f037bf84a",
+      "seconds": 0.10290234093554318,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "5d8613cd49c8ebdc3c4a5f46b27a86fcb94b9e726b7fc1c6c564dc9c74d48fce",
+        "framework/tensorflow/npu_supported_ops.json": "723d78896ca331a96710254f083d89839441d43692be13613804c08bef432718",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "75c4af9faccd934d59972ba0d89084bbd050418c26f7c24036a5bc22c4efbd30",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "8b81b566219cc84e2c6910b55fd55b5fcde181ec8de83f2dfb98847c91f64336",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_norm_bf16_f32_kernel.json": "b58f8eafa780d070e660b95794dd982bb35cf85d9b3b36f039fa254a83c2a9b0",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_bf16_f32_kernel/KdaPrepChunkNormBf16F32Kernel_387ffda0886f36825c640020af4ede7c.json": "1f3cf629fbfa7b11eb76dde5e4cd45f172f69603d761c796df5e47cdb1387fad",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_bf16_f32_kernel/KdaPrepChunkNormBf16F32Kernel_387ffda0886f36825c640020af4ede7c.o": "1a6de87f2b76639fcd662dee72d7917f8d8f98ada4a918b25ea5d2a3e6ccceb0",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "75c4af9faccd934d59972ba0d89084bbd050418c26f7c24036a5bc22c4efbd30",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "87cfd2dba06af6ef7e3eccb54276325fa270661c82ae080b839a3b092de69d2f",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "ec80f7decbd8efad71121feb3eb3051b8dd0d154d5ef2db6d749d745b1ef69ad"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_norm_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "76e43ffccecbc481",
+      "seconds": 0.10414267308078706,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "bf287c7bc7e7331112e5d86c5b2d8ea2a6186e3eb5fc8ff91f8746f7ea5c6c61",
+        "framework/tensorflow/npu_supported_ops.json": "ff75211b00de27635525162548f727cdfb43f6a31e0595f4e1f8928ef8a3b72d",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "90637abbd0f9ea8ee883736aa8b187cc9a6c94a81d36184f3f474c565e71ad83",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "5a68742d1a5e04e41199bd554252cc8d7ef14d7d07e2aa3796d4d6befb88606b",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_norm_f32_bf16_kernel.json": "631cd9c618baff63ab81f2acff5d6628279dd7383a058698092c3413d0e85b53",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_f32_bf16_kernel/KdaPrepChunkNormF32Bf16Kernel_50bff6ec1c35f9cd5d88752ebfd297ef.json": "911f8b0714445a83403f4f4acc2b6e5bf08bfd6a39e2803bc47b3955131e7ba3",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_f32_bf16_kernel/KdaPrepChunkNormF32Bf16Kernel_50bff6ec1c35f9cd5d88752ebfd297ef.o": "56629c974c82b4d8d3562c0c0b5aab5579cd2257583426bd0eabddbb2b5e77bb",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "90637abbd0f9ea8ee883736aa8b187cc9a6c94a81d36184f3f474c565e71ad83",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "2021f13976641df5da3228d7169768d59b31f4d6fdb34856ae3f68b578a1af25",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "ea7c99877af5eacf9c2ff946755dadb2e19ee0f15e7767cf4a6b34368a343be4"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_norm_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "b3e22ec24c6d0ab7",
+      "seconds": 0.1008996011223644,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "5ce06664cbcc270d0c784200daffe2b572560dc686144cf3539d799ecb2e32aa",
+        "framework/tensorflow/npu_supported_ops.json": "7799191bfb41a9a7311fb8d5c854c734862c1ef0af7aab0b1a9b189fa001e503",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "b2948efa7e9821c617da2c4e140c78d531d34b7626af9b6d78cb9a6000b1dda1",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "31952432fdbe632a8c74e871cdb3a4f085bff9cfc4f66d8b2cfc303303e443c7",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_norm_f32_f32_kernel.json": "97b34e1dcc7788af1561da0674b921fad43673eba174820b2a7b17ca20a3f8d9",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_f32_f32_kernel/KdaPrepChunkNormF32F32Kernel_ccd5024d530cb30392aeacbf29ead831.o": "a6383d2cb4b66f4e84dc6b85838fd7d576dfa8e3fc41bce18edf25673fc1c2bc",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_norm_f32_f32_kernel/KdaPrepChunkNormF32F32Kernel_ccd5024d530cb30392aeacbf29ead831.json": "1373dbba8f2141a9c4567bdeb266bc19c67aa5a7a1cd704ea0eb75ac5828e770",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "b2948efa7e9821c617da2c4e140c78d531d34b7626af9b6d78cb9a6000b1dda1",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "811348524da777021fbd2aa7693c264c8b010432c8905db5a78dfb3afee5856d",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "0191aeb5418522f31e980a55f47e5036944c04954a5727046d826ddc0852aadd"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_bf16_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "cfffaf65d94ec35f",
+      "seconds": 0.18328647315502167,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "5b928cbb9ea7702abdf7efbf9af85fa8a3f906699477fab4c4639273abc05fae",
+        "framework/tensorflow/npu_supported_ops.json": "7cc51f1cdae45176753d93f0837ab86fa32b15432fa7ffab993175d36e311cb3",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "450a978420e8e7519a2ab93153e37c73990fb153dd2961fc8c1e4c5dddd70511",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "d61a2252411c90c3323fbd09dc41d93c9eb106dc4b83f0fc23bda2aa6c62a391",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_bf16_bf16_bf16_kernel.json": "8152337c7d61800d4864a4e8295a4e283dee82940d728dec689276d5e7a8f1c4",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_bf16_bf16_kernel/KdaPrepChunkGateBf16Bf16Bf16Kernel_0154f48ecb47b42af6d08813e9bcf16b.o": "a1387deb7809ce245655a2a5e19827fd073baa5f96b56e3a28a25a06d10f6627",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_bf16_bf16_kernel/KdaPrepChunkGateBf16Bf16Bf16Kernel_0154f48ecb47b42af6d08813e9bcf16b.json": "472ffe659d5ce0464cdb01ba35ff59f5150840a3ebed497b161c9d0db0dc4e01",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "450a978420e8e7519a2ab93153e37c73990fb153dd2961fc8c1e4c5dddd70511",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "0f857c87392e12856eed25be94ae7a0001d3ed78122f6da2793e863a81e637e2",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "34c594b20570e936ea53f8b42eeb2be968b8a973a8710beb8a355faabf779907"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_bf16_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "fac83475928a8b76",
+      "seconds": 0.1749753609765321,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "6703fbe549e403915b8c2e33a48c01c99da48da5ca00b75990ec1ac5dab97489",
+        "framework/tensorflow/npu_supported_ops.json": "7c5ff0d3b66788eaf6cf39ac8a61e88e3c052134a5e668ddcf7117e9fa9231eb",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "f29980c7ced976a38efc2d974eace8ef2691884a496c667202daa8000d6fc5a4",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_bf16_bf16_f32_kernel.json": "36b26912d80c1696dfb5a3b3629044a802c96563ba14e5900ba173ccc517886a",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "26b9d11ea2a709b9d4c15fd723216a60a5756cb5bb4246a0da477244a45beb07",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_bf16_f32_kernel/KdaPrepChunkGateBf16Bf16F32Kernel_13d236a8b48038dcd1ac5a69856b4deb.o": "144225a5727da89dfba990c70c6361370f5b3c200d58aefa0eed51006db66e36",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_bf16_f32_kernel/KdaPrepChunkGateBf16Bf16F32Kernel_13d236a8b48038dcd1ac5a69856b4deb.json": "f66647bf17718b2567d8daf139f8e03773e63a88681ce15e5e23e3aa387b3da8",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "f29980c7ced976a38efc2d974eace8ef2691884a496c667202daa8000d6fc5a4",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "79043d9b2146ff63887a8ef24cbcc3d6ace4138729118b9464a4520da6c31823",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "86b318b294d8261250a4a92d99bd8d036e10c8b2210aacab6ac5a0731fad1249"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_bf16_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "c03fa54cfdd49ce4",
+      "seconds": 0.17988158599473536,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "6d472852795e79e0a7f9577c34a4aa0be020492b856c6b6fab02d2637dc1c034",
+        "framework/tensorflow/npu_supported_ops.json": "028a452492db140713673f3a7b745e256086b1109b3de8a6ff061a9f57bf12af",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "0ead1d07c848fb4cc074956fc935412c019b9af4645763c85bcf3583eaa543eb",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_bf16_f32_bf16_kernel.json": "b03202109954ef95954277f7eb55566b171494d1e4540e876529a14296257e64",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "0cb2682110663f6fed50f0cfcf6c15a2d9ffcbe2759edf63c31fac3e58648259",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_f32_bf16_kernel/KdaPrepChunkGateBf16F32Bf16Kernel_43dc6f5d25ca66e5927bf691c205d300.o": "34bf60bd72e9275f618aa26e68df1f23040871182736ff292e68f65a4ad4bb8b",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_f32_bf16_kernel/KdaPrepChunkGateBf16F32Bf16Kernel_43dc6f5d25ca66e5927bf691c205d300.json": "cb3903c299df8dd80958ae96ad7dd651c77e4cae670c8f0f1a71fef0f70eaec3",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "0ead1d07c848fb4cc074956fc935412c019b9af4645763c85bcf3583eaa543eb",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "2983c0b078d00384255bd35463174c390be5c1f1f3c5d68793870c3d8c2ed39b",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "09382f640edf60b610772cfe90a21cede874c1645fea83e013627f8b23c42fc2"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_bf16_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "5172e80c439ab506",
+      "seconds": 0.17561103613115847,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "244616e735f5e2e87265bde5f0cc962c7409290201ce2c23402be65852205227",
+        "framework/tensorflow/npu_supported_ops.json": "838f6892159d740f934c177a57b96d0dba81abc3178b2e4d279984d2d632e438",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "fadb3443508a0ab973f54edcf41f3fc7ccd41d95bbe9490c11aa5195d6a86102",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "f7b73596022584329846668f0adc1960baa8e7fdb2e2540bfd513c86a6e390f3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_bf16_f32_f32_kernel.json": "c0c935395082f6755dc52b2949286cb1802a2f4e1ea37110570d4c8f00cd7c51",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_f32_f32_kernel/KdaPrepChunkGateBf16F32F32Kernel_a2b4f22de1a4af5f394269497f875e5a.json": "0ac421092c725b8841a38e0664c2507e3178cbb33b38ad9b939c8bacc93079c0",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_bf16_f32_f32_kernel/KdaPrepChunkGateBf16F32F32Kernel_a2b4f22de1a4af5f394269497f875e5a.o": "f6a583bd405cb51c8df66cad00a00b2da4b3f4c778bbbe7a901bf9c791615be3",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "fadb3443508a0ab973f54edcf41f3fc7ccd41d95bbe9490c11aa5195d6a86102",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "0ac9963a7b568e489c4830ab08f14fd6ae690eb2ae88e83081ecef74566b880e",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "cd2167cc59cdfe25e8dd6ee806bdf2852bfcca5acc872f04567086836b8c0fe1"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_f32_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "8a9d1b79a5ea15bc",
+      "seconds": 0.17389293294399977,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "4c5bde41db10f6667e26ed418b0ca58fbbafebc0308605348444ce0078c42a02",
+        "framework/tensorflow/npu_supported_ops.json": "42b973e592eee021eaa41a00ba11b55faa8e3c1097da921ba7028900f6f048f3",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "016d5be30b756392ba60ce2dff4d1401c22e1ae9931968ce9cc3284902e1faa7",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "d78be26a97e3e86b90d7857a9faa8f8ffac38d487263a918ef0712a80fdbd7f5",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_f32_bf16_bf16_kernel.json": "42719515df5a28eb475faa270749aa66b0824b52796efc0f845709eb2782cbb2",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_bf16_bf16_kernel/KdaPrepChunkGateF32Bf16Bf16Kernel_ce54443d4cd600fddd85ca3a2221ea4d.json": "c2bf0b5a2086fe5e523be92d676e5992e442bb479e21ad48ddedf82dc62ed961",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_bf16_bf16_kernel/KdaPrepChunkGateF32Bf16Bf16Kernel_ce54443d4cd600fddd85ca3a2221ea4d.o": "5ed947590a183904b27227df8e632b8cd9ea900afae010761e9a31b4761ff872",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "016d5be30b756392ba60ce2dff4d1401c22e1ae9931968ce9cc3284902e1faa7",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "b756bdec41ed55197f44763a24142c91a2c26fb3012290929ccdaecf3569e184",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "6911c25cd0382b0d286dc0cf79f3712d22190ceb1c6c0c957cebaac96db7362a"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_f32_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "c66d76ca16614daf",
+      "seconds": 0.1720051800366491,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "f9ad76703fcb56e44f1f68ee307906939b77ad2fe70046eda1854bdd7b1d19f1",
+        "framework/tensorflow/npu_supported_ops.json": "734d2b06428cc75e8324915f9856c76879674405e599b52938523f4fd3feb12c",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "10691364f9c36b5a7964f89bb498a93c790b08f67456e81b1ead6963ea652d6d",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "8c9e3a8b19fb6a8d7347c9b371678a979005f1283875b9744faea4d0a479037b",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_f32_bf16_f32_kernel.json": "6101e55b3091fe5a9d623474fd32b9ef58bbc5c25c7779d9caaa771820b0d93b",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_bf16_f32_kernel/KdaPrepChunkGateF32Bf16F32Kernel_c765909600864985defbfabc353106f6.json": "31468bff32775f6a5dd94ca4ddc18c3486d5a9007e4e9ad5718ed49f50e5a0da",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_bf16_f32_kernel/KdaPrepChunkGateF32Bf16F32Kernel_c765909600864985defbfabc353106f6.o": "841b77409ccd390ed5e9cb75cb4cd84213ee2cee1c9482581f256691509ce339",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "10691364f9c36b5a7964f89bb498a93c790b08f67456e81b1ead6963ea652d6d",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "c34ce40b5dc202511a463d72485df71f45209e29d968029fa090bc88af1ca189",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "7b9819a2ebdd30663b8ab844aa4f0b40eeda6a55f8134c572871b22b2e935c79"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_f32_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "8c46153d8c5a7d5c",
+      "seconds": 0.18107402697205544,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "d4dde71420bfb35467abd9a3d8f1bcf1df081a4e4a32deeb5507506c3ceb3cbf",
+        "framework/tensorflow/npu_supported_ops.json": "3fe8a7c7397ebcf6ba365ffc22937743dfaee9391596f75fdc77f3d8f69c7131",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "de84f9173563e2850fc0fa61942118332919006b34b17cf13986e6c61d237b24",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "958c7227ba9f89b5df8b1636e19f7cdb39ac2b8b2477076c6bbc7b15307ff084",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_f32_f32_bf16_kernel.json": "25536d25ccade5f286b9d216c61aabba180037585b5f79c7377afe39e5e3faec",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_f32_bf16_kernel/KdaPrepChunkGateF32F32Bf16Kernel_1d2f7d900b797253f99415037561f08f.json": "ac36787e28e193817ecadbd8fcd0c7372931f69f74ef43f1d4041dfe3e4ec6cc",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_f32_bf16_kernel/KdaPrepChunkGateF32F32Bf16Kernel_1d2f7d900b797253f99415037561f08f.o": "6bc065c6686356c9f8622f3a92093ddabcf3965726080e7a844295534bdcdf58",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "de84f9173563e2850fc0fa61942118332919006b34b17cf13986e6c61d237b24",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "04981910d6888cd80dbbf8f35da3146316b9a76de9849b767d4d42eb4bfe7efb",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "d7cc0f4cc4ba1d034ae655097b5f891fa52a3eee8bc8d5c2a583965615ba5380"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_gate_f32_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "53ee7ed25f0129cb",
+      "seconds": 0.17287773406133056,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "5bcc9bdfe87ac9d33db3cfed0af9b56ec8c22fb4e8988723aa36159edcfcbeb4",
+        "framework/tensorflow/npu_supported_ops.json": "3d59291afcfe2ddaebfce8240df134eea466d4b501f5608a534bdef75572b3cd",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "afeba60207ae93fef8208002c917887976cd347ef269bd61cf26c2519d81b3e1",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "871e9372230792af6c8717bbe8de1116388823c73b315a6c858b77a1a65dded5",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_gate_f32_f32_f32_kernel.json": "a26566abb305b5c192b6926c6b4fcce48427f2e7888246aec09be0c4981411fb",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_f32_f32_kernel/KdaPrepChunkGateF32F32F32Kernel_36a4a282b9882ba8fbe7377cb0f70290.json": "f66233aa3977f46d95fee68e296f0949ddf66c23880995e6257b6941e473e571",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_gate_f32_f32_f32_kernel/KdaPrepChunkGateF32F32F32Kernel_36a4a282b9882ba8fbe7377cb0f70290.o": "35cd70dd47b5a6ce0079276405eca3640fd10af2f61a4a29ac339af2c93b9748",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "afeba60207ae93fef8208002c917887976cd347ef269bd61cf26c2519d81b3e1",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "3b8ecd0ba1dc14fdd3e0557bdb3a684e7e94d33535c341e4cf3fb0547b0da2f5",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "8452503f86144bccb37aa3532bc0ede29df717596f0ddad9ca78d313e9d73f4c"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_beta_bf16_kernel",
+      "block_dim": 4,
+      "signature": "58983d550034bf31",
+      "seconds": 0.08878772216849029,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "89347397b8d828967a2f3b11d5e6809170f51ff39fd556e6b3f4295975a09a8d",
+        "framework/tensorflow/npu_supported_ops.json": "051870b23e07c23284db15b1d097efddcb55111a6aca625eecf391e16706991a",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "58cff0d1c5d15b25a5e411e8545b2f71a4e5483ad10fefea3368ad6752f0b229",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "f0deda25d40580a53f02b2ec82b42f2b5e1c99aec7ba9c31ae2fa75bfb0a7539",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_beta_bf16_kernel.json": "4ba2be04f5f65e300f0d9e95f68033ab55c0940d6dd160ccaf2adfa6a24f29e0",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_beta_bf16_kernel/KdaPrepChunkBetaBf16Kernel_baff48775d0775301cc2580ad9debcdf.json": "19f9c79761ccbd9f360fd6e59213e05b9f87e50b49514f92e212d7579015fd14",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_beta_bf16_kernel/KdaPrepChunkBetaBf16Kernel_baff48775d0775301cc2580ad9debcdf.o": "627ea894cac830eabb1de6f14f0211d74cfe824b687240bc0b5caaf3f553c1c4",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "58cff0d1c5d15b25a5e411e8545b2f71a4e5483ad10fefea3368ad6752f0b229",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "7bd6e0033e796937783135c13828c8c95a992f445f3b381aa4a59b124901916d",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "04ae4a767a6f12fc4fa7e6ec0a3a5ae9b4c80ad7e1b930181f87c6ef235ee7ab"
+      }
+    },
+    {
+      "family": "prep_forward",
+      "entry": "kda_prep_chunk_beta_f32_kernel",
+      "block_dim": 4,
+      "signature": "8e448d6684ec8096",
+      "seconds": 0.08697126107290387,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "8790b0fddb53b7718a5f54fdee86d6376fec0446b596d7f636d1203488dcf6bd",
+        "framework/tensorflow/npu_supported_ops.json": "8ae05b385600b2ea8683502fd7b1e9acc5e2cb304807f3445139445a88a273cb",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "979d9fb1111f0c691ce764c9afdd259660aa81c8a59a7ab7edc03283a3e6062f",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "610dfe11591523e7697c57f7019cc64c6b6fecca774315ba182d3a02410e8d45",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_chunk_beta_f32_kernel.json": "8fc9fcc7ed2ad33fffbe5eb7e24f7d871023988491b5d426d4205cef648d087f",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_beta_f32_kernel/KdaPrepChunkBetaF32Kernel_e368ffdd51ce54da0ccab9103c60a06e.o": "e65df6cc5a9dc68d66e72b5deb936de7c5d8175fd3ce56d6855ac1f1cfebb636",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_chunk_beta_f32_kernel/KdaPrepChunkBetaF32Kernel_e368ffdd51ce54da0ccab9103c60a06e.json": "84b8e2ef70ed41406bc25c05efdf7c7d58f87537926c1bd3413e10f278771788",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "979d9fb1111f0c691ce764c9afdd259660aa81c8a59a7ab7edc03283a3e6062f",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "5203751384648f1bac4797adc7ed36160142c88961396e9bc8c0cf7b1b5c2164",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "799d74edd6d938dcce47732d837f290134e110d44ded3946e1a8657de3fbd5fd"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_norm_bf16_kernel",
+      "block_dim": 4,
+      "signature": "282b6c38e4d16c4b",
+      "seconds": 0.4090045830234885,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "73709a8d58fd50ccf499fbe43f52e6f69a163d6bfda2d2414825290142b33a73",
+        "framework/tensorflow/npu_supported_ops.json": "017ff53cb71bce13a78b87de7e1546e1df10ef25ca27bdca7f116f19c2af100b",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "76815634e018713cda5f2c585071cd905e1a296c5e174314a976d2cd58d4622e",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "5f7245bf18f18d258cb4723caa3388dfd57b1fda85532b3ba6fce3952f6527bd",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_norm_bf16_kernel.json": "36ce478b280f5695ae637158b7d72c0df59aac49a9072bfee9fa192627f9fc17",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_norm_bf16_kernel/KdaPrepBackwardNormBf16Kernel_ac9cb142b40a1475c2fe318304f93287.o": "9334c258bb57184d7655353f0f0d7d19dcd4cf307f8613c306f3ea53f5abbc60",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_norm_bf16_kernel/KdaPrepBackwardNormBf16Kernel_ac9cb142b40a1475c2fe318304f93287.json": "e21f57b556a8c0c3456461d4f55242a3cabecb2eb223b19726fd49b8ececa399",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "76815634e018713cda5f2c585071cd905e1a296c5e174314a976d2cd58d4622e",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "45adc9f4b5d9adaf7b0d160f80c61fa0ccd64e69bdbb0062d62cad1182955e32",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "11d7841988c24896b2264fa6c2f977d529e287b3c58425fda9256799641fface"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_norm_f32_kernel",
+      "block_dim": 4,
+      "signature": "7e3b08b4365b5bc0",
+      "seconds": 0.43901454098522663,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "103ff3f1ecb391c4eecc6016f41004670991626fde7cc3e3aa65f77335f28014",
+        "framework/tensorflow/npu_supported_ops.json": "57d4563f5a272698c8f8991f4b7a8cff0921ad5c5f0d5b244c3a7bde40469f5d",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "fdcb011f5a75395095fc02901a311fdf2cbc9521fa11c3d4829cf1f40f593dec",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "8f5a2cd3df741ca0a81996560b4d84e9aa8a80f242b18c4cf15a2d85294c330f",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_norm_f32_kernel.json": "8ea803fab3b23e381d9979abc33efc8ad5e13f9b2d7bb7b2253a7a540babcc8c",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_norm_f32_kernel/KdaPrepBackwardNormF32Kernel_ff4119532d0d5acc71cc8c7b8f100a45.json": "c035ab0d7e471d5022220c5c3d96dec571989c56043cbf515854172c84308d53",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_norm_f32_kernel/KdaPrepBackwardNormF32Kernel_ff4119532d0d5acc71cc8c7b8f100a45.o": "807f102955c1004645c49d9c7008294a4935565ab371193447e2ca5f06228568",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "fdcb011f5a75395095fc02901a311fdf2cbc9521fa11c3d4829cf1f40f593dec",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "dfccb8912d8062c6138f3dcadddc001a84ef4cb19a8c0987d289e7e28e4dcec7",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "976399757a9e23e0f807a65f91685e56da55918dc149643ac32a24f690488693"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_bf16_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "f09cbd0cffdf43a3",
+      "seconds": 4.437705047195777,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "f349f1f29c9a8120bbeca33309ec3e31f05da2dcc5b408fc7be3715c2451e776",
+        "framework/tensorflow/npu_supported_ops.json": "5cb296394441a24b6ffe352ad4a89514f5f3c448cc118f40793ae24a507c24d8",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "40444607bf91e0a3461e8586e5b8dc7fae0bc2b5cf729d7bf3d0a8cc9867269b",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "a453abb52aae9264a2ea8b0766f07eeb612cc399136bb04ec59d49b83dd86d61",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_bf16_bf16_bf16_kernel.json": "15f8f7ee8d7f5dd2dc54262a39d67f6e8f075c575a3cb40353173c79d746d2eb",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_bf16_bf16_kernel/KdaPrepBackwardGateBf16Bf16Bf16Kernel_3c9faae8835d488c7dca6e6761ab4ba1.json": "95507e6089bd046be055e684f24591e834e37c9188784478a2c0c6eed66be0fe",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_bf16_bf16_kernel/KdaPrepBackwardGateBf16Bf16Bf16Kernel_3c9faae8835d488c7dca6e6761ab4ba1.o": "389413269741edadab6e854571f730f72e50a669fbbfadf33149b548d7c37e36",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "40444607bf91e0a3461e8586e5b8dc7fae0bc2b5cf729d7bf3d0a8cc9867269b",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "1522299f0c3b4dd4f6947ee0d00d1db5de702019c7d878600c9f705c48448db8",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "2f5c61377a79f3c48530c32b0a03b13449ada7bf8a46468be58fa545f2825bd7"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_bf16_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "48b79c20a5237ed6",
+      "seconds": 4.196413318859413,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "03fe0daf18e5406f715fb01a58f8e7d7ac43436ee59c5729f929a8abdbdcaadb",
+        "framework/tensorflow/npu_supported_ops.json": "72245b613678c09e9d48f20a015468c76de8a934a62b7ffdb56e9beb2ead5a44",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "3e648013e7d4e247e407f631f710603c481195736d1e00f578a803cc12ff10b3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "e82a1d0cd843dded207065d7ea6ef138a2d59cc11871788559efd54a13b9d447",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_bf16_bf16_f32_kernel.json": "c39f34af1570d0adb27abfe6e5876347ff1702c8f2663aa8125b98e2be60ca6e",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_bf16_f32_kernel/KdaPrepBackwardGateBf16Bf16F32Kernel_4ee6bd8ad22332c150d171d875aec5d3.json": "d7fbfb23baa05badd8f4eb65b59f27bc569d0c5457d3c22c16e46fc2b840680b",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_bf16_f32_kernel/KdaPrepBackwardGateBf16Bf16F32Kernel_4ee6bd8ad22332c150d171d875aec5d3.o": "3408676d210e9b636505c8aa1aa94d47b423b24f02d2d7b7961ed8fa842fd5cd",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "3e648013e7d4e247e407f631f710603c481195736d1e00f578a803cc12ff10b3",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "823947cce4a49fd42b2c31c3e194d0940b263f7b632fb3850308d81835ee0c95",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "c3b16cddafa9ddace76810d9402e0cbe904e70045e3910e5973108bfea7f068c"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_bf16_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "580164d19916d365",
+      "seconds": 4.367201969958842,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "00cfe31c8556f7658e5a481407081ba0d7a54b1a24d6e3a44501f905da0b2d3c",
+        "framework/tensorflow/npu_supported_ops.json": "6a42c0314edd8a4aec3f3b468d5c07699d46b86ef80f71c8bc7892b072ae194d",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "cc5f5ae159ac9ba6500d82ef54b08e93f39e774def1f909c9d5de792c66e28fb",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "99ed7056b25b5fa01a0ba6573bedd2b45cf3e91b03cfc25f7db82f40109f3efd",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_bf16_f32_bf16_kernel.json": "c0ea0e1bf7e3b44e35487807f38633284a4a58ae689b5051931d5d781e441fa9",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_f32_bf16_kernel/KdaPrepBackwardGateBf16F32Bf16Kernel_43d58bfeec2a2cbaa3d7d644f0cad03c.json": "f9f18acd9db329f6f743a6e9064c7b8d2d74b50d077054f666d2167eb78034e8",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_f32_bf16_kernel/KdaPrepBackwardGateBf16F32Bf16Kernel_43d58bfeec2a2cbaa3d7d644f0cad03c.o": "61e7610ab692667346193bebb8b5ba382341c0a3cdc52ddf19e307b30219baad",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "cc5f5ae159ac9ba6500d82ef54b08e93f39e774def1f909c9d5de792c66e28fb",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "7f90641f8ec4c33a514026112ea8e6df07f84290351befc9b7bc731c4a97602a",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "2cb4ff1ba786fedc447edc99960215002bcd3a827d81c9bb9a041af0e89bf27e"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_bf16_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "5902f61609303382",
+      "seconds": 4.099916206905618,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "4ef4731ac212166ff491f60025f7c1599454ebb8fad26a75d0f3fcd630b798c7",
+        "framework/tensorflow/npu_supported_ops.json": "70a73e575df18a8084e626504fbb80e08a9ec501e115cb7479907f5432a78cb2",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "d02c8118e3c7c2e66660f91d7d72361f6c2c3abe02377c7f9fb18a11a25f894c",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "2a88766f7dd6726ce3462705e360170538b49bcdef5bc42078ba4ea15af351b1",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_bf16_f32_f32_kernel.json": "20228fcea2f0a13e5c6a565b72f48b39cdcdf7ba13682c76f05c1cf85a22e0b1",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_f32_f32_kernel/KdaPrepBackwardGateBf16F32F32Kernel_f38443c1d1e5a73b7190e4cc2662752e.json": "e409739c744b5e772de277cc99c92c00e854abf43b7ca1063d61fa697fbeca14",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_bf16_f32_f32_kernel/KdaPrepBackwardGateBf16F32F32Kernel_f38443c1d1e5a73b7190e4cc2662752e.o": "23f90dab9e066417ee491414a2c959e826cea46b64f72ec1e94f3f1be770be51",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "d02c8118e3c7c2e66660f91d7d72361f6c2c3abe02377c7f9fb18a11a25f894c",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "677210d68d0c333a4246f4dacf8f3338350509fa0a54535a8a1229bd8a2a1595",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "9263c7ba4e4bafea17f3bc5d56d13b656eae8a2299866c785d8120938064b885"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_f32_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "9f45911497a6278d",
+      "seconds": 4.399936174042523,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "afceaec4595d2ed37b035f0306bfb1a8fb966842db835469f4c51ab4032686bc",
+        "framework/tensorflow/npu_supported_ops.json": "a6bdf277ffcc23f4a858d0a0db1110db6e05b513526afd3342f81ddbf55f14dd",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "341eb144ee11cf4ad66d0d8ad1bcad8161872379310567c418ff91315ca867d9",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "a3f9869e673af1dd4edcc168d806dc04bfaf127eb221a27249f1f9902f414596",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_f32_bf16_bf16_kernel.json": "199fcefaf9322a09a53a3e8922c4d0610a5f504927bf3162ca32ac9e3c77e010",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_bf16_bf16_kernel/KdaPrepBackwardGateF32Bf16Bf16Kernel_fd7b05f1126f2259f2d17934f9aa977f.json": "fc7549a511f7c41d6a4311c1daaec68f5639528b71a28491085bec58aa12dabf",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_bf16_bf16_kernel/KdaPrepBackwardGateF32Bf16Bf16Kernel_fd7b05f1126f2259f2d17934f9aa977f.o": "ba277be426f367c65e62e72e4b1443ff7e9826afdfd433dd18ab27e753a59011",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "341eb144ee11cf4ad66d0d8ad1bcad8161872379310567c418ff91315ca867d9",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "26d0d97fb3394f4b723e4e3cc25ec3159aff076038cfad9bd41012889d11d3ce",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "1201b6ab7012d2d4b9b96cc31659b8a34a05d2aaf166b6e87a2e2a8aa5a312c6"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_f32_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "9babdf0d1e798fc8",
+      "seconds": 4.171591521939263,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "4bf47c2f895c4a7459eea93ef7ae1d9089a2040dd7d6022f78083bcf5a398465",
+        "framework/tensorflow/npu_supported_ops.json": "324af3c5d0ea20396ea5c1b12d71efeff1a52375349bcaefda60b3cc7aeb39ec",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "9634abe3d31dda47d9599ed6f2f8d4e140831c010378c11afca66d038c099065",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "f8ab4f2b60a4a62bb57ec712d1a95ccf2400c56041b986e57c655918be9e160a",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_f32_bf16_f32_kernel.json": "b1462c026c181f56b44fb24188811fc921050ad75c9d268ab701f734e6c26bdd",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_bf16_f32_kernel/KdaPrepBackwardGateF32Bf16F32Kernel_8cd63531b1a0f3f9496cf7ddfe1d2638.o": "58c0e2d5380e2a0c3a6ced2cfcbcd0c286b1944b6752a181e58cacf25a930be8",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_bf16_f32_kernel/KdaPrepBackwardGateF32Bf16F32Kernel_8cd63531b1a0f3f9496cf7ddfe1d2638.json": "d6475f28765570f3e6400201e384956c525105d49adff3cfb3af976668a1e5fb",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "9634abe3d31dda47d9599ed6f2f8d4e140831c010378c11afca66d038c099065",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "f86e71b0cffa6b29009a3e39c580aab1f200c9c6419988ddcc7da48c3b702bea",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "526f1d4d0bea729f838e050639a44242dcada2c2b2278862b9e97268e902151b"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_f32_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "87816689ebe186f4",
+      "seconds": 4.138983885990456,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "7f9892471659c4affb92d667afbf5165268c6d9ee65d3b4f875852479c2e5099",
+        "framework/tensorflow/npu_supported_ops.json": "5591b111280f87379e2344591397cf64211c546058541b273bcd46b8f7bf686a",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "bae91b6d6e4abd146371841864f61ce6914e522d67bd7a16597ed4bd1af3afe4",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "46dd1eec4d1e882b0c3c025dbd87ac5b2474f6d5a8eb79cf47eff927667a669d",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_f32_f32_bf16_kernel.json": "2d76c0e08bff5a0c5730142abf788f10bf6033f3e4915e03cab1f727905c77a8",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_f32_bf16_kernel/KdaPrepBackwardGateF32F32Bf16Kernel_2c697ece223727b5d2f4da9598a8d62e.json": "2ea8002ec6d76a398fc53a7b857a21e2e6fd21c430b35d9604df362db3ce127a",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_f32_bf16_kernel/KdaPrepBackwardGateF32F32Bf16Kernel_2c697ece223727b5d2f4da9598a8d62e.o": "a8b37896b25223566c474de98ccdae0e094b4ec7e2fa1c80b46ffa4f4c01c282",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "bae91b6d6e4abd146371841864f61ce6914e522d67bd7a16597ed4bd1af3afe4",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "97fb058cc85bc10acbc3b5f8ec843157e59b20af5128c734e847481fb6a54f09",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "5036ed2a83988da3acba64f9e4530e7f1a4b169d0560410c8c1fdb3522ee32f2"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_f32_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "e59a6da112a57336",
+      "seconds": 4.472083692904562,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "95b3a09b3e7981b60368821a811ce4aecc3f7ed90f43859f3b1832e3128f5d2c",
+        "framework/tensorflow/npu_supported_ops.json": "8d45d6b440d2ec8c92332fba6c65f0e859d3ac2dda57166f6b859fb1b49dce8c",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "627c24f1cd57791ff37a0cd9e8e12a0a071fc7eb97946377d2c59c2e52c871d3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "9bc8c01f999e33655944cb2287c9a851f354d299dae22b9bda8e85f1e5855273",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_f32_f32_f32_kernel.json": "df55b19e36e05a83e4914d6430a77612b365c1f1ee698470ef67a8c72db0bc2d",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_f32_f32_kernel/KdaPrepBackwardGateF32F32F32Kernel_09cd0cab573f72dc385ae4cc49673377.o": "a878bedc525a24fe0b1997f3144a89ca863769b3f5947501a8fb12af12c5c4dd",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_f32_f32_f32_kernel/KdaPrepBackwardGateF32F32F32Kernel_09cd0cab573f72dc385ae4cc49673377.json": "c5a7967b4b53479290956c489dc7e0097034c889ac80198af9fec91e3b4ec074",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "627c24f1cd57791ff37a0cd9e8e12a0a071fc7eb97946377d2c59c2e52c871d3",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "77d2323848c38e49315bb85a78f579a5a01a49a47150fd7036f4b019a57ec51c",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "933226d87edb152b45dbcd245da77b3b70d02ecff7e7bdcf6b3d68c4daa8387b"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_reduce_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "2ed76930eb54029e",
+      "seconds": 0.636673750821501,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "83ad5845f8a4694e1d60f47bc8ef596bb787d8b469bcc0e6efd9bb98ef1c4f58",
+        "framework/tensorflow/npu_supported_ops.json": "c04f6b5ee63ddcd1eb5cad9107ea5e1de347b6fc1d62b60215686b91c5340687",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "1dc999dbba7f6f6ff4517819cc3ba19ed8cea642e82a5c94633ed892cf161ea8",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "20e15dce011ba79decf9cc4e7902545853e4324c7aacf1900d96801cd3c0791c",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_reduce_bf16_bf16_kernel.json": "65989d8ce95f427c02147629196c00f895dad04b20b4143da46ea8063dcb15cf",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_bf16_bf16_kernel/KdaPrepBackwardGateReduceBf16Bf16Kernel_1b8104d308d9a489bb6a00462a5d8c42.o": "3e8a0c5f74721348b9c9b75babbed7dcc89f73b8d909e277b424caa461cb5644",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_bf16_bf16_kernel/KdaPrepBackwardGateReduceBf16Bf16Kernel_1b8104d308d9a489bb6a00462a5d8c42.json": "6cfbbc902d84565d8d164128747565b24b19b77f7bb847ea293785dae803d3af",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "1dc999dbba7f6f6ff4517819cc3ba19ed8cea642e82a5c94633ed892cf161ea8",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "d2bcb4c70f45751f26f61769b9ea3a524a58c2ea4c73b47cdf2c3611d3030ed3",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "d5fa4593e960b6d5f48282cfb79ec662e0b6a4ba266ab92968c176cca5f2d479"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_reduce_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "c9058ce0a8ff747d",
+      "seconds": 0.6516912099905312,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "b687e63209c8b3fbb818a3f6f100502805f32d9ada94ffa947247b1463520f9f",
+        "framework/tensorflow/npu_supported_ops.json": "cd84ef7a555228cb333fbaf3167517c33916ca79fbddc5014cf946425fa4b776",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "76a37b57bc55d1c57b19daf391698d59f168d791424ecf54db85eea7b1bd5125",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "89af70ae22ea4b691f7c9f83e8126e0e6d121a0936c1a773c89a4bb1b0454234",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_reduce_bf16_f32_kernel.json": "4bdfb4a87da6a702e7b2a7cfdbf8ad4388c22d073209a11d7ecb490631c47320",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_bf16_f32_kernel/KdaPrepBackwardGateReduceBf16F32Kernel_b657635caba564dc6d0c122c9483ea22.o": "cd20f151dc4db2297cfa267da61bdd3bf4827cd9185c34f359c994e36697b38a",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_bf16_f32_kernel/KdaPrepBackwardGateReduceBf16F32Kernel_b657635caba564dc6d0c122c9483ea22.json": "0ccd10a3e814ae57ff028425bc2d339f4ae5261a66da6669f54f77b095ecacbb",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "76a37b57bc55d1c57b19daf391698d59f168d791424ecf54db85eea7b1bd5125",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "801ab12ece5fe389626f7ac68dbaae0ece8d25ed89a7174e60faa6a7b358e340",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "e78e6b6589da0e674cb44ed29beb7aed21248967d69b8739ff8996b9623cc7f2"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_reduce_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "cfefc17a88acb9ad",
+      "seconds": 0.6660019531846046,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "d0d4187b4d51899f1b80f9a2fcc90423100d271a61f7abf3119e2ed73de53de5",
+        "framework/tensorflow/npu_supported_ops.json": "5be891949ddb1f50bbc36731a63a3cf98c9c40ffaccd166d4a2d5b62dc2f7c7c",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "3cac5ceeaad492a787081d8a0ae9ef930c9d4c179f092b7e43b44f500b1cfbe3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "86b8b8d2055116458d454859597a74ce7bd04d4b993a6daf3b483135b4870532",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_reduce_f32_bf16_kernel.json": "a4ba9c6414bf114eec170a7899288b92b9cb0e432cc8c0f4c4e13f92ac11b4f1",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_f32_bf16_kernel/KdaPrepBackwardGateReduceF32Bf16Kernel_53002c2c5e2c444c0e28ad6e3547a3f2.json": "3d67047f08d4fb7e98e1a9642df1f3e7d5f870731da84cf1cdb56bb543e0b004",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_f32_bf16_kernel/KdaPrepBackwardGateReduceF32Bf16Kernel_53002c2c5e2c444c0e28ad6e3547a3f2.o": "37029723656f976346858c96d67d663ff6be6b28325bb36986f5053f1d8ab7e7",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "3cac5ceeaad492a787081d8a0ae9ef930c9d4c179f092b7e43b44f500b1cfbe3",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "cecd88719b28d05fc50a2f298fcaf46ecdc8c6bcfd0cca880a199ecf5754d3e3",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "cd3b7abb11145797b11dcd582c62a907be5cc2db31892f39479907f81e2acced"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_gate_reduce_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "8729ad9a337cb26d",
+      "seconds": 0.7181384859140962,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "b10ed2e9e4a8fcfef35ddc0e9213839134362911a809cda4c667674583d303d9",
+        "framework/tensorflow/npu_supported_ops.json": "32c29e0046e60e6952b1c9a20cc58b397263bdca7f05456d04784c7afdfd7dcf",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "5be0dbfcf8801bc7a3cd1f5226f216246c523dfdcfb00396a1085ea2a14bdf60",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "1def7d64a7f28c6943cf1bae9fc4f625a08653f18fddfcbb6db5a50062d293b3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_gate_reduce_f32_f32_kernel.json": "1418e9418f8d38ea508b0db8e8cdb23764c04a0a641e1b109704ff96ebfdf772",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_f32_f32_kernel/KdaPrepBackwardGateReduceF32F32Kernel_67dbbc8ce7f2d5de36de8df4ab5ff102.o": "b3f5ee9f19ed933c3784dffcdcf2fa0696f7f675a4b01dfe32293f8a14852121",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_gate_reduce_f32_f32_kernel/KdaPrepBackwardGateReduceF32F32Kernel_67dbbc8ce7f2d5de36de8df4ab5ff102.json": "b75336025610fea27825ff0c5b5412c2796908c736b8a5b6bf1dcb02dc9da6a1",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "5be0dbfcf8801bc7a3cd1f5226f216246c523dfdcfb00396a1085ea2a14bdf60",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "c8c80a1b64fa5adca898422ff0911bd8923dd89640de444486e29917c5d446c0",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "bf16ec94c1924c555005cb701001433c8123dfaea62348411a4921e43fee6414"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_beta_bf16_kernel",
+      "block_dim": 4,
+      "signature": "f2642b8a9f223b2e",
+      "seconds": 0.8465998850297183,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "15d1f805baaef2441907a6500fa8be3392cfcc03f842908f81fe21e934bb5de9",
+        "framework/tensorflow/npu_supported_ops.json": "c8b18da28c22b9642e65946ef49acd5ecca282ca058928b3f55c27166aa44003",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "3cbe269edd59adf7e97ee1dd4520cfa3a1452964d85f8c6741117319f563f085",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "63e013480c894a1a4faacd1ea2aabd1e8e32efd52a12b758b598134ee933ee96",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_beta_bf16_kernel.json": "fef37ba313f32caea1b48e55f0e1463e237ae102b6bddbc96f0564693dc5df63",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_beta_bf16_kernel/KdaPrepBackwardBetaBf16Kernel_ca04d1fb1e5b58ed2603c0261f0ac6b6.o": "45416b12d7ed2836ce2970b6499ae5907433867305b77d6d085bd28b30b682ab",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_beta_bf16_kernel/KdaPrepBackwardBetaBf16Kernel_ca04d1fb1e5b58ed2603c0261f0ac6b6.json": "c138f183382634b35e934735902521f69f530e46d6486f174c40f5f9d47e9ca6",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "3cbe269edd59adf7e97ee1dd4520cfa3a1452964d85f8c6741117319f563f085",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "3ab01787b546d921b297af8b366dc8ed50f7179c77eaf51a439d91f9e1e70e44",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "0a9e7358b4513cfb9674830f3f0c3760dd0a8a54837dd3aadf6b3789a59441ee"
+      }
+    },
+    {
+      "family": "prep_backward",
+      "entry": "kda_prep_backward_beta_f32_kernel",
+      "block_dim": 4,
+      "signature": "c522d922ea071478",
+      "seconds": 1.164759273873642,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "d82abbd5a657b99b1a1424bca3a96eb1eea1defc8ba64ce380f72928fda026f5",
+        "framework/tensorflow/npu_supported_ops.json": "b70feecb65bb9df80458fc672c27d20c1f0755440cdd92dfa6d6613fe7501972",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "c30e26a361f4e5ae4b536fdf0b137a0fca870eaa85062c1216e82c1c0e1a2300",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "63f799e9cbae7e13b7ce85ec9c2043ad0a4856a8dc5482a129f456acf62c6c1d",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_prep_backward_beta_f32_kernel.json": "9e31b2edebfc6446c06d61466e068f304b6870617d8ac0df3d212aa01c92636d",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_beta_f32_kernel/KdaPrepBackwardBetaF32Kernel_3986f40e1efd581a52094ffc9f2b9328.o": "d39b00f43fd8ad44191edad672f0432e32c7d7c2f0cf93c5147bae695e0609ce",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_prep_backward_beta_f32_kernel/KdaPrepBackwardBetaF32Kernel_3986f40e1efd581a52094ffc9f2b9328.json": "520a4a573d7f1e8107d6f449ff65f8fe4a9834078a5cf9b19cb5525784f9b085",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "c30e26a361f4e5ae4b536fdf0b137a0fca870eaa85062c1216e82c1c0e1a2300",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "6154a872ebfb90f9e7c4be815312e56806bf9dc53cb33e2ba145f5f0b452a900",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "dfeceb16beb1ba2df4a0e7b5b97bc4e29c3e52a7559d42012f000eccb0696e0e"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_bf16_bf16_kernel",
+      "block_dim": 4,
+      "signature": "cf153020c43cbeab",
+      "seconds": 0.14687998197041452,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "07f734f08121cb4fcc87eb8dbf5bd11c3107aac8102f59d10b42482179cde943",
+        "framework/tensorflow/npu_supported_ops.json": "4c9b4eff1271bf0b27297f331ef51727b816f4705887630c1d867f227d9deefc",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "fb8d638011a07ab70c83e9d2cfdde9e208eb848c8e3f2dcc4a265790f1bd6a6e",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "05b806ed0fe3437931e687b60457b4755cacc7e530910c5f081e5fd6712efb27",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_bf16_bf16_kernel.json": "c55737be17145154d84b0ecfe71a0ca8ca278d970d8d0c46bf7027a75db09e65",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_bf16_bf16_kernel/KdaLayoutBf16Bf16Kernel_d65681ec20e7ec7018911850248cbd0f.json": "ce44301149ec35bb1d3a86306c4e55ba2792351e2a01f8fdc8c48af1741c15b7",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_bf16_bf16_kernel/KdaLayoutBf16Bf16Kernel_d65681ec20e7ec7018911850248cbd0f.o": "ba825781c5d574587780d6014e8bd6500977428af8eba9d374041329c3b41210",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "fb8d638011a07ab70c83e9d2cfdde9e208eb848c8e3f2dcc4a265790f1bd6a6e",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "907d82ff87130be83a4f5ab9d5bc43f1073998131f82e68c569f5a365b2d70e1",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "3091afde5a050dde766362d9f01e850fc481a1cda29410996b90ff4d409ba9fd"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_f32_f32_kernel",
+      "block_dim": 4,
+      "signature": "c734ca5227d79ce8",
+      "seconds": 0.22321299207396805,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "61e79a27fbeb6d5637a7aee9d790a1bcc0a8221345815febfd33f439455b3a86",
+        "framework/tensorflow/npu_supported_ops.json": "ab5c02bc8e7dd67207e1363798c67ca4b31982394de55ed3a63bff9028be12b4",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "cb13856ea6acb3b05cd8041079ac0f0c45f2d333a48b1614c758ca8965db7047",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "066f9c157848eeb8f2016022f95573a8fc09c2556f47bd7af6bd6b9eb3465819",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_f32_f32_kernel.json": "7041b07fc15fa43ee48c1444374ec31fbfa87d36806559f9f574140eb22777bf",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_f32_f32_kernel/KdaLayoutF32F32Kernel_b2dcc2c4ce461333d0e04a3b91c4b0f7.o": "f21c635545e3e16594a37b1715a52914be3b8832728166deafad5a360c0c23be",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_f32_f32_kernel/KdaLayoutF32F32Kernel_b2dcc2c4ce461333d0e04a3b91c4b0f7.json": "292739592c16f4bf6653a2fb5e3ee013289474fa8192dde8c7fdc26ed95c59e1",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "cb13856ea6acb3b05cd8041079ac0f0c45f2d333a48b1614c758ca8965db7047",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "c7dbaea1dc2e0db1b99bbcb7bbd664bd319ae3a35731cdedb8a6da638045305b",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "98f6e0016813df18e244ce21fe4942c5a579625cf9e25e86255debd4d29228c5"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_bf16_f32_kernel",
+      "block_dim": 4,
+      "signature": "127dcc2b9168d6bb",
+      "seconds": 0.269263279158622,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "1cb9fb58bad10466210464991dd60689e119cdab8b79cdce5f5ee2622c4b973d",
+        "framework/tensorflow/npu_supported_ops.json": "8d2b4f2e51b7c6555a1c6b7857712b63cd9ccf819f5969849a7e7fe2e18dd66c",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "a562fd1a77ea890d3b2adcea192c49b5467f7cca816fecfc509deedd7f21d662",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "4823b657603a2e65ca5b0bf969e471ac44b8009512bf226dc7fb7ccd0c1c1e28",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_bf16_f32_kernel.json": "6bbf9a0ed5ef9ae7cb27642690836299e6af961f722bc7907d7704bbb30279c7",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_bf16_f32_kernel/KdaLayoutBf16F32Kernel_f910d18b0266c8eac6229f85c15e7141.json": "9dfa7267fa21187ca47529c241e4f0ac0a348160883222ddcb17d3e41c95a1a3",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_bf16_f32_kernel/KdaLayoutBf16F32Kernel_f910d18b0266c8eac6229f85c15e7141.o": "cb7737372aac1cb01859339709ffe34d737006a2c05348128a995bef0e110b11",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "a562fd1a77ea890d3b2adcea192c49b5467f7cca816fecfc509deedd7f21d662",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "e88e8da5e6f12f648317676badab02f95eabb0eb85b5bb72ce6acf49757f7383",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "c6fb4137337735aaf4f565496ca65bbf15f1b8455d29eecb701241bfea209c95"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_f32_bf16_kernel",
+      "block_dim": 4,
+      "signature": "1bace06d52ff1d46",
+      "seconds": 0.2748246709816158,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "efc2b1cda5e3a00dbcd0e8b0925a90cc02f76eb8684d86670537430393be27d7",
+        "framework/tensorflow/npu_supported_ops.json": "120e9ab8a7154bf6e6509b7debbea9f37a08f20e2483012935911856865fe78d",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "e2474ed5003a2ca92eadec143fb570bd47533cd674b8bb5d5a2880920ccb58ad",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "200941842364c84f64d94715e73bc2df4f4ed593dcebbf7ae6bcffd2590af9d3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_f32_bf16_kernel.json": "57a3fccfac53fcea080d10663b16f17e27edfa9e33167e49d1c76a66b51d1397",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_f32_bf16_kernel/KdaLayoutF32Bf16Kernel_bbeb5bd84544b7b69ed2a453358f3832.o": "12ac93b3e62876be12e45eb510dd6f98e84dd20f21fea4e3d7fc513d9c707464",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_f32_bf16_kernel/KdaLayoutF32Bf16Kernel_bbeb5bd84544b7b69ed2a453358f3832.json": "acaa460cd6a3542e4b3de45d6a4016a1cd7058be0d2c232734ae424d960d2f5f",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "e2474ed5003a2ca92eadec143fb570bd47533cd674b8bb5d5a2880920ccb58ad",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "47e91abfbe37b1a0635045433ad5b67b1b6cd4e1da872ecb860500a2f61d8f83",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "4b699f793885a8a00edf3c22797f828b86731a22821e6deb2e11698219f86966"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_zero_bf16_kernel",
+      "block_dim": 4,
+      "signature": "852eed2ee9f4afed",
+      "seconds": 0.11134214582853019,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "42cfc94c4792e39ec0f1d6664012bde88574b3a79065887175e81a9b730c77d8",
+        "framework/tensorflow/npu_supported_ops.json": "1a4b5729866a62c3dd633af961c74a5b6f82cabbcbbfc1c8197214f36ed59971",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "498ecdd605dd01cda170e34fe95435244356e2e97d569c189f196a88b35d8621",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "2e15c7a60e33f86c5e274919835c679ed43ba4f343cb7bcff082523502d1a55e",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_zero_bf16_kernel.json": "dd5c2aca174c825191ce79d282a671b7a9fd48bf3a407f35d2f3747b47909af1",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_zero_bf16_kernel/KdaLayoutZeroBf16Kernel_e9a5264a6e5944f8ad39c293238f5e1e.json": "4ffb423ef89330bc76e4f03e957612556e92d9bb519a76152c8e0553123789ef",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_zero_bf16_kernel/KdaLayoutZeroBf16Kernel_e9a5264a6e5944f8ad39c293238f5e1e.o": "55c13d7137c070379ab596aff2c0b34161fd71e247255c99bc20ec4c88e7a917",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "498ecdd605dd01cda170e34fe95435244356e2e97d569c189f196a88b35d8621",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "a920f28e0a21b8640a02d1b679062c5913385ebf8429b493666ad64df2240e1b",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "0c1f98a18e188b03d3a93414dd8e70e089282eb705a7d3f998532c96804e797f"
+      }
+    },
+    {
+      "family": "layout",
+      "entry": "kda_layout_zero_f32_kernel",
+      "block_dim": 4,
+      "signature": "e05a6edd4997faf9",
+      "seconds": 0.10926715401001275,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "4afff4cefa2fb80f5544e58ca0ab986dd114d1b959e8673506edafe78c52aa71",
+        "framework/tensorflow/npu_supported_ops.json": "7363a52de2e81ecff88406653093fb62db9510233b143cb437834088cedc2343",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "d72ab20552c811259c2d1aac64f46c1ca18890bdf9b741550fcd648c251d9c5d",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "9ee7855f500c8565cd8200cf846f7157e623db0c069f421bffedca7453f90877",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_layout_zero_f32_kernel.json": "182c0e0a7195d6d3a413709d5a9ff24be318e3793abe9cc382e9823a13655fb2",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_zero_f32_kernel/KdaLayoutZeroF32Kernel_52f85800626182a666c484380a084b9c.json": "915d3cfe3c049baa162a60964543eeaba6cfb8f7f27334c93b34d0f3005cffc8",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_layout_zero_f32_kernel/KdaLayoutZeroF32Kernel_52f85800626182a666c484380a084b9c.o": "cefac5c4187b17b8380a8b399a873939741b034bca9489dcf453a71aa4e44137",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "d72ab20552c811259c2d1aac64f46c1ca18890bdf9b741550fcd648c251d9c5d",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "053f4df2cb8b91bcbefb6329450caa7e92eb979351b9654305ecbfc79204bece",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "0da49330edeaf0df1f5b901d78cbeec04339e74257a46e887c63bf3a1d05c7dd"
+      }
+    },
+    {
+      "family": "forward",
+      "entry": "kda_sub1_gate_stable_kernel",
+      "block_dim": 4,
+      "signature": "aad21f2d2b3d2c2c",
+      "seconds": 0.20947253401391208,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "d37deecbef4ba5fbdfb155f4908a01ee2bedf8d26dfb45ba460e8c3595329a37",
+        "framework/tensorflow/npu_supported_ops.json": "ba7c47a44863313857c787ae4bf80ca9d245a1398feacc8f768f3ad91b9d3297",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "58eac8d8a36610ebc727b3331b96fb26574e63e16543e4066e0f14c0b2a1fdcc",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "806f856119480fd230705ef6f4378a8088c70df55710bb9b76f0aa5477b2649b",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_sub1_gate_stable_kernel.json": "be62aa219159ebc48725688f4f5424ea3b6eef6060ef7f469ad5ebc9fdcc1a29",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub1_gate_stable_kernel/KdaSub1GateStableKernel_e27864a4f08eecb2168257429a655d98.o": "a9e83af37843eed3561505b072250266a65e6d13e5cce079dcd60f6c0b19941a",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub1_gate_stable_kernel/KdaSub1GateStableKernel_e27864a4f08eecb2168257429a655d98.json": "0d2611e913003d83db65c5c5a576642675da5d354bdb7ca6e36a619189bca970",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "58eac8d8a36610ebc727b3331b96fb26574e63e16543e4066e0f14c0b2a1fdcc",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "343c09e110a17aa5106ff29853ac724eebc8d02d59156bc822e885ae9e6c9a3e",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "5c7f88b254ae2ea5681e6432592ae05cf5c68e59ba9ba3174bca41c041f32b5d"
+      }
+    },
+    {
+      "family": "forward",
+      "entry": "kda_sub2_score_stable_kernel",
+      "block_dim": 4,
+      "signature": "69ca68c647809e44",
+      "seconds": 1.4998388609383255,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "a28ce40492f3ef8cd81e337cd4401289b5f05b94c2deced3e594f2efdfa07254",
+        "framework/tensorflow/npu_supported_ops.json": "241cca875685228fcb3bbc94b7f860e1400ad10f1255dd4f28759b6913efe3c7",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "2057c1efdc70135aa5fe668b5a00d618cfa806a909fdd2d66badf7fcddeffe98",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "7bb4a29c5b89689a1f4ebf2ce2366582e6ec92363da6a8325d003c551cfc7079",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_sub2_score_stable_kernel.json": "637f96f41a47c0748c2db04366be56962f9ae09517005a98a74b8b5b210eb36e",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub2_score_stable_kernel/KdaSub2ScoreStableKernel_b140fb8e032ad334df865d10bd87e456.json": "4ae8e72f57139224b9c879450326d4b8e9b38e5cda2021f456f8ed7fcdd25af8",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub2_score_stable_kernel/KdaSub2ScoreStableKernel_b140fb8e032ad334df865d10bd87e456.o": "5a31149d7955b5f4626af4ac80ebc06e78a47b5baebc75a884060f5a0e2e1706",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "2057c1efdc70135aa5fe668b5a00d618cfa806a909fdd2d66badf7fcddeffe98",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "46025f7f48b0a7b149ecb67605a80ff16d70a32dad8e4991145d8d762d5ece6d",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "31f9cdcaa0f31f609a58b5c6a990bba4ed8fc14d924531baa13d9a2df6b265ba"
+      }
+    },
+    {
+      "family": "forward",
+      "entry": "tril_inverse64_v2_strict_bf16_kernel",
+      "block_dim": 4,
+      "signature": "a5a2c0726a680ba3",
+      "seconds": 2.4669258899521083,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "162dc9d74906e6262185908fcb08dc744fa2df2a72c0940bc6667bbcff19ce18",
+        "framework/tensorflow/npu_supported_ops.json": "4c9f33439c28c893077f6dd6698bbb57d9de5cb301043bea3b7686b1b5c89f22",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "afabdbf209125a3370b5a05b8be3916d458325cf4cfa4eab80dc7e438d668b57",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "d297ca478423caeaba2fa2d27531fd61f6f300689ba670295d4f6f9fce51718f",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/tril_inverse64_v2_strict_bf16_kernel.json": "037214a07ab737b7e718115fa9d0f11c6891ec580ff0f8a6e2eac6fef0614f66",
+        "op_impl/ai_core/tbe/kernel/ascend950/tril_inverse64_v2_strict_bf16_kernel/TrilInverse64V2StrictBf16Kernel_261b7f1d6dbfa9c5faad7d2814c7f1cc.json": "dffdb34bea7fe723e5a3b051c15ea2c72983bf43eb33b229d1dc794873964df6",
+        "op_impl/ai_core/tbe/kernel/ascend950/tril_inverse64_v2_strict_bf16_kernel/TrilInverse64V2StrictBf16Kernel_261b7f1d6dbfa9c5faad7d2814c7f1cc.o": "52532cc7aa0f112db727ad3b64e6f799250f6a6ba93531415a5ae05b3c4883b8",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "afabdbf209125a3370b5a05b8be3916d458325cf4cfa4eab80dc7e438d668b57",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "b7bd0660a34bda3b1126af9ed6a45d10ae4893f8952bab894897fc8e5ca0706a",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "b9df3b3d342ba92920395190e33793c435012388213de4b7f094a496d3b72ef7"
+      }
+    },
+    {
+      "family": "forward",
+      "entry": "kda_sub3_wy_stable_kernel",
+      "block_dim": 4,
+      "signature": "d90b2cf4c23fa99a",
+      "seconds": 1.0653884229250252,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "22697e537fc02c5a378e048d741ad976fd17c5c3b0c788247ab9e5de027a049c",
+        "framework/tensorflow/npu_supported_ops.json": "cafe546b8800d726a41329dd5dc654dae09e92a1706c00d55be023ce4fe231ed",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "c102bba519d9b91dbd72cb5200a5a6a56d56ae6c031db5d37b127de3c5aec595",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "d7a6ab6aeaff5831af7f70560b9aa3571aad64663e79ee942d1b3c45ac513ae3",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_sub3_wy_stable_kernel.json": "35105238858e650755dd8c1e487c158d743e737f4bbfd2c4ebe1dc229ef1bd51",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub3_wy_stable_kernel/KdaSub3WyStableKernel_6a8d5c82f55899541be6c03caac763ba.json": "30fcba78315f050454dd03af351b012694a093602edab247c0f7ec77c6b012fa",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub3_wy_stable_kernel/KdaSub3WyStableKernel_6a8d5c82f55899541be6c03caac763ba.o": "d851caee8969ec2f01321aa75007bac93440fdfa1bc9e7927b296d648b2b8c76",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "c102bba519d9b91dbd72cb5200a5a6a56d56ae6c031db5d37b127de3c5aec595",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "fa55b5e27903a4da12377ecdeea8862b165c15cb56666fedbd27d9b443836c2f",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "a842a37e2c739e73182c6d0eed6406ffe92a139f7bd95be5a821f0dfe2826a1b"
+      }
+    },
+    {
+      "family": "forward",
+      "entry": "kda_sub45_aqk_repaired_kernel",
+      "block_dim": 4,
+      "signature": "d24e6d59beb12bc6",
+      "seconds": 1.5681703691370785,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "b4a554c3b7a59168b4f39b78834b6f62cbfd92766bcd72f47053d0665c256457",
+        "framework/tensorflow/npu_supported_ops.json": "bbb3545cea7722112cbe10f29e916d41741ca884ee6a6c45356f3bc0fde7aa66",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "1a2cbc217d1b281ffed013da5112ea3a87d0141a9b427af7fb1cd92dea139fd0",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "96e9199768e64e5bcedc008486e0c5f6bb13ce1fbf28759ca9c5f6d1de2e8f4e",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/kda_sub45_aqk_repaired_kernel.json": "0dd66e27b9fee312abe3149ed677db7b3fef592e8b117e851032651c1cdc9be7",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub45_aqk_repaired_kernel/KdaSub45AqkRepairedKernel_8a0762bf0346a00c81f7a66013cc1930.o": "0328976691afc57e98761853753e02230fbd30ef8a576783aa7a7d64d3242dde",
+        "op_impl/ai_core/tbe/kernel/ascend950/kda_sub45_aqk_repaired_kernel/KdaSub45AqkRepairedKernel_8a0762bf0346a00c81f7a66013cc1930.json": "9c6a8f5cbc53e2aeadfcde0288e46f8aae5d046350ffefb4ba63b05020d58ab1",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "1a2cbc217d1b281ffed013da5112ea3a87d0141a9b427af7fb1cd92dea139fd0",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "5ff2158cf4dd5b8aef5782301d726e566faf5e68ced210c66d879af1156e6aae",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "2c96dce6ddbb50671a3fa7724fa9da634df69a67abf69ae2e8c53e6a49d30064"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "scan_fused_kernel",
+      "block_dim": 4,
+      "signature": "306f6f401a02c792",
+      "seconds": 1.3927242020145059,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "90c315eadcf0ed5df1fcea15555918db50e7bffaf6d8b57913a2f0bf34fe9c8d",
+        "framework/tensorflow/npu_supported_ops.json": "429bff1a19b9cb785eb10978689365da22102ad1ec94bfb3f75011c1e6874aca",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "7316613caa720ef7029e5616b8185e5e179708b43812e1a19cf4cb3e76e84c06",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "bac6946d26c1aac6d27f73d4e58bbba4b664577a15441558dfade2f0199ed8bb",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/scan_fused_kernel.json": "a09a07e5babab3b01b635cbf4224070cc540fe9d883aacd69edfa7488bf16fb5",
+        "op_impl/ai_core/tbe/kernel/ascend950/scan_fused_kernel/ScanFusedKernel_420db5b1797512eb7d052e1cf8d3a093.json": "b4b14c7d9a1f6e0f051dce824b3bbccefd5b6cecf1089e62cdf8971bbec9bf52",
+        "op_impl/ai_core/tbe/kernel/ascend950/scan_fused_kernel/ScanFusedKernel_420db5b1797512eb7d052e1cf8d3a093.o": "e401df994473cd6a15963ea877a6561038f916469862a6609e1543647ddbe37a",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "7316613caa720ef7029e5616b8185e5e179708b43812e1a19cf4cb3e76e84c06",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "81bc74311ea99f8f9476ac17cbc7a3b4a8cf55f9b8570f13eb1bce58cfe8a06e",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "4c9e7e6e29ce7209d0e36c6a6916783a71da56ea83b6c874c230e90d9ba5ef8f"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "inverse_mm_bounded_kernel",
+      "block_dim": 4,
+      "signature": "5a0b0e0263189b90",
+      "seconds": 1.4606714150868356,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "01bca3a07097846cde5c43b9b62da6d362a9d21613d0de08eaf1a3f1b4645129",
+        "framework/tensorflow/npu_supported_ops.json": "e947f264e338dd5e83dc6cadaefe52758ce20e3afcd8126f3f055a7a493bf317",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "7aaf604022c96e5cca8e166ef9e53c98bfa28066efe8080b64fa993d6c959d08",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "56a56d7b23f93f4e4f3432bf101c4b8b7191b18a3d3a0c179f6fdb9f01129361",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/inverse_mm_bounded_kernel.json": "829fdb22d2faa8e16f9c896c7d037cde52bfb178924a4a08d917cfc3bdf9f0e5",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_mm_bounded_kernel/InverseMmBoundedKernel_70534ac4294c4f6030b466cdcf618249.o": "0bbef784e090abe520928bddb25f3913d68c3b025e9e13ea01664a2403301fea",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_mm_bounded_kernel/InverseMmBoundedKernel_70534ac4294c4f6030b466cdcf618249.json": "8f4f098fddb777b4a260e5a8509903ce6feda63ec78b2018d5ebbbf79ccfffe9",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "7aaf604022c96e5cca8e166ef9e53c98bfa28066efe8080b64fa993d6c959d08",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "1d21e7e149fbbea88e86d62b271d4ffb01398cd738a3ccc3fc719272817a1da7",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "1936f32bb951e08d021aa3e2a8ebdfebb8eef2c694dce9fd4b0b0e86f116b5ed"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "inverse_epilogue_kernel",
+      "block_dim": 4,
+      "signature": "99d699ab19037e94",
+      "seconds": 0.8778221169486642,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "1ac341b72fdc3c6d64ee75b16acf32d8d05f60f323ab264d7387a494a1cd05fb",
+        "framework/tensorflow/npu_supported_ops.json": "e4fa9301d4f13c89e59b620e151e89c5bb776d74f20d1a42c1b06f46b0fdf573",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "3a176f267696aac57752714af99843aaca83bc8c2d24890bec597188fbee6c0e",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "93628d780633a208ad4143f1cc3684c6a96fefebeed57c20feb6eab11421997d",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/inverse_epilogue_kernel.json": "6b963604a7e2b37272f1d19266a081e086e7040912e93f2a0d9589e23700f1dc",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_epilogue_kernel/InverseEpilogueKernel_40ef85ca41aafeed7e90e5e0b346c0b0.o": "a22a72303de1dac2ec0d1504a1dd151c45aba549260ece22b83b573278574f5b",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_epilogue_kernel/InverseEpilogueKernel_40ef85ca41aafeed7e90e5e0b346c0b0.json": "b4743cb0d6c1e5bba56f3a3a780dd7d99667c879b2b3a0f0b0168c2cb3bf417a",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "3a176f267696aac57752714af99843aaca83bc8c2d24890bec597188fbee6c0e",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "b355a158d604157b3c603df5d525c2b44c7b91eedcffae6a9dfb0819f6c1c2a3",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "f6064ce30044390cef7eec2c6c4d674d20ab12a7d04b0ccf1db778d6cc57cdc3"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "inverse_dainv_kernel",
+      "block_dim": 4,
+      "signature": "ed387cdedccff8e4",
+      "seconds": 0.6221582170110196,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "6173271d1ae79cb3f601c20fb1776d4f2542c920356db27056ea469f7b6b517d",
+        "framework/tensorflow/npu_supported_ops.json": "b3d7bfa71ff688694d466a83585437869e6ca39a9f38f77ebaae14b2ff12e34f",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "65050e7015efcc416b20643b069a5bca5a5147b6d08e3a5fad8774fcb4e675e4",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "c53a5220d77f0a782000d6ef2e143ba5daf0a94c0237719a13ff9024d88da999",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/inverse_dainv_kernel.json": "39936136e64ad7763ac18b7fed25110f7c6de08e03eeca14f2c83b3c76de16a9",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_dainv_kernel/InverseDainvKernel_62293072c5fa01bde130e638320acdaa.json": "329388ee2693067c43ef5d5f2362dac63456543c111224765770e48da2ae43a0",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_dainv_kernel/InverseDainvKernel_62293072c5fa01bde130e638320acdaa.o": "ae1ce5b619c6e528aeead9e978353f0a2bae6f7c4be91386789d7783d454c920",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "65050e7015efcc416b20643b069a5bca5a5147b6d08e3a5fad8774fcb4e675e4",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "bf74f38d5ec6d8eabc178443adb9b7a1cb445668e4f2832221a75607aa6d7b36",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "d1da3464bf18868ec41c344422051bc9310c14402285df53edbc69701cba66a8"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "inverse_dakk_fused_kernel",
+      "block_dim": 4,
+      "signature": "c9546079430df630",
+      "seconds": 0.9165479759685695,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "01bd9e33e9d925890a564bd266d919c7992f20b0e835b69b8b759bd3173f10db",
+        "framework/tensorflow/npu_supported_ops.json": "364f1a02146c078efd792650f230dbfb3ebb03b571a1c9f95a8fb2262e462b05",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "8aa505e6fafc23f2a8c028099dd3c1a27d56712e4248514babcc5a5d32cad339",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "08be2418f15b4ea775c735e7ff245cf8a1feb237c7c75161371d12d1dfb17468",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/inverse_dakk_fused_kernel.json": "8c97d43554999245c81bd9f85ff6604239db5cd6f3dca3b2fecbe6cee3907f06",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_dakk_fused_kernel/InverseDakkFusedKernel_8766237371d09c480997d3e413f39c9b.o": "c6cb6ef860cd1dfa8a533a8629a32449b95f57a88839992683fbbaccebda17be",
+        "op_impl/ai_core/tbe/kernel/ascend950/inverse_dakk_fused_kernel/InverseDakkFusedKernel_8766237371d09c480997d3e413f39c9b.json": "89b71b07db2583a4c10b051cf58dce18a5a0d0620dcd0cc519a9f488022a0262",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "8aa505e6fafc23f2a8c028099dd3c1a27d56712e4248514babcc5a5d32cad339",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "023ac1f4a51dc36875596f5bc28714392045e2abdbcf78fa6d452e51847e3d06",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "a046fd9c5096bb53325ff8cb330b9f5f69eda52ac0447c51d0043f616469e22a"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "finalize_pre_stable_kernel",
+      "block_dim": 4,
+      "signature": "89a92dfb7d3decd2",
+      "seconds": 0.5723862370941788,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "6f15b18d9760b45e3bc5e2fe39072a42988031bf1ae1bd1ab0a743e649dc46b8",
+        "framework/tensorflow/npu_supported_ops.json": "b99c841ee457dfb163973e9c42ad55107e6a277167df5e8f8d4ae19804184dd1",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "caa8c947565345b8f2abd5d855013e5545003902e747a83459df363cb5e19352",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "70031d931d82c4c2e6350cd7260b7e913cd13e45f3574c2f0b3f7aebc4b28e1b",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/finalize_pre_stable_kernel.json": "80d043311d4268bfaa0fd53cd1427a4e84923ad417c4b4d44219c7a86e2aa34c",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_pre_stable_kernel/FinalizePreStableKernel_3614771698ea1e5b050a169b54144453.o": "0c7d26c1af92fd086c23c96df5cb2d67638884b6baf37713a08388bf69ae36b1",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_pre_stable_kernel/FinalizePreStableKernel_3614771698ea1e5b050a169b54144453.json": "6ca63afe00ee9299707ba997ecebe18337b902f629b9f06654a284a233758cee",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "caa8c947565345b8f2abd5d855013e5545003902e747a83459df363cb5e19352",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "73aac07aa3ba18cd8d8198128b60c75a71c3a2a8097053ebadc1f9aaf1b0fe24",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "80697eabc2c25808b53f3b39388275afe56cde372170afb73194fdabe0529eea"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "finalize_pair_kernel",
+      "block_dim": 4,
+      "signature": "0ec1db8afb1df417",
+      "seconds": 1.6458604910876602,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "d59d5510b359ddd3d39190f5e9146d7dfbd2f68738a58bd35c2e7441d8d6b47a",
+        "framework/tensorflow/npu_supported_ops.json": "2aa72762b94852ffe3d37bfe4f90cedfcc5bc31a3d2297332b01740f02bf5b59",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "d865a3a7b796989ee6586eac3325387e418cbd15c9f26fb7c2ce6f320e0e47a9",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "aec979b54aff8c98830d7e2f58dcebc33344173dc444ed645436841f5dcd8aba",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/finalize_pair_kernel.json": "4e5112710f1e3ee10baa2d0e38598c080f78455462933b46b68d9360cd9454b1",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_pair_kernel/FinalizePairKernel_d42c171bdbfec198b3ceb0a98e6bb2d9.json": "450489ccc0f6b6e6e4cc1fd18388a299f153235ce0c0578eeb80f810588ea4a5",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_pair_kernel/FinalizePairKernel_d42c171bdbfec198b3ceb0a98e6bb2d9.o": "2ad53cb649e4e5a4ef60013bdf74ede53c3fb0cf605a83820f8c9bc8824240c4",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "d865a3a7b796989ee6586eac3325387e418cbd15c9f26fb7c2ce6f320e0e47a9",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "8fa32889fcea942218e6fd516afd0c6da00ce2420dcbc860dfe07e38e6b99e2a",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "c403cbc911c5c6dc867a78d2916feb58b74e7e512620947b955f03378de2c58e"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "finalize_post_stable_kernel",
+      "block_dim": 4,
+      "signature": "de7bf5fd932aff3e",
+      "seconds": 0.841062730178237,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "99b752e7a70b387e375a716975afb53e5990e3f737489f4d81562633b6150fe5",
+        "framework/tensorflow/npu_supported_ops.json": "7cc0c1a68b1756b6f568e14ddc1b64b30360f48e7eb038279fb1bf698dbf405f",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "9b0fb077d443b9b57c1d5753d67df3f3d13601f4a762f3c617c6196c71cd8dbc",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "98bfe6065cc1d5083c877613932158016ddab6a40986e01d8367a5200a141dad",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/finalize_post_stable_kernel.json": "df09555175854ea34fdc47bdb31e96ae7aca5182ecb3158b618027ddf32b192d",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_post_stable_kernel/FinalizePostStableKernel_69314c5b25175eb916b841c391485d2d.o": "d2bd9b5985fc78cda8e6e3f96dcc2b90bd2a5fff52093a80244c8a8df499a696",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_post_stable_kernel/FinalizePostStableKernel_69314c5b25175eb916b841c391485d2d.json": "fea2be8ed8588d9d22afbb77fd51029f0d09f09166c29032f00e80ffb0632425",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "9b0fb077d443b9b57c1d5753d67df3f3d13601f4a762f3c617c6196c71cd8dbc",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "c55f8290e718dbc1a2a2b204c638d816a05185af167bd7496907c84e0c164548",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "4ad48ce2ee2c838d64f1bac1cfca839738bf97b41b3b4781e7c680261f3315cb"
+      }
+    },
+    {
+      "family": "backward",
+      "entry": "finalize_reduce_kernel",
+      "block_dim": 4,
+      "signature": "c50ccb9f48fbef6a",
+      "seconds": 0.3376388449687511,
+      "vendor_files": {
+        "op_api/lib/libcust_opapi.so": "b8ed43de2d58aa99b23617ed091f8bdaa2a5233e8886f3a7a10603355b5d6a10",
+        "framework/tensorflow/npu_supported_ops.json": "b4a87f92b39cd9cccc65d8294e587e1da9484b16349fadeb8ee9b53947eba2e7",
+        "op_impl/ai_core/tbe/op_tiling/liboptiling.so": "02538aa8920e3c40de9c627b05535df8032721da1908997bcfcf8027647946f2",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/binary_info_config.json": "29496e3f1cc9bec09f544f42ca10b0511fc1f3521bebff81c0a2247cea82b8a7",
+        "op_impl/ai_core/tbe/kernel/config/ascend950/finalize_reduce_kernel.json": "ab89070e4621f32d7c84f6b80d9b6bc110a56c39e492d61f514581a83ed0246a",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_reduce_kernel/FinalizeReduceKernel_f8b50cde1c86c3340b680c1e3e10e657.json": "e5bd13796284c6abdfd4891a83464a40194e32fcf74f868a27cac29c2b43d1d9",
+        "op_impl/ai_core/tbe/kernel/ascend950/finalize_reduce_kernel/FinalizeReduceKernel_f8b50cde1c86c3340b680c1e3e10e657.o": "e2d7a98d633006254d736e8e00b9627c57628f1d3805458be3a7c7c1bca18b04",
+        "op_impl/ai_core/tbe/op_tiling/lib/linux/x86_64/libcust_opmaster_rt2.0.so": "02538aa8920e3c40de9c627b05535df8032721da1908997bcfcf8027647946f2",
+        "op_impl/ai_core/tbe/config/ascend950/aic-ascend950-ops-info.json": "1b4dba74e2e8aada72005f9445098ea71e59fae343e7d2806a86166dcb71f9e3",
+        "op_proto/lib/linux/x86_64/libcust_opsproto_rt2.0.so": "2bcc3b5f2479d733cd483c74c7e8e48c38e0f0a773f18a587063731f9d0a16fc"
+      }
+    }
+  ],
+  "first_custom_launch_not_started": true,
+  "raw_receipt_sha256": "94862979049843a4c8d53779658dbe4f0634d7dad7b3d7091a62bc30a8e6a5d5"
+}

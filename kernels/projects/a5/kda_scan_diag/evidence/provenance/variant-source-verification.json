@@ -1,0 +1,49 @@
+{
+  "negative_ast_equals_baseline": true,
+  "ring_ast_differs": true,
+  "emitted": {
+    "baseline": {
+      "cast_dht_to_f32_vf.h": "0978c519c64f2639ac83b81aacef482d2e88e735cefb2726253a50caacb4b5e5",
+      "snapshot_and_cast_state_vf.h": "d4ec7a58cc1df21c4d851ffaf4323e0667cd8648692a59edbd02558fa62d79b4",
+      "exp2_glast_vf.h": "441818fee6da16bd7ad16eecbadc8d8c0a422452488acb67739bbfdb3c58889a",
+      "add_dv_and_cast_bf16_vf.h": "d1cdbc10660b92cc5b3c923d99034d8ad78294ea12292b65b0118a19f9efa516",
+      "update_dstate_vf.h": "d32fd2757e15e5af32bd03b527a7a99497281baa6acf7aa58898cae19d50bb53",
+      "update_dstate_final_vf.h": "ebc54bef0c6d03a29d569b13097b3cfc617043577d22bc0a0f72ff94f40d2aab",
+      "a5k03_scan_baseline_kernel_cube.h": "838699426092bf8e8b3663cddede94d9993ce2c87c5b3b4c7de1619b94cc52c5",
+      "a5k03_scan_baseline_kernel_vec.h": "fdfb85381459cc203147cd5a5e35c60ec2c9eac7144218b44f455ba783659e1f",
+      "a5k03_scan_baseline_kernel.cpp": "1603cd508e4fb6763d5b9eb2cf59fb7d53feb0bb368a4cc1a5a7abc494bd58fb",
+      "tensorutils_cce.h": "73965f4ed6c9afaf1eb96724a47b6a3cca2e15c9615afc4958b05831782d2bc9",
+      "scalar_math.h": "a49ae04e54ad1999222c1ca925a1f624f36df2551ae9fed73a8b0a1461081f7e",
+      "manifest.json": "f514e43c8c7b0165565360fdc4452723ea93915bb3fe5dd00d3fdbc32c2dd828"
+    },
+    "ring": {
+      "cast_dht_to_f32_vf.h": "0978c519c64f2639ac83b81aacef482d2e88e735cefb2726253a50caacb4b5e5",
+      "snapshot_and_cast_state_vf.h": "d4ec7a58cc1df21c4d851ffaf4323e0667cd8648692a59edbd02558fa62d79b4",
+      "exp2_glast_vf.h": "a0d5758620c273ecf30df96f7f357bf0b0641cbafff175b07080d96784bbe912",
+      "add_dv_and_cast_bf16_vf.h": "008a7766dde0b8e0c1b2e2dec4484e16bcd2fcdd0d32412a2bf0b517480676af",
+      "update_dstate_vf.h": "fe76b33ba876d7658a6a0cbf0650db42fa0dcd8128199bf25612ffac155cc83c",
+      "update_dstate_final_vf.h": "63b923f46bbbff4b34229d5b66c27e7e26f4b3cd2d59b4aceb1f98e47ae22566",
+      "a5k03_scan_ring_kernel_cube.h": "b0c974106178c9865ef509c151c9e8b8970e612a2edadb0af09c3e151cc1b8b0",
+      "a5k03_scan_ring_kernel_vec.h": "51441e591858dfa1ebfc57825930b3da28881584880deace820b0b1436ca8164",
+      "a5k03_scan_ring_kernel.cpp": "16c99c06905d69542080f969e17729271a97ff243f1d224cd941cbd8d8b7750a",
+      "tensorutils_cce.h": "73965f4ed6c9afaf1eb96724a47b6a3cca2e15c9615afc4958b05831782d2bc9",
+      "scalar_math.h": "a49ae04e54ad1999222c1ca925a1f624f36df2551ae9fed73a8b0a1461081f7e",
+      "manifest.json": "778b39571d6665a4b4410ccd538aa3461edd5c629313a6686d380f00bf34d838"
+    },
+    "negative": {
+      "cast_dht_to_f32_vf.h": "0978c519c64f2639ac83b81aacef482d2e88e735cefb2726253a50caacb4b5e5",
+      "snapshot_and_cast_state_vf.h": "d4ec7a58cc1df21c4d851ffaf4323e0667cd8648692a59edbd02558fa62d79b4",
+      "exp2_glast_vf.h": "441818fee6da16bd7ad16eecbadc8d8c0a422452488acb67739bbfdb3c58889a",
+      "add_dv_and_cast_bf16_vf.h": "d1cdbc10660b92cc5b3c923d99034d8ad78294ea12292b65b0118a19f9efa516",
+      "update_dstate_vf.h": "d32fd2757e15e5af32bd03b527a7a99497281baa6acf7aa58898cae19d50bb53",
+      "update_dstate_final_vf.h": "ebc54bef0c6d03a29d569b13097b3cfc617043577d22bc0a0f72ff94f40d2aab",
+      "a5k03_scan_negative_kernel_cube.h": "72d3dc58b0325e38fc551f90a2c154c71dd68dcdc5133e7223118ec52215eb41",
+      "a5k03_scan_negative_kernel_vec.h": "a313793531cef5f2399de3a8934119c8fef2be1d1cd6043e4a340b40eddaa8b3",
+      "a5k03_scan_negative_kernel.cpp": "4d1baeca0e1f920d868f80351c55bbf26d1d80979b7a9d4f678086f6a84076f5",
+      "tensorutils_cce.h": "73965f4ed6c9afaf1eb96724a47b6a3cca2e15c9615afc4958b05831782d2bc9",
+      "scalar_math.h": "a49ae04e54ad1999222c1ca925a1f624f36df2551ae9fed73a8b0a1461081f7e",
+      "manifest.json": "586e1a05cc7cb9595c17a523e7ccd1e4a80766acda5df2248bb0291797e49501"
+    }
+  },
+  "raw_receipt_sha256": "bb0d29baecdca294a539dbb51f4bdb133db314e603d310cb5800abc5cdd770fb"
+}

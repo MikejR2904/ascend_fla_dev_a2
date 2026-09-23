@@ -1,0 +1,52 @@
+{
+  "schema": "a5k03.validation-summary/1",
+  "scope": "Root-cause localization only; no production repair or performance qualification",
+  "mechanism": "Odd-C seed_ub phase reset crosses the continuously advancing two-credit seed CvMutex; previous final VF read versus next-BHV initial FIX write has no happens-before edge",
+  "stage_status": {
+    "reference": "CPU FP32 counterfactuals and existing full-workload golden executed",
+    "pipesim": "22 bounded model runs complete",
+    "emission": "All seven native vector headers match model-side emitted sources; normalized negative-control CCE equals baseline",
+    "vendor_compile": "50 production including 9 backward; 3 experiments where used, before first custom launch",
+    "device_execution": "18 recorded full-first jobs complete across two CANN environments",
+    "private_archive": "6923 files restored and SHA/size verified; 264 anchors and1350 captured trials verified against numeric/hash receipts"
+  },
+  "recorded_native_jobs": 18,
+  "original_replay_trials": 150,
+  "unstressed_variant_trials": 10800,
+  "stressed_variant_trials": 2250,
+  "models": 22,
+  "host_tests": {
+    "full": {
+      "passed": 1225,
+      "skipped": 6,
+      "seconds": 160.32
+    },
+    "targeted": {
+      "passed": 11,
+      "seconds": 0.06
+    }
+  },
+  "budgets": "Existing budgets unchanged; no new accuracy threshold",
+  "production_dispatch_changed": false,
+  "upstream_modified": false,
+  "limitations": [
+    "Historical dev-A/dev-B unhealthy; no new launch or reset on those cards.",
+    "New original-entry replays are stable; controlled timing stress is not unmodified natural reproduction.",
+    "CANN9.2 comment-only unstressed copy has one wrong anchor; later50 samples correct.",
+    "Each zero-deviation family is 0/50 with one-sided95% CP bound0.05815507911697225 under conditional iid; no pooling across conditions.",
+    "No production fix qualification; repairs require a separately approved kernel batch."
+  ],
+  "failures_retained": [
+    "First host suite:1224passed/6skipped/1failure due untouched base README/PMboard mismatch; metadata-only upstream update resolves it.",
+    "Initial archive configuration lookup failed; partial retained. Slow replacement archive cancelled by exact own PID before deduplicated archive generation. No device job affected.",
+    "Expected upstream/negative seed WAR diagnostics and all captured incorrect device outputs retained."
+  ],
+  "host_log_sha256": {
+    "host-pytest.log": "db0d88a2280debc2c0a46ec564526cf59cf74f2ffd766674b1c811cb0e700442",
+    "host-pytest-current-base.log": "50397a9758cd58de46b30b10aba2d3798c747e9225375598e499ea54f1e81d06",
+    "host-targeted-closeout.log": "6a840c9afb8c0e0e613d2f47dddba1dbba0efc79f3d678114250febb27d74362"
+  },
+  "diagnostic_validation_complete": true,
+  "review_status": "awaiting PM",
+  "raw_receipt_sha256": "a4b4a1377de4858bde963feec9698a7892576f83e12b991dfca6cfbc6f91918f"
+}

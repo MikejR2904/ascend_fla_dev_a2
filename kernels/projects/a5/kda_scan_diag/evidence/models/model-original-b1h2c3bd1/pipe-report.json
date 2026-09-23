@@ -1,0 +1,106 @@
+{
+  "cycles": 73701,
+  "pipes": {
+    "core0/cube/S": {
+      "busy": 478,
+      "end": 72106,
+      "tasks": 408,
+      "utilisation": 0.0065
+    },
+    "core0/cube/MTE1": {
+      "busy": 8928,
+      "end": 71822,
+      "tasks": 324,
+      "utilisation": 0.1211
+    },
+    "core0/cube/MTE2": {
+      "busy": 44400,
+      "end": 69491,
+      "tasks": 108,
+      "utilisation": 0.6024
+    },
+    "core0/cube/M": {
+      "busy": 8334,
+      "end": 71820,
+      "tasks": 210,
+      "utilisation": 0.1131
+    },
+    "core0/cube/FIX": {
+      "busy": 9852,
+      "end": 72094,
+      "tasks": 162,
+      "utilisation": 0.1337
+    },
+    "core0/vec0/S": {
+      "busy": 342,
+      "end": 73701,
+      "tasks": 272,
+      "utilisation": 0.0046
+    },
+    "core0/vec0/MTE2": {
+      "busy": 3464,
+      "end": 66959,
+      "tasks": 24,
+      "utilisation": 0.047
+    },
+    "core0/vec0/MTE3": {
+      "busy": 10628,
+      "end": 73689,
+      "tasks": 126,
+      "utilisation": 0.1442
+    },
+    "core0/vec0/V": {
+      "busy": 9096,
+      "end": 72881,
+      "tasks": 206,
+      "utilisation": 0.1234
+    },
+    "core0/vec1/S": {
+      "busy": 342,
+      "end": 73701,
+      "tasks": 272,
+      "utilisation": 0.0046
+    },
+    "core0/vec1/MTE2": {
+      "busy": 3464,
+      "end": 66959,
+      "tasks": 24,
+      "utilisation": 0.047
+    },
+    "core0/vec1/MTE3": {
+      "busy": 10628,
+      "end": 73689,
+      "tasks": 126,
+      "utilisation": 0.1442
+    },
+    "core0/vec1/V": {
+      "busy": 9096,
+      "end": 72881,
+      "tasks": 206,
+      "utilisation": 0.1234
+    }
+  },
+  "hazards": [
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [36300, 36872) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [42803, 43069) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [36300, 36872) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [42803, 43069) are not ordered by any event, barrier or mutex"
+  ],
+  "deadlock": null,
+  "tasks": 2468,
+  "flag_timeline": {
+    "checked_tokens": 0,
+    "physical_checked_tokens": 0,
+    "physical_bindings_complete": true,
+    "unbound_events": []
+  },
+  "local_mutex": {
+    "slots_per_lane": 32,
+    "sections": 552,
+    "ids_by_lane": {
+      "core0/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core0/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+    },
+    "timing": "modeled, not silicon calibrated"
+  },
+  "raw_receipt_sha256": "6bf1ab99a0e9969bdc84d3b59e00854780de649df295173aba8f4a2671b26c5c"
+}

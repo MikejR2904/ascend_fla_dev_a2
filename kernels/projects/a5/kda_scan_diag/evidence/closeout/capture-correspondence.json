@@ -1,0 +1,154 @@
+{
+  "complete": true,
+  "rows": [
+    {
+      "label": "native",
+      "job": "intervention-v1-control-c-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v1-control-d-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-c-bd1",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-c-bd2",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-c-bd3",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-c-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-d-bd1",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-d-bd2",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-d-bd3",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-d-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "intervention-v2-control-e-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "replay-v1-control-c-bd4",
+      "verified_anchors": 1,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "replay-v1-control-d-bd4",
+      "verified_anchors": 1,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "stress-v1-control-c-bd4",
+      "verified_anchors": 15,
+      "verified_captured_trials": 400,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "native",
+      "job": "stress-v1-control-d-bd4",
+      "verified_anchors": 15,
+      "verified_captured_trials": 400,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "cross",
+      "job": "intervention-v2-cross-env-bd4",
+      "verified_anchors": 18,
+      "verified_captured_trials": 50,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "cross",
+      "job": "replay-v1-cross-env-bd4",
+      "verified_anchors": 1,
+      "verified_captured_trials": 0,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    },
+    {
+      "label": "cross",
+      "job": "stress-v1-cross-env-bd4",
+      "verified_anchors": 15,
+      "verified_captured_trials": 500,
+      "complete": true,
+      "scope": "Actual restored CPU tensors vs every recorded output hash, bit difference, finite flag and per-row diagnostic; includes stable incorrect stress outputs."
+    }
+  ],
+  "verified_anchors": 264,
+  "verified_captured_trials": 1350,
+  "verifier_sha256": "59a50703a6deeb211e04d5c07aca50c411eb6dae64e1087e5b423ec1adddb051",
+  "scope": "Archive-restored tensors, actual byte hashes and differences; no new NPU execution. Cross check used preceding equivalent family selector; native version excludes unrelated initial full-workload summaries.",
+  "raw_receipt_sha256": "5b6004593f40794a4d17542c8a33d70bc938dea11c50cfc251289795fb18c2d3"
+}

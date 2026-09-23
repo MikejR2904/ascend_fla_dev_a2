@@ -1,0 +1,70 @@
+{
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.12.0+cpu",
+    "torch_npu": "2.12.0",
+    "ascriptor": "0.1.0",
+    "device_sharing_authorized": true,
+    "device_lock_scope": "task",
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "cann_version_records": {
+      "compiler": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\"9.2\"",
+          "required_package_ge-executor_version=\"9.2\"",
+          "required_package_metadef_version=\"9.2\"",
+          "required_package_bisheng-compiler_version=\"9.2\"",
+          "required_package_tbe-tik_version=\"9.2\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "604198c1934cf29ad9566ba130465921b80c8a9c15c6620678498d290fdd7ce0"
+      },
+      "opp": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\">=8.5\"",
+          "required_package_ge-executor_version=\">=8.5\"",
+          "required_package_metadef_version=\">=8.5\"",
+          "required_package_asc-devkit_version=\">=8.5\"",
+          "required_package_bisheng-compiler_version=\">=8.5\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "abd4979cb7af44675c08c3dc04bbc68589e9a388778e057e365f820273717e58"
+      }
+    },
+    "opp_directories": [
+      "ascend910_93",
+      "ascend910b",
+      "ascend950"
+    ],
+    "driver_sha256": "fc14fdfca0095ba05c68b4a9279ae11fdc95ade2b76f0337b30d930610d2eeae",
+    "source_manifest": {
+      "file": "sources/2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e.json",
+      "canonical_json_sha256": "2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e",
+      "files": 426
+    },
+    "helper_sha256": "808b3d2c778ea577489ef966db72f38375d5a4d609190a63a63704757ae4f880"
+  },
+  "complete": true,
+  "passed": true,
+  "cases": [
+    {
+      "id": "full_kimi_t4096_all_flags_training",
+      "B": 1,
+      "T": 4096,
+      "H": 32,
+      "HV": 32,
+      "K": 128,
+      "raw_dtype": "bf16",
+      "parameter_dtype": "f32",
+      "flags": [true,true,true],
+      "all_raw_and_parameter_gradients": true
+    }
+  ],
+  "scope": "full training workload only",
+  "raw_receipt_sha256": "9c125c26e360a2d1d57732e27756258dfd03e9e3bd98a558cc438344e9281786"
+}

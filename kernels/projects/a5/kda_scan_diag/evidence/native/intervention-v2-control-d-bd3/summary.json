@@ -1,0 +1,1229 @@
+{
+  "complete": true,
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.12.0+cu130",
+    "torch_npu": "2.12.0",
+    "ascriptor": "0.1.0",
+    "device_sharing_authorized": true,
+    "device_lock_scope": "task",
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "cann_version_records": {
+      "compiler": {
+        "raw_lines": [
+          "Version=9.1.0-beta.1",
+          "version_dir=cann",
+          "required_package_runtime_version=\"9.1\"",
+          "required_package_ge-executor_version=\"9.1\"",
+          "required_package_metadef_version=\"9.1\"",
+          "required_package_opbase_version=\"9.1\"",
+          "required_package_bisheng-compiler_version=\"9.1\"",
+          "required_package_tbe-tik_version=\"9.1\"",
+          "timestamp=20260509_173000235"
+        ],
+        "sha256": "0f982a259247cdd06df4fa5bdaf526b57b6ad15f7d27a33f23b3c70a381c2fe5"
+      },
+      "opp": {
+        "raw_lines": [
+          "Version=9.1.0-beta.1",
+          "version_dir=cann",
+          "required_package_runtime_version=\">=8.5\"",
+          "required_package_ge-executor_version=\">=8.5\"",
+          "required_package_metadef_version=\">=8.5\"",
+          "required_package_asc-devkit_version=\">=8.5\"",
+          "required_package_bisheng-compiler_version=\">=8.5\"",
+          "timestamp=20260509_173000235"
+        ],
+        "sha256": "377b05dab3a2dfc87dfaa92affd69a9aa5795a54d423cbe629d3495ad20370ef"
+      }
+    },
+    "opp_directories": [
+      "ascend910_93",
+      "ascend910b",
+      "ascend950"
+    ],
+    "driver_sha256": "1d674dfdc445b9b942a96f5aab0132a3bba5f4aec6df40253fd50ca9529ddd48",
+    "source_manifest": {
+      "file": "sources/90e170c0daa98a7f198dc4d994cc94b9808316e991e2de392b3b0f31cb76acd8.json",
+      "canonical_json_sha256": "90e170c0daa98a7f198dc4d994cc94b9808316e991e2de392b3b0f31cb76acd8",
+      "files": 432
+    }
+  },
+  "case_families": 18,
+  "production_fix": false,
+  "scope": "Repeatability and experimental intervention; existing numerical budgets unchanged.",
+  "cases": [
+    {
+      "case": "b2h4c3",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+        "dh": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+        "dv": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+            "trials": 50,
+            "hash_distribution": {
+              "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+            "trials": 50,
+            "hash_distribution": {
+              "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+            "trials": 50,
+            "hash_distribution": {
+              "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c3",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+        "dh": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+        "dv": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+            "trials": 50,
+            "hash_distribution": {
+              "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+            "trials": 50,
+            "hash_distribution": {
+              "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+            "trials": 50,
+            "hash_distribution": {
+              "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c3",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+        "dh": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+        "dv": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+            "trials": 50,
+            "hash_distribution": {
+              "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+            "trials": 50,
+            "hash_distribution": {
+              "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+            "trials": 50,
+            "hash_distribution": {
+              "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c3",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+        "dh": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+        "dv": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+            "trials": 50,
+            "hash_distribution": {
+              "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+            "trials": 50,
+            "hash_distribution": {
+              "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+            "trials": 50,
+            "hash_distribution": {
+              "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c3",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+        "dh": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+        "dv": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+            "trials": 50,
+            "hash_distribution": {
+              "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+            "trials": 50,
+            "hash_distribution": {
+              "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+            "trials": 50,
+            "hash_distribution": {
+              "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c3",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+        "dh": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+        "dv": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b",
+            "trials": 50,
+            "hash_distribution": {
+              "af74947a1ce4cc9e0bf9a0da60309e4da317acca22c67a518cf14fd78c174d6b": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+            "trials": 50,
+            "hash_distribution": {
+              "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8",
+            "trials": 50,
+            "hash_distribution": {
+              "bc0cba2ca31b9a30cd77dce20e8df6f4f0ff187a3a533bce7fcf73c25ec53bc8": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c2",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+        "dh": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+        "dv": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+            "trials": 50,
+            "hash_distribution": {
+              "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+            "trials": 50,
+            "hash_distribution": {
+              "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+            "trials": 50,
+            "hash_distribution": {
+              "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c2",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+        "dh": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+        "dv": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+            "trials": 50,
+            "hash_distribution": {
+              "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+            "trials": 50,
+            "hash_distribution": {
+              "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+            "trials": 50,
+            "hash_distribution": {
+              "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h2c2",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+        "dh": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+        "dv": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+        "dh0": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab",
+            "trials": 50,
+            "hash_distribution": {
+              "448a8120502965ee539ae2f1a4a530a295318542c6030a04d30d94519d51a1ab": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4",
+            "trials": 50,
+            "hash_distribution": {
+              "a53ccd07beecd9d57669aad4bb1582d29a7f0b26b5f71f55d1c62338ded0f9c4": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926",
+            "trials": 50,
+            "hash_distribution": {
+              "03ef149f9fe69856638e0972e0dad28757b5f03173ff5f0b8da4eef959c01926": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9",
+            "trials": 50,
+            "hash_distribution": {
+              "3ed74d76cb08d5d71cb7b490aa91fe0429eca25beb16a14396391749bc5960a9": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h1c3",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+        "dh": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+        "dv": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+        "dh0": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+            "trials": 50,
+            "hash_distribution": {
+              "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+            "trials": 50,
+            "hash_distribution": {
+              "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a",
+            "trials": 50,
+            "hash_distribution": {
+              "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+            "trials": 50,
+            "hash_distribution": {
+              "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h1c3",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+        "dh": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+        "dv": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+        "dh0": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+            "trials": 50,
+            "hash_distribution": {
+              "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+            "trials": 50,
+            "hash_distribution": {
+              "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a",
+            "trials": 50,
+            "hash_distribution": {
+              "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+            "trials": 50,
+            "hash_distribution": {
+              "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b1h1c3",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+        "dh": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+        "dv": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+        "dh0": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d",
+            "trials": 50,
+            "hash_distribution": {
+              "04a40ca3eb75436e49b6c579b384c43097f70d6eb0b5e93c1fc1f1f9cb98ff3d": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967",
+            "trials": 50,
+            "hash_distribution": {
+              "5c5ad1afffb90f835c52e72da1930af8e24e521a0607e769908fa3767ade5967": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a",
+            "trials": 50,
+            "hash_distribution": {
+              "9564fdb5ab0a268090f1d24c1b41fe8a970a7f7a5de5e230ec92371affcde02a": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0",
+            "trials": 50,
+            "hash_distribution": {
+              "5459ac11b4e0b4ec1ca304777cb5600e6449e9a1cb9f87e7538b4f9746164eb0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c1",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+        "dh": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+        "dv": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+            "trials": 50,
+            "hash_distribution": {
+              "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+            "trials": 50,
+            "hash_distribution": {
+              "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+            "trials": 50,
+            "hash_distribution": {
+              "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c1",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+        "dh": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+        "dv": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+            "trials": 50,
+            "hash_distribution": {
+              "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+            "trials": 50,
+            "hash_distribution": {
+              "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+            "trials": 50,
+            "hash_distribution": {
+              "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c1",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+        "dh": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+        "dv": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0",
+            "trials": 50,
+            "hash_distribution": {
+              "74bdac4da0e6eca0a1a85835417e89909d95e962554502531194db5b82cb0ea0": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c",
+            "trials": 50,
+            "hash_distribution": {
+              "c9a0e88818124655b8be6478274d0eea5235f4692b52fc5eb0dd4fbe294a4e8c": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd",
+            "trials": 50,
+            "hash_distribution": {
+              "e03c309a9861c26018dd7d770dc1e808155d4fbcad4012da168c24573d46f2dd": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c2",
+      "variant": "baseline",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+        "dh": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+        "dv": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+            "trials": 50,
+            "hash_distribution": {
+              "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+            "trials": 50,
+            "hash_distribution": {
+              "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+            "trials": 50,
+            "hash_distribution": {
+              "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c2",
+      "variant": "ring",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+        "dh": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+        "dv": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+            "trials": 50,
+            "hash_distribution": {
+              "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+            "trials": 50,
+            "hash_distribution": {
+              "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+            "trials": 50,
+            "hash_distribution": {
+              "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    },
+    {
+      "case": "b2h4c2",
+      "variant": "negative",
+      "block_dim": 3,
+      "device_label": "control-d",
+      "trials": 50,
+      "anchor": {
+        "dAqk": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+        "dh": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+        "dv": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+        "dh0": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef"
+      },
+      "anchor_differences_from_baseline": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "repeatability": {
+        "outputs": {
+          "dAqk": {
+            "anchor_sha256": "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17",
+            "trials": 50,
+            "hash_distribution": {
+              "333a397e5bf6709be39c778b240cf5b06110e1422adc8cdc7c3b63ce9b1cdd17": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh": {
+            "anchor_sha256": "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749",
+            "trials": 50,
+            "hash_distribution": {
+              "e0972b8dc83789581360eb92aa74a08d21d178a85c0a7bd4d55e11d400587749": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dh0": {
+            "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+            "trials": 50,
+            "hash_distribution": {
+              "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          },
+          "dv": {
+            "anchor_sha256": "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824",
+            "trials": 50,
+            "hash_distribution": {
+              "a01fbaf446339fbdff390d83b3d8b88ca1412afa4b06b4b435a47fa8aaeba824": 50
+            },
+            "deviations_from_anchor": 0,
+            "one_sided_95pct_upper_bound": 0.05815507911697225,
+            "anchor_excluded_from_trials": true
+          }
+        },
+        "confidence_model": "conditional independent identically distributed trials",
+        "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+      }
+    }
+  ],
+  "raw_receipt_sha256": "4cb9c149a491e2c9b0dc0598f9372326c13ee5bb115df6e4b7af02f33f3440e0"
+}

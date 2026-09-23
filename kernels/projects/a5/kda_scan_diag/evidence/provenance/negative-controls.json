@@ -1,0 +1,131 @@
+[
+  {
+    "stressed": false,
+    "normalized_ast_sha256": "4cf7e65971f6d0228fe99e6455aa1a28639a64e80cc494e6f3c33c52a1891335",
+    "negative_ast_equals_baseline": true,
+    "emitted": [
+      {
+        "file": "a5k03_scan_baseline_kernel.cpp",
+        "normalized_sha256": "1603cd508e4fb6763d5b9eb2cf59fb7d53feb0bb368a4cc1a5a7abc494bd58fb",
+        "equal": true
+      },
+      {
+        "file": "a5k03_scan_baseline_kernel_cube.h",
+        "normalized_sha256": "838699426092bf8e8b3663cddede94d9993ce2c87c5b3b4c7de1619b94cc52c5",
+        "equal": true
+      },
+      {
+        "file": "a5k03_scan_baseline_kernel_vec.h",
+        "normalized_sha256": "fdfb85381459cc203147cd5a5e35c60ec2c9eac7144218b44f455ba783659e1f",
+        "equal": true
+      },
+      {
+        "file": "add_dv_and_cast_bf16_vf.h",
+        "normalized_sha256": "d1cdbc10660b92cc5b3c923d99034d8ad78294ea12292b65b0118a19f9efa516",
+        "equal": true
+      },
+      {
+        "file": "cast_dht_to_f32_vf.h",
+        "normalized_sha256": "0978c519c64f2639ac83b81aacef482d2e88e735cefb2726253a50caacb4b5e5",
+        "equal": true
+      },
+      {
+        "file": "exp2_glast_vf.h",
+        "normalized_sha256": "441818fee6da16bd7ad16eecbadc8d8c0a422452488acb67739bbfdb3c58889a",
+        "equal": true
+      },
+      {
+        "file": "scalar_math.h",
+        "normalized_sha256": "a49ae04e54ad1999222c1ca925a1f624f36df2551ae9fed73a8b0a1461081f7e",
+        "equal": true
+      },
+      {
+        "file": "snapshot_and_cast_state_vf.h",
+        "normalized_sha256": "d4ec7a58cc1df21c4d851ffaf4323e0667cd8648692a59edbd02558fa62d79b4",
+        "equal": true
+      },
+      {
+        "file": "tensorutils_cce.h",
+        "normalized_sha256": "73965f4ed6c9afaf1eb96724a47b6a3cca2e15c9615afc4958b05831782d2bc9",
+        "equal": true
+      },
+      {
+        "file": "update_dstate_final_vf.h",
+        "normalized_sha256": "ebc54bef0c6d03a29d569b13097b3cfc617043577d22bc0a0f72ff94f40d2aab",
+        "equal": true
+      },
+      {
+        "file": "update_dstate_vf.h",
+        "normalized_sha256": "d32fd2757e15e5af32bd03b527a7a99497281baa6acf7aa58898cae19d50bb53",
+        "equal": true
+      }
+    ]
+  },
+  {
+    "stressed": true,
+    "normalized_ast_sha256": "2b37fb6c70e86270f0bfac1b05597be576116bcab08445245b6193c5ec15d1e9",
+    "negative_ast_equals_baseline": true,
+    "emitted": [
+      {
+        "file": "a5k03_scan_stress_baseline_kernel.cpp",
+        "normalized_sha256": "0c824ab3c9b93a6c60cdaaff2c3030a3aeca7f61f441e20621f4791da17e9878",
+        "equal": true
+      },
+      {
+        "file": "a5k03_scan_stress_baseline_kernel_cube.h",
+        "normalized_sha256": "162d1d70f1ad29627768a1aa2906d62ca35b50526a048e2f6c6d02074428b958",
+        "equal": true
+      },
+      {
+        "file": "a5k03_scan_stress_baseline_kernel_vec.h",
+        "normalized_sha256": "e94022debc89f282a18acf7ecb7f3edd6ab93798cc5abd1152cd8cf9d6801734",
+        "equal": true
+      },
+      {
+        "file": "add_dv_and_cast_bf16_vf.h",
+        "normalized_sha256": "d1cdbc10660b92cc5b3c923d99034d8ad78294ea12292b65b0118a19f9efa516",
+        "equal": true
+      },
+      {
+        "file": "cast_dht_to_f32_vf.h",
+        "normalized_sha256": "0978c519c64f2639ac83b81aacef482d2e88e735cefb2726253a50caacb4b5e5",
+        "equal": true
+      },
+      {
+        "file": "diagnostic_identity_delay_vf.h",
+        "normalized_sha256": "fe910757abaf03f769d48f86286a1d306d8b73301a73ec4e3275f793c2623241",
+        "equal": true
+      },
+      {
+        "file": "exp2_glast_vf.h",
+        "normalized_sha256": "441818fee6da16bd7ad16eecbadc8d8c0a422452488acb67739bbfdb3c58889a",
+        "equal": true
+      },
+      {
+        "file": "scalar_math.h",
+        "normalized_sha256": "a49ae04e54ad1999222c1ca925a1f624f36df2551ae9fed73a8b0a1461081f7e",
+        "equal": true
+      },
+      {
+        "file": "snapshot_and_cast_state_vf.h",
+        "normalized_sha256": "d4ec7a58cc1df21c4d851ffaf4323e0667cd8648692a59edbd02558fa62d79b4",
+        "equal": true
+      },
+      {
+        "file": "tensorutils_cce.h",
+        "normalized_sha256": "73965f4ed6c9afaf1eb96724a47b6a3cca2e15c9615afc4958b05831782d2bc9",
+        "equal": true
+      },
+      {
+        "file": "update_dstate_final_vf.h",
+        "normalized_sha256": "6d8c644cd8064f73e81fee8fb0b4cd985c630bb13d951ad1dad8da4bd3563fa8",
+        "equal": true
+      },
+      {
+        "file": "update_dstate_vf.h",
+        "normalized_sha256": "d32fd2757e15e5af32bd03b527a7a99497281baa6acf7aa58898cae19d50bb53",
+        "equal": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,393 @@
+[
+  {
+    "label": "control-c",
+    "variant": "baseline",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "ring",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "negative",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "baseline",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 49,
+      "bfe623a33a67cd150902a75cb83b83eb3e9cf5652ce443c7bdfa2a5ee58bc65c": 1
+    },
+    "anchor": "801a337d23706c2a924eecffb6f76f846d9d5ccca7fcd352c907060cfe069793",
+    "deviations_from_anchor": 50,
+    "trials_different_from_unperturbed": 1,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "ring",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "negative",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "cf73cdbea40e048f611fa7490a74edf007781599f775aa48735c24cac53ec3e9",
+    "deviations_from_anchor": 50,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "baseline",
+    "SPINS": 256,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "ring",
+    "SPINS": 256,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "negative",
+    "SPINS": 256,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "baseline",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "ring",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "negative",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "baseline",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "ring",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-c",
+    "variant": "negative",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "baseline",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "ring",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "negative",
+    "SPINS": 0,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "baseline",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "4c3ec50bc4174ae55ea66b96f99882e9bc5770fa3e1332eab7eb62c4ad337432",
+    "deviations_from_anchor": 50,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "ring",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "negative",
+    "SPINS": 64,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "3ff79dee8fd4aa8cbb98964d1d315fc57dcf0c4078b8fcaa13a08935909b4b1f",
+    "deviations_from_anchor": 50,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "baseline",
+    "SPINS": 256,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "ring",
+    "SPINS": 256,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "negative",
+    "SPINS": 256,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "baseline",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "ring",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "negative",
+    "SPINS": 1024,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "baseline",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "ring",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+    },
+    "anchor": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 0,
+    "other_outputs_different": 0,
+    "all_finite": true
+  },
+  {
+    "label": "control-d",
+    "variant": "negative",
+    "SPINS": 4096,
+    "hash_distribution": {
+      "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6": 50
+    },
+    "anchor": "900c2da099abe93813cda915dbabc1ce38d16e0429c3a522109b26b1a0a9bbc6",
+    "deviations_from_anchor": 0,
+    "trials_different_from_unperturbed": 50,
+    "other_outputs_different": 0,
+    "all_finite": true
+  }
+]

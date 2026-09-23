@@ -1,0 +1,276 @@
+{
+  "cycles": 164099,
+  "pipes": {
+    "core2/cube/S": {
+      "busy": 478,
+      "end": 108370,
+      "tasks": 408,
+      "utilisation": 0.0029
+    },
+    "core2/cube/MTE1": {
+      "busy": 8928,
+      "end": 108086,
+      "tasks": 324,
+      "utilisation": 0.0544
+    },
+    "core2/cube/MTE2": {
+      "busy": 77664,
+      "end": 105755,
+      "tasks": 108,
+      "utilisation": 0.4733
+    },
+    "core2/cube/M": {
+      "busy": 8334,
+      "end": 108084,
+      "tasks": 210,
+      "utilisation": 0.0508
+    },
+    "core2/cube/FIX": {
+      "busy": 12852,
+      "end": 108358,
+      "tasks": 162,
+      "utilisation": 0.0783
+    },
+    "core2/vec0/S": {
+      "busy": 342,
+      "end": 109965,
+      "tasks": 272,
+      "utilisation": 0.0021
+    },
+    "core2/vec0/MTE2": {
+      "busy": 3464,
+      "end": 101715,
+      "tasks": 24,
+      "utilisation": 0.0211
+    },
+    "core2/vec0/MTE3": {
+      "busy": 10628,
+      "end": 109953,
+      "tasks": 126,
+      "utilisation": 0.0648
+    },
+    "core2/vec0/V": {
+      "busy": 9096,
+      "end": 109145,
+      "tasks": 206,
+      "utilisation": 0.0554
+    },
+    "core2/vec1/S": {
+      "busy": 342,
+      "end": 109965,
+      "tasks": 272,
+      "utilisation": 0.0021
+    },
+    "core2/vec1/MTE2": {
+      "busy": 3464,
+      "end": 101715,
+      "tasks": 24,
+      "utilisation": 0.0211
+    },
+    "core2/vec1/MTE3": {
+      "busy": 10628,
+      "end": 109953,
+      "tasks": 126,
+      "utilisation": 0.0648
+    },
+    "core2/vec1/V": {
+      "busy": 9096,
+      "end": 109145,
+      "tasks": 206,
+      "utilisation": 0.0554
+    },
+    "core1/cube/S": {
+      "busy": 666,
+      "end": 162504,
+      "tasks": 596,
+      "utilisation": 0.0041
+    },
+    "core1/cube/MTE1": {
+      "busy": 13392,
+      "end": 162220,
+      "tasks": 486,
+      "utilisation": 0.0816
+    },
+    "core1/cube/MTE2": {
+      "busy": 116496,
+      "end": 159889,
+      "tasks": 162,
+      "utilisation": 0.7099
+    },
+    "core1/cube/M": {
+      "busy": 12501,
+      "end": 162218,
+      "tasks": 315,
+      "utilisation": 0.0762
+    },
+    "core1/cube/FIX": {
+      "busy": 19278,
+      "end": 162492,
+      "tasks": 243,
+      "utilisation": 0.1175
+    },
+    "core1/vec0/S": {
+      "busy": 461,
+      "end": 164099,
+      "tasks": 391,
+      "utilisation": 0.0028
+    },
+    "core1/vec0/MTE2": {
+      "busy": 5196,
+      "end": 155849,
+      "tasks": 36,
+      "utilisation": 0.0317
+    },
+    "core1/vec0/MTE3": {
+      "busy": 15942,
+      "end": 164087,
+      "tasks": 189,
+      "utilisation": 0.0971
+    },
+    "core1/vec0/V": {
+      "busy": 13644,
+      "end": 163279,
+      "tasks": 309,
+      "utilisation": 0.0831
+    },
+    "core1/vec1/S": {
+      "busy": 461,
+      "end": 164099,
+      "tasks": 391,
+      "utilisation": 0.0028
+    },
+    "core1/vec1/MTE2": {
+      "busy": 5196,
+      "end": 155849,
+      "tasks": 36,
+      "utilisation": 0.0317
+    },
+    "core1/vec1/MTE3": {
+      "busy": 15942,
+      "end": 164087,
+      "tasks": 189,
+      "utilisation": 0.0971
+    },
+    "core1/vec1/V": {
+      "busy": 13644,
+      "end": 163279,
+      "tasks": 309,
+      "utilisation": 0.0831
+    },
+    "core0/cube/S": {
+      "busy": 666,
+      "end": 162504,
+      "tasks": 596,
+      "utilisation": 0.0041
+    },
+    "core0/cube/MTE1": {
+      "busy": 13392,
+      "end": 162220,
+      "tasks": 486,
+      "utilisation": 0.0816
+    },
+    "core0/cube/MTE2": {
+      "busy": 116496,
+      "end": 159889,
+      "tasks": 162,
+      "utilisation": 0.7099
+    },
+    "core0/cube/M": {
+      "busy": 12501,
+      "end": 162218,
+      "tasks": 315,
+      "utilisation": 0.0762
+    },
+    "core0/cube/FIX": {
+      "busy": 19278,
+      "end": 162492,
+      "tasks": 243,
+      "utilisation": 0.1175
+    },
+    "core0/vec0/S": {
+      "busy": 461,
+      "end": 164099,
+      "tasks": 391,
+      "utilisation": 0.0028
+    },
+    "core0/vec0/MTE2": {
+      "busy": 5196,
+      "end": 155849,
+      "tasks": 36,
+      "utilisation": 0.0317
+    },
+    "core0/vec0/MTE3": {
+      "busy": 15942,
+      "end": 164087,
+      "tasks": 189,
+      "utilisation": 0.0971
+    },
+    "core0/vec0/V": {
+      "busy": 13644,
+      "end": 163279,
+      "tasks": 309,
+      "utilisation": 0.0831
+    },
+    "core0/vec1/S": {
+      "busy": 461,
+      "end": 164099,
+      "tasks": 391,
+      "utilisation": 0.0028
+    },
+    "core0/vec1/MTE2": {
+      "busy": 5196,
+      "end": 155849,
+      "tasks": 36,
+      "utilisation": 0.0317
+    },
+    "core0/vec1/MTE3": {
+      "busy": 15942,
+      "end": 164087,
+      "tasks": 189,
+      "utilisation": 0.0971
+    },
+    "core0/vec1/V": {
+      "busy": 13644,
+      "end": 163279,
+      "tasks": 309,
+      "utilisation": 0.0831
+    }
+  },
+  "hazards": [
+    "WAR hazard on %slot.8 (ub): core2/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core2/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core2/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core2/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex"
+  ],
+  "deadlock": null,
+  "tasks": 9772,
+  "flag_timeline": {
+    "checked_tokens": 0,
+    "physical_checked_tokens": 0,
+    "physical_bindings_complete": true,
+    "unbound_events": []
+  },
+  "local_mutex": {
+    "slots_per_lane": 32,
+    "sections": 2208,
+    "ids_by_lane": {
+      "core2/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core2/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core2/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core1/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core1/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core1/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core0/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+    },
+    "timing": "modeled, not silicon calibrated"
+  },
+  "raw_receipt_sha256": "fe2adbcb05552988be89437426882f54db224f9e73f79d760db3629e8bbf9442"
+}

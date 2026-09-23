@@ -1,0 +1,346 @@
+{
+  "cycles": 109996,
+  "pipes": {
+    "core3/cube/S": {
+      "busy": 506,
+      "end": 108398,
+      "tasks": 436,
+      "utilisation": 0.0046
+    },
+    "core3/cube/MTE1": {
+      "busy": 8928,
+      "end": 108114,
+      "tasks": 324,
+      "utilisation": 0.0812
+    },
+    "core3/cube/MTE2": {
+      "busy": 77664,
+      "end": 105783,
+      "tasks": 108,
+      "utilisation": 0.7061
+    },
+    "core3/cube/M": {
+      "busy": 8334,
+      "end": 108112,
+      "tasks": 210,
+      "utilisation": 0.0758
+    },
+    "core3/cube/FIX": {
+      "busy": 12852,
+      "end": 108386,
+      "tasks": 162,
+      "utilisation": 0.1168
+    },
+    "core3/vec0/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core3/vec0/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core3/vec0/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core3/vec0/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core3/vec1/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core3/vec1/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core3/vec1/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core3/vec1/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core0/cube/S": {
+      "busy": 506,
+      "end": 108398,
+      "tasks": 436,
+      "utilisation": 0.0046
+    },
+    "core0/cube/MTE1": {
+      "busy": 8928,
+      "end": 108114,
+      "tasks": 324,
+      "utilisation": 0.0812
+    },
+    "core0/cube/MTE2": {
+      "busy": 77664,
+      "end": 105783,
+      "tasks": 108,
+      "utilisation": 0.7061
+    },
+    "core0/cube/M": {
+      "busy": 8334,
+      "end": 108112,
+      "tasks": 210,
+      "utilisation": 0.0758
+    },
+    "core0/cube/FIX": {
+      "busy": 12852,
+      "end": 108386,
+      "tasks": 162,
+      "utilisation": 0.1168
+    },
+    "core0/vec0/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core0/vec0/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core0/vec0/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core0/vec0/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core0/vec1/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core0/vec1/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core0/vec1/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core0/vec1/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core1/cube/S": {
+      "busy": 506,
+      "end": 108398,
+      "tasks": 436,
+      "utilisation": 0.0046
+    },
+    "core1/cube/MTE1": {
+      "busy": 8928,
+      "end": 108114,
+      "tasks": 324,
+      "utilisation": 0.0812
+    },
+    "core1/cube/MTE2": {
+      "busy": 77664,
+      "end": 105783,
+      "tasks": 108,
+      "utilisation": 0.7061
+    },
+    "core1/cube/M": {
+      "busy": 8334,
+      "end": 108112,
+      "tasks": 210,
+      "utilisation": 0.0758
+    },
+    "core1/cube/FIX": {
+      "busy": 12852,
+      "end": 108386,
+      "tasks": 162,
+      "utilisation": 0.1168
+    },
+    "core1/vec0/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core1/vec0/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core1/vec0/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core1/vec0/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core1/vec1/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core1/vec1/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core1/vec1/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core1/vec1/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core2/cube/S": {
+      "busy": 506,
+      "end": 108398,
+      "tasks": 436,
+      "utilisation": 0.0046
+    },
+    "core2/cube/MTE1": {
+      "busy": 8928,
+      "end": 108114,
+      "tasks": 324,
+      "utilisation": 0.0812
+    },
+    "core2/cube/MTE2": {
+      "busy": 77664,
+      "end": 105783,
+      "tasks": 108,
+      "utilisation": 0.7061
+    },
+    "core2/cube/M": {
+      "busy": 8334,
+      "end": 108112,
+      "tasks": 210,
+      "utilisation": 0.0758
+    },
+    "core2/cube/FIX": {
+      "busy": 12852,
+      "end": 108386,
+      "tasks": 162,
+      "utilisation": 0.1168
+    },
+    "core2/vec0/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core2/vec0/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core2/vec0/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core2/vec0/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    },
+    "core2/vec1/S": {
+      "busy": 360,
+      "end": 109996,
+      "tasks": 290,
+      "utilisation": 0.0033
+    },
+    "core2/vec1/MTE2": {
+      "busy": 3464,
+      "end": 101746,
+      "tasks": 24,
+      "utilisation": 0.0315
+    },
+    "core2/vec1/MTE3": {
+      "busy": 10628,
+      "end": 109984,
+      "tasks": 126,
+      "utilisation": 0.0966
+    },
+    "core2/vec1/V": {
+      "busy": 9096,
+      "end": 109176,
+      "tasks": 206,
+      "utilisation": 0.0827
+    }
+  },
+  "hazards": [],
+  "deadlock": null,
+  "tasks": 10128,
+  "flag_timeline": {
+    "checked_tokens": 0,
+    "physical_checked_tokens": 0,
+    "physical_bindings_complete": true,
+    "unbound_events": []
+  },
+  "local_mutex": {
+    "slots_per_lane": 32,
+    "sections": 2208,
+    "ids_by_lane": {
+      "core3/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core3/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core3/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core0/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core1/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core1/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core1/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core2/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core2/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core2/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+    },
+    "timing": "modeled, not silicon calibrated"
+  },
+  "raw_receipt_sha256": "2e9117edb0111e3270b3ed924afad7b465bca24d19455b1d4fcefea59fca83ff"
+}

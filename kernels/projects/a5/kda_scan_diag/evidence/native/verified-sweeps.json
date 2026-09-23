@@ -1,0 +1,101 @@
+[
+  {
+    "job": "intervention-v1-control-c-bd4",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v1-control-d-bd4",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-c-bd1",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-c-bd2",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-c-bd3",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-c-bd4",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-d-bd1",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-d-bd2",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-d-bd3",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-d-bd4",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  },
+  {
+    "job": "intervention-v2-control-e-bd4",
+    "full_passed": true,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 0,
+    "anchor_differences": 0,
+    "all_finite": true
+  }
+]

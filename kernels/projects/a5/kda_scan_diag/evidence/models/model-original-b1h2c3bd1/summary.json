@@ -1,0 +1,45 @@
+{
+  "environment": {
+    "python": "3.11.15",
+    "torch": "2.10.0+cpu",
+    "ascriptor": "0.1.0",
+    "stage": "pipesim",
+    "capture_sha256": "835adb71e947ffd8df9a9a9165bee5f924c0fcda73975003f20cfdba1b45f52e",
+    "source_before": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+    "driver_sha256": "52351767c755f85723927560370e8f3e3f0b4bc72b53e4bada870e675101c472",
+    "runtime_manifest_sha256": "5cdd9b7600c14440489b26ab45f4042e38d07fee05a5342d558155ed755d136e",
+    "verified_runtime_files": 259,
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1"
+  },
+  "complete": true,
+  "case": {
+    "B": 1,
+    "HV": 2,
+    "C": 3,
+    "T": 192,
+    "block_dim": 1
+  },
+  "event_balance": [],
+  "hazards": [
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [36300, 36872) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [42803, 43069) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [36300, 36872) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [42803, 43069) are not ordered by any event, barrier or mutex"
+  ],
+  "deadlock": null,
+  "cycles": 73701,
+  "output_hashes": {
+    "dAqk": "7e8929e10f8bae807403b7027ecef241ce505d26f2a1fbb50439b5085d6db933",
+    "dh": "0a5957f77c256f37b660a9497921432fe703075cecc0bc0f314881b79fdd6e90",
+    "dv": "1d92f3b15c2954e5f2b848e0cd6909ba9ad062d1c7791b80b1cedd0edbb8ffeb",
+    "dh0": "f6e08ec0b43166ac53947964bd7ccbd5083e8435f2c6aa699fee06aa96d8df57"
+  },
+  "finite": {
+    "dAqk": true,
+    "dh": true,
+    "dv": true,
+    "dh0": true
+  },
+  "source_after": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+  "scope": "Executed-trace event diagnostic; not native validation or a fix claim",
+  "raw_receipt_sha256": "d8c6dcfd0de8107348df3ea23911b38898c202d4d281773a10d875606133e161"
+}

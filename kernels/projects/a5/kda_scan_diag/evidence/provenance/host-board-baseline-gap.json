@@ -1,0 +1,13 @@
+{
+  "base": "5a085751595fe6223bed785ac36b6d839216d125",
+  "pm_module": "tools/pm_board.py",
+  "check": [
+    "README.md \u7684 kernel \u8fdb\u5c55\u8868\u4e0e\u770b\u677f\u4e0d\u4e00\u81f4\uff0c\u8bf7\u8fd0\u884c python tools/pm_board.py --readme"
+  ],
+  "tracked_equal_to_base": {
+    "README.md": "71d12c5b339330ea4a8d6e980d6ab234000fbe30eff38b29ecb2d54fed8f4560",
+    "docs/pm/board.json": "227ac0214ba8dba67f69bf7d19fbfd255a13c2a07c03372c4fb7b0b780105ac6",
+    "tools/pm_board.py": "af87b5836d4ec23b4ce07f9ebbba7225b4c66a43f492e5ba9d96cdc23545d23b"
+  },
+  "raw_receipt_sha256": "a380b415eb45c5f778e02e665781e1b68af6852ed8b36a7230faff6625e6728b"
+}

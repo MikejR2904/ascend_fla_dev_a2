@@ -1,0 +1,193 @@
+[
+  {
+    "job": "intervention-v2-cross-env-bd4",
+    "full_passed": true,
+    "production_vendors": 50,
+    "backward_vendors": 9,
+    "trials": 900,
+    "families": 18,
+    "deviating_trials": 50,
+    "anchor_differences": 32742,
+    "all_finite": true
+  },
+  {
+    "job": "replay-v1-cross-env-bd4",
+    "full_passed": true,
+    "production_vendors": 50,
+    "backward_vendors": 9,
+    "repeatability": {
+      "outputs": {
+        "dAqk": {
+          "anchor_sha256": "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac",
+          "trials": 50,
+          "hash_distribution": {
+            "fb86fc99beb11e997e13611d77d9e3d0e7d773311388b558a255416735aaadac": 50
+          },
+          "deviations_from_anchor": 0,
+          "one_sided_95pct_upper_bound": 0.05815507911697225,
+          "anchor_excluded_from_trials": true
+        },
+        "dh": {
+          "anchor_sha256": "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15",
+          "trials": 50,
+          "hash_distribution": {
+            "19a2115f6f423306c8bfbba9d5d749b81f7ca988633086093a5513764c63dd15": 50
+          },
+          "deviations_from_anchor": 0,
+          "one_sided_95pct_upper_bound": 0.05815507911697225,
+          "anchor_excluded_from_trials": true
+        },
+        "dh0": {
+          "anchor_sha256": "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef",
+          "trials": 50,
+          "hash_distribution": {
+            "ba5f03d26f0a5a5dad46f430f61cc3e764a8e7f4bb17ab14a8e20d65391310ef": 50
+          },
+          "deviations_from_anchor": 0,
+          "one_sided_95pct_upper_bound": 0.05815507911697225,
+          "anchor_excluded_from_trials": true
+        },
+        "dv": {
+          "anchor_sha256": "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10",
+          "trials": 50,
+          "hash_distribution": {
+            "bb85f8c6e69a3b857b2cf351c2f038b80e03b73ca6514a9abcb22ef7f5fdbd10": 50
+          },
+          "deviations_from_anchor": 0,
+          "one_sided_95pct_upper_bound": 0.05815507911697225,
+          "anchor_excluded_from_trials": true
+        }
+      },
+      "confidence_model": "conditional independent identically distributed trials",
+      "scope": "Byte-repeatability only; not numerical correctness, race absence, or a repair claim."
+    }
+  },
+  {
+    "job": "stress-v1-cross-env-bd4",
+    "full_passed": true,
+    "production_vendors": 50,
+    "backward_vendors": 9,
+    "families": [
+      {
+        "variant": "baseline",
+        "SPINS": 0,
+        "deviations_from_anchor": 50,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "ring",
+        "SPINS": 0,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "negative",
+        "SPINS": 0,
+        "deviations_from_anchor": 50,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "baseline",
+        "SPINS": 64,
+        "deviations_from_anchor": 50,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "ring",
+        "SPINS": 64,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "negative",
+        "SPINS": 64,
+        "deviations_from_anchor": 50,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "baseline",
+        "SPINS": 256,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "ring",
+        "SPINS": 256,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "negative",
+        "SPINS": 256,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "baseline",
+        "SPINS": 1024,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "ring",
+        "SPINS": 1024,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "negative",
+        "SPINS": 1024,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "baseline",
+        "SPINS": 4096,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "ring",
+        "SPINS": 4096,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 0,
+        "other_outputs_different": 0,
+        "all_finite": true
+      },
+      {
+        "variant": "negative",
+        "SPINS": 4096,
+        "deviations_from_anchor": 0,
+        "trials_different_from_unperturbed": 50,
+        "other_outputs_different": 0,
+        "all_finite": true
+      }
+    ]
+  }
+]

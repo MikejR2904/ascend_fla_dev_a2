@@ -1,0 +1,355 @@
+{
+  "cycles": 39069,
+  "pipes": {
+    "core1/cube/S": {
+      "busy": 218,
+      "end": 37474,
+      "tasks": 148,
+      "utilisation": 0.0056
+    },
+    "core1/cube/MTE1": {
+      "busy": 2976,
+      "end": 37190,
+      "tasks": 108,
+      "utilisation": 0.0762
+    },
+    "core1/cube/MTE2": {
+      "busy": 25888,
+      "end": 34859,
+      "tasks": 36,
+      "utilisation": 0.6626
+    },
+    "core1/cube/M": {
+      "busy": 2778,
+      "end": 37188,
+      "tasks": 70,
+      "utilisation": 0.0711
+    },
+    "core1/cube/FIX": {
+      "busy": 4284,
+      "end": 37462,
+      "tasks": 54,
+      "utilisation": 0.1097
+    },
+    "core1/vec0/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core1/vec0/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core1/vec0/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core1/vec0/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core1/vec1/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core1/vec1/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core1/vec1/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core1/vec1/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core3/cube/S": {
+      "busy": 218,
+      "end": 37474,
+      "tasks": 148,
+      "utilisation": 0.0056
+    },
+    "core3/cube/MTE1": {
+      "busy": 2976,
+      "end": 37190,
+      "tasks": 108,
+      "utilisation": 0.0762
+    },
+    "core3/cube/MTE2": {
+      "busy": 25888,
+      "end": 34859,
+      "tasks": 36,
+      "utilisation": 0.6626
+    },
+    "core3/cube/M": {
+      "busy": 2778,
+      "end": 37188,
+      "tasks": 70,
+      "utilisation": 0.0711
+    },
+    "core3/cube/FIX": {
+      "busy": 4284,
+      "end": 37462,
+      "tasks": 54,
+      "utilisation": 0.1097
+    },
+    "core3/vec0/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core3/vec0/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core3/vec0/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core3/vec0/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core3/vec1/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core3/vec1/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core3/vec1/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core3/vec1/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core0/cube/S": {
+      "busy": 218,
+      "end": 37474,
+      "tasks": 148,
+      "utilisation": 0.0056
+    },
+    "core0/cube/MTE1": {
+      "busy": 2976,
+      "end": 37190,
+      "tasks": 108,
+      "utilisation": 0.0762
+    },
+    "core0/cube/MTE2": {
+      "busy": 25888,
+      "end": 34859,
+      "tasks": 36,
+      "utilisation": 0.6626
+    },
+    "core0/cube/M": {
+      "busy": 2778,
+      "end": 37188,
+      "tasks": 70,
+      "utilisation": 0.0711
+    },
+    "core0/cube/FIX": {
+      "busy": 4284,
+      "end": 37462,
+      "tasks": 54,
+      "utilisation": 0.1097
+    },
+    "core0/vec0/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core0/vec0/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core0/vec0/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core0/vec0/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core0/vec1/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core0/vec1/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core0/vec1/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core0/vec1/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core2/cube/S": {
+      "busy": 218,
+      "end": 37474,
+      "tasks": 148,
+      "utilisation": 0.0056
+    },
+    "core2/cube/MTE1": {
+      "busy": 2976,
+      "end": 37190,
+      "tasks": 108,
+      "utilisation": 0.0762
+    },
+    "core2/cube/MTE2": {
+      "busy": 25888,
+      "end": 34859,
+      "tasks": 36,
+      "utilisation": 0.6626
+    },
+    "core2/cube/M": {
+      "busy": 2778,
+      "end": 37188,
+      "tasks": 70,
+      "utilisation": 0.0711
+    },
+    "core2/cube/FIX": {
+      "busy": 4284,
+      "end": 37462,
+      "tasks": 54,
+      "utilisation": 0.1097
+    },
+    "core2/vec0/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core2/vec0/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core2/vec0/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core2/vec0/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    },
+    "core2/vec1/S": {
+      "busy": 190,
+      "end": 39069,
+      "tasks": 120,
+      "utilisation": 0.0049
+    },
+    "core2/vec1/MTE2": {
+      "busy": 2240,
+      "end": 22410,
+      "tasks": 12,
+      "utilisation": 0.0573
+    },
+    "core2/vec1/MTE3": {
+      "busy": 4628,
+      "end": 39057,
+      "tasks": 46,
+      "utilisation": 0.1185
+    },
+    "core2/vec1/V": {
+      "busy": 3904,
+      "end": 38249,
+      "tasks": 82,
+      "utilisation": 0.0999
+    }
+  },
+  "hazards": [
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core3/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core3/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core3/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core3/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core2/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core2/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core2/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [18984, 19556) and core2/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [30023, 30289) are not ordered by any event, barrier or mutex"
+  ],
+  "deadlock": null,
+  "tasks": 3744,
+  "flag_timeline": {
+    "checked_tokens": 0,
+    "physical_checked_tokens": 0,
+    "physical_bindings_complete": true,
+    "unbound_events": []
+  },
+  "local_mutex": {
+    "slots_per_lane": 32,
+    "sections": 800,
+    "ids_by_lane": {
+      "core1/cube": [0,1,2,3,5,7,9,11,13,14,15,16,18,19,20,21,22,24],
+      "core1/vec0": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core1/vec1": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core3/cube": [0,1,2,3,5,7,9,11,13,14,15,16,18,19,20,21,22,24],
+      "core3/vec0": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core3/vec1": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core0/cube": [0,1,2,3,5,7,9,11,13,14,15,16,18,19,20,21,22,24],
+      "core0/vec0": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core0/vec1": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core2/cube": [0,1,2,3,5,7,9,11,13,14,15,16,18,19,20,21,22,24],
+      "core2/vec0": [0,1,2,3,4,5,6,7,8,9,11,12,13],
+      "core2/vec1": [0,1,2,3,4,5,6,7,8,9,11,12,13]
+    },
+    "timing": "modeled, not silicon calibrated"
+  },
+  "raw_receipt_sha256": "e623fb1221d1f24049e8a6414f6317637af8b2dc809358fc2fd3bd02f576b9f4"
+}

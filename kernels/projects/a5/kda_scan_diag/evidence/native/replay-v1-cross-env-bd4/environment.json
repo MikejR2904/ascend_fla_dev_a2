@@ -1,0 +1,51 @@
+{
+  "python": "3.12.13",
+  "torch": "2.12.0+cpu",
+  "torch_npu": "2.12.0",
+  "ascriptor": "0.1.0",
+  "device_sharing_authorized": true,
+  "device_lock_scope": "task",
+  "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+  "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+  "cann_version_records": {
+    "compiler": {
+      "raw_lines": [
+        "Version=9.2.0",
+        "version_dir=cann",
+        "required_package_runtime_version=\"9.2\"",
+        "required_package_ge-executor_version=\"9.2\"",
+        "required_package_metadef_version=\"9.2\"",
+        "required_package_bisheng-compiler_version=\"9.2\"",
+        "required_package_tbe-tik_version=\"9.2\"",
+        "timestamp=20260805_101249091"
+      ],
+      "sha256": "604198c1934cf29ad9566ba130465921b80c8a9c15c6620678498d290fdd7ce0"
+    },
+    "opp": {
+      "raw_lines": [
+        "Version=9.2.0",
+        "version_dir=cann",
+        "required_package_runtime_version=\">=8.5\"",
+        "required_package_ge-executor_version=\">=8.5\"",
+        "required_package_metadef_version=\">=8.5\"",
+        "required_package_asc-devkit_version=\">=8.5\"",
+        "required_package_bisheng-compiler_version=\">=8.5\"",
+        "timestamp=20260805_101249091"
+      ],
+      "sha256": "abd4979cb7af44675c08c3dc04bbc68589e9a388778e057e365f820273717e58"
+    }
+  },
+  "opp_directories": [
+    "ascend910_93",
+    "ascend910b",
+    "ascend950"
+  ],
+  "source_manifest": {
+    "file": "sources/2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e.json",
+    "canonical_json_sha256": "2cf4e310e207d008b1772fe1e413b069ad502f8b592e8763761d4717eca3020e",
+    "files": 426
+  },
+  "driver_sha256": "9b532b62f9e4c2b9148f71c793e25b04ecccee766ccfe05c28de6d10368ded61",
+  "statistics_sha256": "feb67a41af98d9f4ca56f18687d6ffc61f1d31d8bc027731f8b7d1c74d4aa5a1",
+  "raw_receipt_sha256": "9d2b9c4ca4e3853164d93181f0b90001f04305b47fdbb735ad90fe0e6f8e2f1d"
+}

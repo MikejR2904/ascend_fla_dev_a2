@@ -1,0 +1,267 @@
+{
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.12.0+cpu",
+    "torch_npu": "2.12.0",
+    "ascriptor": "0.1.0",
+    "device_sharing_authorized": true,
+    "device_lock_scope": "task",
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "cann_version_records": {
+      "compiler": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\"9.2\"",
+          "required_package_ge-executor_version=\"9.2\"",
+          "required_package_metadef_version=\"9.2\"",
+          "required_package_bisheng-compiler_version=\"9.2\"",
+          "required_package_tbe-tik_version=\"9.2\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "604198c1934cf29ad9566ba130465921b80c8a9c15c6620678498d290fdd7ce0"
+      },
+      "opp": {
+        "raw_lines": [
+          "Version=9.2.0",
+          "version_dir=cann",
+          "required_package_runtime_version=\">=8.5\"",
+          "required_package_ge-executor_version=\">=8.5\"",
+          "required_package_metadef_version=\">=8.5\"",
+          "required_package_asc-devkit_version=\">=8.5\"",
+          "required_package_bisheng-compiler_version=\">=8.5\"",
+          "timestamp=20260805_101249091"
+        ],
+        "sha256": "abd4979cb7af44675c08c3dc04bbc68589e9a388778e057e365f820273717e58"
+      }
+    },
+    "opp_directories": [
+      "ascend910_93",
+      "ascend910b",
+      "ascend950"
+    ],
+    "driver_sha256": "353f435543c564e7dbea1c23ce8ba28bc7f944f61b35586c3d234c048f0914bb",
+    "source_manifest": {
+      "file": "sources/83df35ae16bbab2ada1c372071394076d4f964e4ca749cce6300fa0fd2ad9cd4.json",
+      "canonical_json_sha256": "83df35ae16bbab2ada1c372071394076d4f964e4ca749cce6300fa0fd2ad9cd4",
+      "files": 438
+    }
+  },
+  "complete": true,
+  "cases": [
+    {
+      "variant": "baseline",
+      "B": 1,
+      "HV": 32,
+      "C": 64,
+      "T": 4096,
+      "SPINS": 4096,
+      "metrics": {
+        "dAqk": {
+          "relative_l2": 0.0007786651258356869,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh": {
+          "relative_l2": 5.132406840857584e-06,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dv": {
+          "relative_l2": 2.096066418744158e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh0": {
+          "relative_l2": 3.3634965802775696e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        }
+      },
+      "differences_from_original": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "output_hashes": {
+        "dAqk": "4e2193ed649dd9d9f0b658726660ed8ec8c5ed0871c4d2cfee4acbd4536fa651",
+        "dh": "abfede02de9da09d96ee146b1764d0ea2dd679cd03cab08716b50218dafd5b83",
+        "dv": "a7ea084c6c7d2d7343003053c2692ba4c510194c514d22d047bb233f69223295",
+        "dh0": "3a336b40b6e6871d1c22308046e73a017e297db62befe287674e1b3f0e022dfc"
+      }
+    },
+    {
+      "variant": "ring",
+      "B": 1,
+      "HV": 32,
+      "C": 64,
+      "T": 4096,
+      "SPINS": 4096,
+      "metrics": {
+        "dAqk": {
+          "relative_l2": 0.0007786651258356869,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh": {
+          "relative_l2": 5.132406840857584e-06,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dv": {
+          "relative_l2": 2.096066418744158e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh0": {
+          "relative_l2": 3.3634965802775696e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        }
+      },
+      "differences_from_original": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "output_hashes": {
+        "dAqk": "4e2193ed649dd9d9f0b658726660ed8ec8c5ed0871c4d2cfee4acbd4536fa651",
+        "dh": "abfede02de9da09d96ee146b1764d0ea2dd679cd03cab08716b50218dafd5b83",
+        "dv": "a7ea084c6c7d2d7343003053c2692ba4c510194c514d22d047bb233f69223295",
+        "dh0": "3a336b40b6e6871d1c22308046e73a017e297db62befe287674e1b3f0e022dfc"
+      }
+    },
+    {
+      "variant": "negative",
+      "B": 1,
+      "HV": 32,
+      "C": 64,
+      "T": 4096,
+      "SPINS": 4096,
+      "metrics": {
+        "dAqk": {
+          "relative_l2": 0.0007786651258356869,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh": {
+          "relative_l2": 5.132406840857584e-06,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dv": {
+          "relative_l2": 2.096066418744158e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        },
+        "dh0": {
+          "relative_l2": 3.3634965802775696e-05,
+          "finite": true,
+          "allclose": true,
+          "passed": true,
+          "existing_budget": {
+            "atol": 0.004,
+            "rtol": 0.004,
+            "max_relative_l2": 0.01,
+            "reason": "Preserve the leaf's source elementwise limit while checking the independently modeled physical bf16/fp32 boundary; the added residual norm limit rejects all-zero or incorrect arithmetic outputs."
+          }
+        }
+      },
+      "differences_from_original": {
+        "dAqk": 0,
+        "dh": 0,
+        "dv": 0,
+        "dh0": 0
+      },
+      "output_hashes": {
+        "dAqk": "4e2193ed649dd9d9f0b658726660ed8ec8c5ed0871c4d2cfee4acbd4536fa651",
+        "dh": "abfede02de9da09d96ee146b1764d0ea2dd679cd03cab08716b50218dafd5b83",
+        "dv": "a7ea084c6c7d2d7343003053c2692ba4c510194c514d22d047bb233f69223295",
+        "dh0": "3a336b40b6e6871d1c22308046e73a017e297db62befe287674e1b3f0e022dfc"
+      }
+    }
+  ],
+  "comparison_contract_sha256": "a89b77dd7294270e007a0b4a348e88d1cd4d05a077a6b1c1706318382c4e955e",
+  "reference": "Torch CPU FP32, physical BF16 seams",
+  "raw_receipt_sha256": "f52640cce8e90b0ecf798b45b6d38467cf0e6e26753bdc47e0ee41295d94d800"
+}

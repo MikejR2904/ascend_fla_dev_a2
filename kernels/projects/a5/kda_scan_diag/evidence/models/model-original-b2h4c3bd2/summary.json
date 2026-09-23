@@ -1,0 +1,56 @@
+{
+  "environment": {
+    "python": "3.11.15",
+    "torch": "2.10.0+cpu",
+    "ascriptor": "0.1.0",
+    "stage": "pipesim",
+    "variant": "original",
+    "capture_sha256": "835adb71e947ffd8df9a9a9165bee5f924c0fcda73975003f20cfdba1b45f52e",
+    "source_before": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+    "driver_sha256": "4fc308fffc0aea2e86a7ea39903db0c4c9078d972c09177599fa693c749554c6",
+    "runtime_manifest_sha256": "5cdd9b7600c14440489b26ab45f4042e38d07fee05a5342d558155ed755d136e",
+    "verified_runtime_files": 259,
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1"
+  },
+  "complete": true,
+  "case": {
+    "B": 2,
+    "HV": 4,
+    "C": 3,
+    "T": 192,
+    "block_dim": 2
+  },
+  "event_balance": [],
+  "hazards": [
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [54432, 55004) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [65471, 65737) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [108566, 109138) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [119605, 119871) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [162700, 163272) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [173739, 174005) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core1/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [162700, 163272) and core1/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [173739, 174005) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec0/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [162700, 163272) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [173739, 174005) are not ordered by any event, barrier or mutex",
+    "WAR hazard on %slot.8 (ub): core0/vec1/V cf.call #521 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:358:20\")) cycles [162700, 163272) and core0/cube/FIX dma.l0c_to_ub #151 (loc(\"upstream-kernels/projects/a5/kda_bwd/kernels/scan_fused.py:277:12\")) cycles [173739, 174005) are not ordered by any event, barrier or mutex"
+  ],
+  "deadlock": null,
+  "cycles": 218233,
+  "output_hashes": {
+    "dAqk": "be8de5a9c05b07e6ffc429b3d1d885d63e44b07373fe1b1ae1d3ed0c033439a7",
+    "dh": "894c2d7dd34e8d7f1a5e2d8a79009eba4220f1fdd92c820b1a424219c80504d7",
+    "dv": "7145342dab1221acda381b47b4ef47b363ddcad9dfee6d3c22d9b0855a552a05",
+    "dh0": "641b301586ef09954ede791c347bca5149d1d8cea159acedbec3f60470cd7e8d"
+  },
+  "finite": {
+    "dAqk": true,
+    "dh": true,
+    "dv": true,
+    "dh0": true
+  },
+  "source_after": "deca5ef18267904baa6ede10b17d41684413a229983f76e48bb10463092fdb03",
+  "scope": "Executed-trace event diagnostic; not native validation or a fix claim",
+  "raw_receipt_sha256": "cf1fb8fba5106368961546147ec659038377fa71ee42d3058b16b6e88424799d"
+}

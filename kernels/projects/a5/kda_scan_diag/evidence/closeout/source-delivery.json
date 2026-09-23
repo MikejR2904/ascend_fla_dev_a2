@@ -1,0 +1,25 @@
+{
+  "base_commit": "9b8c7e8e8433d3cb00d6890a48b3d4bc2207c01a",
+  "original_native_source_files": 423,
+  "original_native_sources_unchanged": true,
+  "device_kernel_and_driver_files": {
+    "kernels/projects/a5/kda_scan_diag/replay_statistics.py": "feb67a41af98d9f4ca56f18687d6ffc61f1d31d8bc027731f8b7d1c74d4aa5a1",
+    "kernels/projects/a5/kda_scan_diag/replay_native.py": "9b532b62f9e4c2b9148f71c793e25b04ecccee766ccfe05c28de6d10368ded61",
+    "kernels/projects/a5/kda_scan_diag/derivation.json": "f05d486122a1dc610ddf8a211f1106cc636750a368ba223d81fe009399bb1fe0",
+    "kernels/projects/a5/kda_scan_diag/intervene_native.py": "1d674dfdc445b9b942a96f5aab0132a3bba5f4aec6df40253fd50ca9529ddd48",
+    "kernels/projects/a5/kda_scan_diag/stress_native.py": "353f435543c564e7dbea1c23ce8ba28bc7f944f61b35586c3d234c048f0914bb",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_baseline.py": "b562c387e60316617e743ebd1019a25e65a81fca93c749ea2a66758d178bdd8d",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_ring.py": "7374942b20ba7c215e857e2f9ba3d2f5bb7b4665f9b39386dfa0463e33b84c72",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_negative.py": "6eb59c03cb126e6b18efa6d355c2095f280960dca0e8f67e55b9381311aee239",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_stress_baseline.py": "d69cbc060cff6867dd20fe01bfd83b7f3587e015b8c7ccf5a0421ae26559e11d",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_stress_ring.py": "26dfaddba99157a3c1068ce75f3c15ac8655c918f8a183d5072df4b061fbc9ee",
+    "kernels/projects/a5/kda_scan_diag/kernels/scan_stress_negative.py": "c81465f0ba93a88b4ff766f7eb182faf20116cd4020fafa9a50a1dfc31f5b6bb"
+  },
+  "native_source_delivery_exact": true,
+  "nondevice_tools_changed_after_snapshot": [
+    "kernels/projects/a5/kda_scan_diag/inspect_events.py",
+    "kernels/projects/a5/kda_scan_diag/counterfactual.py"
+  ],
+  "scope": "CPU analysis/model CLI changes separately source-attributed; no device code changed after native execution.",
+  "raw_receipt_sha256": "8f46a9c93a7aeeb80fccca9048997ecc57d8609571dd7e83b50cf56ae67a6b09"
+}

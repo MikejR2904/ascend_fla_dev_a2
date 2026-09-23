@@ -1,0 +1,13 @@
+{
+  "previous_base": "5a085751595fe6223bed785ac36b6d839216d125",
+  "current_base": "9b8c7e8e8433d3cb00d6890a48b3d4bc2207c01a",
+  "upstream_metadata_only": [
+    "README.en.md",
+    "README.md",
+    "docs/pm/board.json",
+    "docs/pm/tasks/A2-12.md"
+  ],
+  "verified_native_source_files": 423,
+  "native_sources_unchanged": true,
+  "raw_receipt_sha256": "5b10dd5a649028a13434fcf83fbc70cfbfcefa08e5a1873be6dc6f8658c488e8"
+}

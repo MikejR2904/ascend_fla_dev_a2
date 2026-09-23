@@ -1,0 +1,1045 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.12.0+cu130",
+    "torch_npu": "2.12.0",
+    "ascriptor": "0.1.0",
+    "device_sharing_authorized": true,
+    "device_lock_scope": "task",
+    "library_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels_commit": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "cann_version_records": {
+      "compiler": {
+        "raw_lines": [
+          "Version=9.1.0-beta.1",
+          "version_dir=cann",
+          "required_package_runtime_version=\"9.1\"",
+          "required_package_ge-executor_version=\"9.1\"",
+          "required_package_metadef_version=\"9.1\"",
+          "required_package_opbase_version=\"9.1\"",
+          "required_package_bisheng-compiler_version=\"9.1\"",
+          "required_package_tbe-tik_version=\"9.1\"",
+          "timestamp=20260509_173000235"
+        ],
+        "sha256": "0f982a259247cdd06df4fa5bdaf526b57b6ad15f7d27a33f23b3c70a381c2fe5"
+      },
+      "opp": {
+        "raw_lines": [
+          "Version=9.1.0-beta.1",
+          "version_dir=cann",
+          "required_package_runtime_version=\">=8.5\"",
+          "required_package_ge-executor_version=\">=8.5\"",
+          "required_package_metadef_version=\">=8.5\"",
+          "required_package_asc-devkit_version=\">=8.5\"",
+          "required_package_bisheng-compiler_version=\">=8.5\"",
+          "timestamp=20260509_173000235"
+        ],
+        "sha256": "377b05dab3a2dfc87dfaa92affd69a9aa5795a54d423cbe629d3495ad20370ef"
+      }
+    },
+    "opp_directories": [
+      "ascend910_93",
+      "ascend910b",
+      "ascend950"
+    ],
+    "driver_sha256": "fc14fdfca0095ba05c68b4a9279ae11fdc95ade2b76f0337b30d930610d2eeae",
+    "source_manifest": {
+      "file": "sources/4466ab896deac16c871a22c191cecee3fe58355690267fa78ed3d35659eb23d8.json",
+      "canonical_json_sha256": "4466ab896deac16c871a22c191cecee3fe58355690267fa78ed3d35659eb23d8",
+      "files": 432
+    },
+    "helper_sha256": "808b3d2c778ea577489ef966db72f38375d5a4d609190a63a63704757ae4f880"
+  },
+  "operations": [
+    {
+      "category": "DPM42_dw_negation_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 290,
+      "operator": "aten.neg.default",
+      "count": 1
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 716,
+      "operator": "aten._to_copy.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 716,
+      "operator": "aten.select.int",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 717,
+      "operator": "aten._to_copy.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 717,
+      "operator": "aten.matmul.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 717,
+      "operator": "aten.select.int",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 717,
+      "operator": "aten.sub.Tensor",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 719,
+      "operator": "aten.select.int",
+      "count": 128
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten._to_copy.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.add.Tensor",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.matmul.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.mul.Tensor",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.select.int",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.transpose.int",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 720,
+      "operator": "aten.unsqueeze.default",
+      "count": 64
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 721,
+      "operator": "aten._to_copy.default",
+      "count": 1
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 721,
+      "operator": "aten.stack.default",
+      "count": 1
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 722,
+      "operator": "aten._to_copy.default",
+      "count": 1
+    },
+    {
+      "category": "DPM42_scan_states_whole_exception_not_compliant",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 722,
+      "operator": "aten.stack.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 423,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 443,
+      "operator": "aten.view.default",
+      "count": 9
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 548,
+      "operator": "aten.empty.memory_format",
+      "count": 11
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 567,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 576,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 585,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 589,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 599,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 254,
+      "operator": "aten.empty.memory_format",
+      "count": 33
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 264,
+      "operator": "aten.slice.Tensor",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 264,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 268,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 271,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 274,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 281,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 295,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 305,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 312,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 313,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 321,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 331,
+      "operator": "aten.view.default",
+      "count": 6
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 334,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 343,
+      "operator": "aten.view.default",
+      "count": 4
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 348,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "ascend_fla/ops/kda/chunk_bwd.py",
+      "line": 359,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_layout/runtime.py",
+      "line": 90,
+      "operator": "aten.view.default",
+      "count": 20
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_layout/runtime.py",
+      "line": 95,
+      "operator": "aten.empty.memory_format",
+      "count": 20
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_layout/runtime.py",
+      "line": 102,
+      "operator": "aten.empty.memory_format",
+      "count": 4
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_layout/runtime.py",
+      "line": 103,
+      "operator": "aten.view.default",
+      "count": 20
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_layout/runtime.py",
+      "line": 120,
+      "operator": "aten.view.default",
+      "count": 5
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 61,
+      "operator": "aten.empty.memory_format",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 63,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 64,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 65,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 79,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 81,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 82,
+      "operator": "aten.view.default",
+      "count": 3
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 84,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 90,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 91,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 92,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 93,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 141,
+      "operator": "aten.empty.memory_format",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 142,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 143,
+      "operator": "aten.view.default",
+      "count": 4
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 144,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 164,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 165,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 166,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 167,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 170,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 171,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 172,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 174,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 176,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 177,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 179,
+      "operator": "aten.view.default",
+      "count": 2
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 188,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 189,
+      "operator": "aten.empty.memory_format",
+      "count": 1
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 190,
+      "operator": "aten.view.default",
+      "count": 3
+    },
+    {
+      "category": "operator",
+      "file": "kernels/projects/a5/kda_prep/runtime.py",
+      "line": 191,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 484,
+      "operator": "aten.cumsum.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 484,
+      "operator": "aten.view.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 485,
+      "operator": "aten._local_scalar_dense.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 485,
+      "operator": "aten.amax.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 485,
+      "operator": "aten.amin.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 485,
+      "operator": "aten.max.default",
+      "count": 1
+    },
+    {
+      "category": "readonly_validation_DPM42_provisional",
+      "file": "ascend_fla/ops/kda/chunk.py",
+      "line": 485,
+      "operator": "aten.sub.Tensor",
+      "count": 1
+    }
+  ],
+  "unexpected": [],
+  "old_host_preparation": [],
+  "launches": [
+    {
+      "operator": "KdaPrepChunkGateBf16F32F32Kernel",
+      "signature": "5172e80c439ab506",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepChunkNormBf16Bf16Kernel",
+      "signature": "97469908b8d7d4c9",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepChunkNormBf16Bf16Kernel",
+      "signature": "97469908b8d7d4c9",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepChunkBetaBf16Kernel",
+      "signature": "58983d550034bf31",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutF32F32Kernel",
+      "signature": "c734ca5227d79ce8",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutF32F32Kernel",
+      "signature": "c734ca5227d79ce8",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaSub1GateStableKernel",
+      "signature": "aad21f2d2b3d2c2c",
+      "outputs": [
+        "g_cumsum",
+        "eg"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaSub2ScoreStableKernel",
+      "signature": "69ca68c647809e44",
+      "outputs": [
+        "Aqk",
+        "strict"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "TrilInverse64V2StrictBf16Kernel",
+      "signature": "a5a2c0726a680ba3",
+      "outputs": [
+        "inv"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaSub3WyStableKernel",
+      "signature": "d90b2cf4c23fa99a",
+      "outputs": [
+        "w",
+        "u",
+        "qg",
+        "kg"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaSub45AqkRepairedKernel",
+      "signature": "d24e6d59beb12bc6",
+      "outputs": [
+        "o",
+        "final_state"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutF32Bf16Kernel",
+      "signature": "1bace06d52ff1d46",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutF32Bf16Kernel",
+      "signature": "1bace06d52ff1d46",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutF32Bf16Kernel",
+      "signature": "1bace06d52ff1d46",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16Bf16Kernel",
+      "signature": "cf153020c43cbeab",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "ScanFusedKernel",
+      "signature": "306f6f401a02c792",
+      "outputs": [
+        "dAqk",
+        "dh",
+        "dv",
+        "dh0"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "InverseMmBoundedKernel",
+      "signature": "5a0b0e0263189b90",
+      "outputs": [
+        "d_qg",
+        "d_kg",
+        "d_vh",
+        "d_v_beta",
+        "d_k_beta_g"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "InverseEpilogueKernel",
+      "signature": "99d699ab19037e94",
+      "outputs": [
+        "dq_hv",
+        "dk_hv",
+        "dv",
+        "dbeta",
+        "dg_core",
+        "k_exp"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "InverseDainvKernel",
+      "signature": "ed387cdedccff8e4",
+      "outputs": [
+        "dtri"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "InverseDakkFusedKernel",
+      "signature": "c9546079430df630",
+      "outputs": [
+        "dAkk"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "FinalizePreStableKernel",
+      "signature": "89a92dfb7d3decd2",
+      "outputs": [
+        "q_scaled",
+        "k_scaled",
+        "kg",
+        "m_qk",
+        "m_base",
+        "m_beta"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "FinalizePairKernel",
+      "signature": "0ec1db8afb1df417",
+      "outputs": [
+        "dq_pair",
+        "dk_pair",
+        "s_base",
+        "t_beta"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "FinalizePostStableKernel",
+      "signature": "de7bf5fd932aff3e",
+      "outputs": [
+        "dq_hv_out",
+        "dk_hv_out",
+        "dbeta_out",
+        "dg_out"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "FinalizeReduceKernel",
+      "signature": "c50ccb9f48fbef6a",
+      "outputs": [
+        "dq_out",
+        "dk_out"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16F32Kernel",
+      "signature": "127dcc2b9168d6bb",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16F32Kernel",
+      "signature": "127dcc2b9168d6bb",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaLayoutBf16F32Kernel",
+      "signature": "127dcc2b9168d6bb",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepBackwardBetaBf16Kernel",
+      "signature": "f2642b8a9f223b2e",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepBackwardNormBf16Kernel",
+      "signature": "282b6c38e4d16c4b",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepBackwardNormBf16Kernel",
+      "signature": "282b6c38e4d16c4b",
+      "outputs": [
+        "destination"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepBackwardGateBf16F32F32Kernel",
+      "signature": "5902f61609303382",
+      "outputs": [
+        "destination",
+        "partials"
+      ],
+      "poisoned": true
+    },
+    {
+      "operator": "KdaPrepBackwardGateReduceF32F32Kernel",
+      "signature": "8729ad9a337cb26d",
+      "outputs": [
+        "da",
+        "db"
+      ],
+      "poisoned": true
+    }
+  ],
+  "raw_receipt_sha256": "18b53212f5a087f6db3276bbec899df607ee7f6b2b6a346e0669b51b57d4cd81"
+}

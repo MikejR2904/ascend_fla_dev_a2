@@ -1,0 +1,94 @@
+{
+  "schema": "a5k03.private-archive-restoration/1",
+  "complete": true,
+  "archives": [
+    {
+      "schema": "a5k03.archive-restoration/1",
+      "utc": "2026-09-23T15:07:03.767282+00:00",
+      "label": "native",
+      "archive": {
+        "utc": "2026-09-23T14:53:31.732779+00:00",
+        "archive": "native-complete-v3.tar.xz",
+        "sha256": "160abf9ea063aabca25f754e42f876473d606511547da55cf3ad63b0e03d68c0",
+        "bytes": 1181963492,
+        "files": 4243,
+        "deduplicated_files": 3117,
+        "manifest_sha256": "06e1d1e7b0c16d45240f22a10d3a05b48ed130a789e35e1c4cea8cebffa30de7",
+        "uncompressed_bytes": 20952755257,
+        "unique_bytes": 1727257597
+      },
+      "restored_files": 4243,
+      "unique_inodes_hashed": 1126,
+      "exact_manifest_match": true,
+      "all_paths_present": true,
+      "no_extra_files": true,
+      "note": "Archive transferred and SHA verified, extracted with safe tar filter; every file checked by SHA256/size. Hardlinks checked through their shared inode."
+    },
+    {
+      "schema": "a5k03.archive-restoration/1",
+      "utc": "2026-09-23T15:05:21.292268+00:00",
+      "label": "cross",
+      "archive": {
+        "utc": "2026-09-23T14:57:22.452208+00:00",
+        "archive": "cross-complete-v3.tar.xz",
+        "sha256": "85e3af9da30f360a8b64cfa12b30a7170b63453af8b03dae3c66af3a1f7b45ba",
+        "bytes": 1240351844,
+        "files": 2281,
+        "deduplicated_files": 1392,
+        "manifest_sha256": "613d82bd9a183259f2cbc5bfa34d2833a4407accfb075ea14e8d3a92949f96e9",
+        "uncompressed_bytes": 4637184504,
+        "unique_bytes": 1752989552
+      },
+      "restored_files": 2281,
+      "unique_inodes_hashed": 889,
+      "exact_manifest_match": true,
+      "all_paths_present": true,
+      "no_extra_files": true,
+      "note": "Archive SHA verified and safely extracted in assigned Docker; every restored path checked by SHA256/size, hardlinks checked through their shared inode. The reusable raw receipt template incorrectly said transferred; no completed off-host transfer is claimed here.",
+      "restore_location": "assigned Docker, fresh directory, source archive retained",
+      "off_host_copy_complete": false,
+      "raw_receipt_sha256": "fad32456926093f5ce89e6108e9af07c5b12103b7a5a48224a4579436f377202"
+    },
+    {
+      "schema": "a5k03.archive-restoration/1",
+      "utc": "2026-09-23T15:04:56.091235+00:00",
+      "label": "local-analysis",
+      "archive": {
+        "archive": "local-analysis-v1.tar.xz",
+        "sha256": "4f8012d4ba66c4a8a3a3a21b3476ce839b2c9ab6a03d1efb3e935db5db5045f4",
+        "bytes": 15904512,
+        "files": 399,
+        "manifest_sha256": "ec35bb8ca87c0e555cd5154dc1977f47b389ac2120789e593ac6342ce830a250"
+      },
+      "restored_files": 399,
+      "exact_manifest_match": true,
+      "all_paths_present": true,
+      "no_extra_files": true,
+      "note": "Local raw models, traces, source emissions, executed analysis driver versions, decisions and failures archived and extracted into a fresh directory; every file SHA256 and size verified."
+    }
+  ],
+  "restored_files": 6923,
+  "privacy": "Archives remain private; only exact content identities and recovery outcomes published.",
+  "cross_off_host_backup": "Complete: incremental archive and existing native archive reconstruct all2281 original cross-environment files with exact original manifest SHA256/size match.",
+  "off_host_cross_restoration": {
+    "schema": "a5k03.offhost-incremental-restoration/1",
+    "utc": "2026-09-23T15:24:12.567468+00:00",
+    "complete": true,
+    "delta_archive": {
+      "archive": "cross-delta-v1.tar.xz",
+      "bytes": 81473264,
+      "sha256": "59a723fb77225cba3399563ee2df8e6dfa3a8d4de74163c5e9fb9285e84b09fb",
+      "files": 2281,
+      "new_chunks": 2394,
+      "new_chunk_bytes": 150416793,
+      "base_archive_sha256": "160abf9ea063aabca25f754e42f876473d606511547da55cf3ad63b0e03d68c0",
+      "utc": "2026-09-23T15:21:19.355901+00:00"
+    },
+    "base_archive_sha256": "160abf9ea063aabca25f754e42f876473d606511547da55cf3ad63b0e03d68c0",
+    "restored_files": 2281,
+    "exact_original_manifest_match": true,
+    "cross_original_manifest_sha256": "613d82bd9a183259f2cbc5bfa34d2833a4407accfb075ea14e8d3a92949f96e9",
+    "note": "Downloaded incremental archive plus already downloaded native archive reconstruct every byte of all original cross-environment files; whole-file SHA256/size checked against independently recorded original cross manifest. Full tar byte stream need not be duplicated."
+  },
+  "raw_receipt_sha256": "30ce2265761df9461ca70458ac72857c4ec9108c2f832967714c96f0eb72434b"
+}

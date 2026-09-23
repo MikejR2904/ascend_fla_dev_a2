@@ -1,0 +1,103 @@
+{
+  "cycles": 50341,
+  "pipes": {
+    "core0/cube/S": {
+      "busy": 348,
+      "end": 48746,
+      "tasks": 278,
+      "utilisation": 0.0069
+    },
+    "core0/cube/MTE1": {
+      "busy": 5952,
+      "end": 48462,
+      "tasks": 216,
+      "utilisation": 0.1182
+    },
+    "core0/cube/MTE2": {
+      "busy": 29600,
+      "end": 46131,
+      "tasks": 72,
+      "utilisation": 0.588
+    },
+    "core0/cube/M": {
+      "busy": 5556,
+      "end": 48460,
+      "tasks": 140,
+      "utilisation": 0.1104
+    },
+    "core0/cube/FIX": {
+      "busy": 6568,
+      "end": 48734,
+      "tasks": 108,
+      "utilisation": 0.1305
+    },
+    "core0/vec0/S": {
+      "busy": 266,
+      "end": 50341,
+      "tasks": 196,
+      "utilisation": 0.0053
+    },
+    "core0/vec0/MTE2": {
+      "busy": 2852,
+      "end": 43599,
+      "tasks": 18,
+      "utilisation": 0.0567
+    },
+    "core0/vec0/MTE3": {
+      "busy": 7628,
+      "end": 50329,
+      "tasks": 86,
+      "utilisation": 0.1515
+    },
+    "core0/vec0/V": {
+      "busy": 6500,
+      "end": 49521,
+      "tasks": 144,
+      "utilisation": 0.1291
+    },
+    "core0/vec1/S": {
+      "busy": 266,
+      "end": 50341,
+      "tasks": 196,
+      "utilisation": 0.0053
+    },
+    "core0/vec1/MTE2": {
+      "busy": 2852,
+      "end": 43599,
+      "tasks": 18,
+      "utilisation": 0.0567
+    },
+    "core0/vec1/MTE3": {
+      "busy": 7628,
+      "end": 50329,
+      "tasks": 86,
+      "utilisation": 0.1515
+    },
+    "core0/vec1/V": {
+      "busy": 6500,
+      "end": 49521,
+      "tasks": 144,
+      "utilisation": 0.1291
+    }
+  },
+  "hazards": [],
+  "deadlock": null,
+  "tasks": 1702,
+  "flag_timeline": {
+    "checked_tokens": 0,
+    "physical_checked_tokens": 0,
+    "physical_bindings_complete": true,
+    "unbound_events": []
+  },
+  "local_mutex": {
+    "slots_per_lane": 32,
+    "sections": 376,
+    "ids_by_lane": {
+      "core0/cube": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      "core0/vec0": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+      "core0/vec1": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+    },
+    "timing": "modeled, not silicon calibrated"
+  },
+  "raw_receipt_sha256": "7df40183de7710ea66cd09d4a508d82c899b5c7cab44e442027d8668f9ac5369"
+}

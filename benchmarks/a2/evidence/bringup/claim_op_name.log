@@ -1,0 +1,9 @@
+# a2 (910B3) bring-up console — _claim_op_name one-build-per-process guard
+# Machine paths scrubbed to relative form (<REPO>/<ASCEND_HOME>); receipt filenames are relative.
+#
+SoC=a2 device_name=Ascend910B3 cann_compiler=Version=9.2.0-beta.1 sha256=fafbca50579f6d14
+coverage: 12/12 ok
+device_facts: {'profile': {'profile_device': 'b3', 'cube_cores': 20, 'vec_cores': 40, 'capacities_kb': {'l1': 512, 'l0a': 64, 'l0b': 64, 'l0amx': 4, 'l0bmx': 4, 'l0c': 128, 'bt': 0.5, 'ub': 192}}, 'measured': {'cube_core_num': 20, 'vector_core_num': 40, 'multi_processor_count': 40, 'L2_cache_size': 201326592, 'total_memory': 65452113920}, 'comparison': {'cube_cores': {'profile': 20, 'measured': 20, 'match': True}, 'vec_cores': {'profile': 40, 'measured': 40, 'match': True}}, 'note': 'profile (ascriptor) vs measured (torch_npu runtime); physical block_dim reach is the block_dim probe; observation only until A2-11'}
+claim_op_name: {'op': 'kda_sub1_gate_a2_kernel', 'second_build_raised': True, 'error_type': 'AclError', 'message': '算子名 KdaSub1GateA2Kernel 在本进程里已由另一份 build 提供：'}
+receipt written: bringup_20260921T124340Z.json
+EXIT=0

@@ -1,0 +1,255 @@
+{
+  "receipt": "SoC=a2 device_name=Ascend910B3 cann_compiler=Version=9.2.0-beta.1 sha256=fafbca50579f6d14",
+  "environment": {
+    "soc": "a2",
+    "device_name": "Ascend910B3",
+    "cann_versions": {
+      "compiler": {
+        "path": "cann-9.2.0-beta.1/compiler/version.info",
+        "sha256": "fafbca50579f6d146db93d27ef5c739e6633c6552a3743abb84362e56abcff0e",
+        "raw": "Version=9.2.0-beta.1\nversion_dir=cann\nrequired_package_runtime_version=\"9.2\"\nrequired_package_ge-executor_version=\"9.2\"\nrequired_package_metadef_version=\"9.2\"\nrequired_package_bisheng-compiler_version=\"9.2\"\nrequired_package_tbe-tik_version=\"9.2\"\ntimestamp=20260805_224858134\n"
+      },
+      "opp": {
+        "path": "cann-9.2.0-beta.1/opp/version.info",
+        "sha256": "529d6c96f5aa7d06004b9bb7befd8e86df1d1b35e52610a2524700e3217e75be",
+        "raw": "Version=9.2.0-beta.1\nversion_dir=cann\nrequired_package_runtime_version=\">=8.5\"\nrequired_package_ge-executor_version=\">=8.5\"\nrequired_package_metadef_version=\">=8.5\"\nrequired_package_asc-devkit_version=\">=8.5\"\nrequired_package_bisheng-compiler_version=\">=8.5\"\ntimestamp=20260805_224858134\n"
+      },
+      "driver": {
+        "path": "driver/version.info",
+        "sha256": "075eed44c97e4194125ffb9855cab7069bb74ddf4e4279a83233580fa4cc861d",
+        "raw": "Version=25.5.1\nascendhal_version=7.35.23\naicpu_version=1.0\ntdt_version=1.0\nlog_version=1.0\nprof_version=2.0\ndvppkernels_version=1.1\ntsfw_version=1.0\nInnerversion=V100R001C23SPC006B220\ncompatible_version=[V100R001C19],[V100R001C20],[V100R001C21],[V100R001C22],[V100R001C23]\ncompatible_version_fw=[7.0.0,8.9.9]\npackage_version=25.5.1\n"
+      }
+    },
+    "op_package": {
+      "path": "cann-9.2.0-beta.1/opp/built-in/op_impl/ai_core/tbe/kernel",
+      "socs": [
+        "ascend910_93",
+        "ascend910b",
+        "config"
+      ],
+      "ascend910b": [
+        "ops_cv",
+        "ops_legacy",
+        "ops_math",
+        "ops_nn",
+        "ops_oam",
+        "ops_transformer"
+      ]
+    },
+    "ascriptor_revisions": {
+      "library": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+      "kernels": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1"
+    },
+    "python": "3.11.15",
+    "torch": "2.10.0+cpu"
+  },
+  "coverage": {
+    "randn": {
+      "ok": true
+    },
+    "zeros": {
+      "ok": true
+    },
+    "empty": {
+      "ok": true
+    },
+    "cast_bf16": {
+      "ok": true
+    },
+    "cast_fp16": {
+      "ok": true
+    },
+    "contiguous": {
+      "ok": true
+    },
+    "matmul": {
+      "ok": true
+    },
+    "einsum": {
+      "ok": true
+    },
+    "cumsum": {
+      "ok": true
+    },
+    "h2d": {
+      "ok": true
+    },
+    "d2h": {
+      "ok": true
+    },
+    "strided_d2h": {
+      "ok": true
+    }
+  },
+  "device_facts": {
+    "profile": {
+      "profile_device": "b3",
+      "cube_cores": 20,
+      "vec_cores": 40,
+      "capacities_kb": {
+        "l1": 512,
+        "l0a": 64,
+        "l0b": 64,
+        "l0amx": 4,
+        "l0bmx": 4,
+        "l0c": 128,
+        "bt": 0.5,
+        "ub": 192
+      }
+    },
+    "measured": {
+      "cube_core_num": 20,
+      "vector_core_num": 40,
+      "multi_processor_count": 40,
+      "L2_cache_size": 201326592,
+      "total_memory": 65452113920
+    },
+    "comparison": {
+      "cube_cores": {
+        "profile": 20,
+        "measured": 20,
+        "match": true
+      },
+      "vec_cores": {
+        "profile": 40,
+        "measured": 40,
+        "match": true
+      }
+    },
+    "note": "profile (ascriptor) vs measured (torch_npu runtime); physical block_dim reach is the block_dim probe; observation only until A2-11"
+  },
+  "bridge": {
+    "comparisons": {
+      "single_token:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "aaf10101375162a4ad9f91a72acbe2ef2fabebc652675e82cd9e4bd73035a7d0",
+        "bridge_sha256": "aaf10101375162a4ad9f91a72acbe2ef2fabebc652675e82cd9e4bd73035a7d0"
+      },
+      "single_token:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "81b3c8c4a8dd8d9bc4d4414219dcd5c63c79453dc120baf7ae49fe05ee424ae7",
+        "bridge_sha256": "81b3c8c4a8dd8d9bc4d4414219dcd5c63c79453dc120baf7ae49fe05ee424ae7"
+      },
+      "single_token_gva:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "8c226a8ac3a5274c2f8bdc87b87793cb35d23187c66aaba003f7d190c8437e45",
+        "bridge_sha256": "8c226a8ac3a5274c2f8bdc87b87793cb35d23187c66aaba003f7d190c8437e45"
+      },
+      "single_token_gva:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "104bb4d81363b820a16b2e8f7b156753f3a11b4dff08024ef1df6d297af85159",
+        "bridge_sha256": "104bb4d81363b820a16b2e8f7b156753f3a11b4dff08024ef1df6d297af85159"
+      },
+      "speculative_4:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "b95ad11ae077abb1804fa576d39d52c8c673504ae88c02bf509b0be741b130bc",
+        "bridge_sha256": "b95ad11ae077abb1804fa576d39d52c8c673504ae88c02bf509b0be741b130bc"
+      },
+      "speculative_4:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "20c75b762cffc5fd32b9978dead670683bb769827a253eb43f10cf56fe2eb32d",
+        "bridge_sha256": "20c75b762cffc5fd32b9978dead670683bb769827a253eb43f10cf56fe2eb32d"
+      },
+      "t_max:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "8874d10f016f003bde05d4924d8edb4adcc0a4567beb6f23ea5eb14cbe43ab44",
+        "bridge_sha256": "8874d10f016f003bde05d4924d8edb4adcc0a4567beb6f23ea5eb14cbe43ab44"
+      },
+      "t_max:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "e4381cdad3117188b306980481817b7187fbac55320679e1898e3f7f7812c4dc",
+        "bridge_sha256": "e4381cdad3117188b306980481817b7187fbac55320679e1898e3f7f7812c4dc"
+      },
+      "kimi_decode:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "a4f75d1fdd3706930a4ce49ca20993010da71a6b690d8edcebec7b3bf25d6a9d",
+        "bridge_sha256": "a4f75d1fdd3706930a4ce49ca20993010da71a6b690d8edcebec7b3bf25d6a9d"
+      },
+      "kimi_decode:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "8e27aa49892961a11f0c6a2604897e259235e59c85be61eee2a3da976af3f9d8",
+        "bridge_sha256": "8e27aa49892961a11f0c6a2604897e259235e59c85be61eee2a3da976af3f9d8"
+      },
+      "kimi_decode_gqa:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "78609ef7ee3198602083e4d89e4b9e8b6d10330bde4b5f88003c8e445900eecd",
+        "bridge_sha256": "78609ef7ee3198602083e4d89e4b9e8b6d10330bde4b5f88003c8e445900eecd"
+      },
+      "kimi_decode_gqa:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "719bdec5ed7919d4a34e778d8649af38eba472292faed0645dbaabf2e8b2ff4d",
+        "bridge_sha256": "719bdec5ed7919d4a34e778d8649af38eba472292faed0645dbaabf2e8b2ff4d"
+      },
+      "batch2_spec8_gqa:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "2b4f66335771f6a43818c86fe39c3ff378eb5d59b4a4d2a5f01635145f69184a",
+        "bridge_sha256": "2b4f66335771f6a43818c86fe39c3ff378eb5d59b4a4d2a5f01635145f69184a"
+      },
+      "batch2_spec8_gqa:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "3b185fdf952fed2f514326a4584f73000b9db31d0d74197c95c98c1b68855eea",
+        "bridge_sha256": "3b185fdf952fed2f514326a4584f73000b9db31d0d74197c95c98c1b68855eea"
+      },
+      "zero_state:bd1:o": {
+        "bitwise": true,
+        "harness_sha256": "19488d0bba33576625bb61e755c2e033c8abeadf96f0e419da0ccd03fca2df88",
+        "bridge_sha256": "19488d0bba33576625bb61e755c2e033c8abeadf96f0e419da0ccd03fca2df88"
+      },
+      "zero_state:bd1:final_state": {
+        "bitwise": true,
+        "harness_sha256": "0b74336aca935716c6652058928f9ec558e6b1055ed12d0fb120ccf762a48adb",
+        "bridge_sha256": "0b74336aca935716c6652058928f9ec558e6b1055ed12d0fb120ccf762a48adb"
+      }
+    },
+    "bridge_trace": {
+      "single_token:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "single_token_gva:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "speculative_4:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "t_max:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "kimi_decode:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "kimi_decode_gqa:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "batch2_spec8_gqa:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      },
+      "zero_state:bd1": {
+        "launches": 1,
+        "signatures": [
+          "36e7901888b20ea1"
+        ]
+      }
+    }
+  }
+}

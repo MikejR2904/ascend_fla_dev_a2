@@ -1,0 +1,127 @@
+{
+  "receipt": "SoC=a2 device_name=Ascend910B3 cann_compiler=Version=9.2.0-beta.1 sha256=fafbca50579f6d14",
+  "environment": {
+    "soc": "a2",
+    "device_name": "Ascend910B3",
+    "cann_versions": {
+      "compiler": {
+        "path": "cann-9.2.0-beta.1/compiler/version.info",
+        "sha256": "fafbca50579f6d146db93d27ef5c739e6633c6552a3743abb84362e56abcff0e",
+        "raw": "Version=9.2.0-beta.1\nversion_dir=cann\nrequired_package_runtime_version=\"9.2\"\nrequired_package_ge-executor_version=\"9.2\"\nrequired_package_metadef_version=\"9.2\"\nrequired_package_bisheng-compiler_version=\"9.2\"\nrequired_package_tbe-tik_version=\"9.2\"\ntimestamp=20260805_224858134\n"
+      },
+      "opp": {
+        "path": "cann-9.2.0-beta.1/opp/version.info",
+        "sha256": "529d6c96f5aa7d06004b9bb7befd8e86df1d1b35e52610a2524700e3217e75be",
+        "raw": "Version=9.2.0-beta.1\nversion_dir=cann\nrequired_package_runtime_version=\">=8.5\"\nrequired_package_ge-executor_version=\">=8.5\"\nrequired_package_metadef_version=\">=8.5\"\nrequired_package_asc-devkit_version=\">=8.5\"\nrequired_package_bisheng-compiler_version=\">=8.5\"\ntimestamp=20260805_224858134\n"
+      },
+      "driver": {
+        "path": "driver/version.info",
+        "sha256": "075eed44c97e4194125ffb9855cab7069bb74ddf4e4279a83233580fa4cc861d",
+        "raw": "Version=25.5.1\nascendhal_version=7.35.23\naicpu_version=1.0\ntdt_version=1.0\nlog_version=1.0\nprof_version=2.0\ndvppkernels_version=1.1\ntsfw_version=1.0\nInnerversion=V100R001C23SPC006B220\ncompatible_version=[V100R001C19],[V100R001C20],[V100R001C21],[V100R001C22],[V100R001C23]\ncompatible_version_fw=[7.0.0,8.9.9]\npackage_version=25.5.1\n"
+      }
+    },
+    "op_package": {
+      "path": "cann-9.2.0-beta.1/opp/built-in/op_impl/ai_core/tbe/kernel",
+      "socs": [
+        "ascend910_93",
+        "ascend910b",
+        "config"
+      ],
+      "ascend910b": [
+        "ops_cv",
+        "ops_legacy",
+        "ops_math",
+        "ops_nn",
+        "ops_oam",
+        "ops_transformer"
+      ]
+    },
+    "ascriptor_revisions": {
+      "library": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+      "kernels": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1"
+    },
+    "python": "3.11.15",
+    "torch": "2.10.0+cpu"
+  },
+  "coverage": {
+    "randn": {
+      "ok": true
+    },
+    "zeros": {
+      "ok": true
+    },
+    "empty": {
+      "ok": true
+    },
+    "cast_bf16": {
+      "ok": true
+    },
+    "cast_fp16": {
+      "ok": true
+    },
+    "contiguous": {
+      "ok": true
+    },
+    "matmul": {
+      "ok": true
+    },
+    "einsum": {
+      "ok": true
+    },
+    "cumsum": {
+      "ok": true
+    },
+    "h2d": {
+      "ok": true
+    },
+    "d2h": {
+      "ok": true
+    },
+    "strided_d2h": {
+      "ok": true
+    }
+  },
+  "device_facts": {
+    "profile": {
+      "profile_device": "b3",
+      "cube_cores": 20,
+      "vec_cores": 40,
+      "capacities_kb": {
+        "l1": 512,
+        "l0a": 64,
+        "l0b": 64,
+        "l0amx": 4,
+        "l0bmx": 4,
+        "l0c": 128,
+        "bt": 0.5,
+        "ub": 192
+      }
+    },
+    "measured": {
+      "cube_core_num": 20,
+      "vector_core_num": 40,
+      "multi_processor_count": 40,
+      "L2_cache_size": 201326592,
+      "total_memory": 65452113920
+    },
+    "comparison": {
+      "cube_cores": {
+        "profile": 20,
+        "measured": 20,
+        "match": true
+      },
+      "vec_cores": {
+        "profile": 40,
+        "measured": 40,
+        "match": true
+      }
+    },
+    "note": "profile (ascriptor) vs measured (torch_npu runtime); physical block_dim reach is the block_dim probe; observation only until A2-11"
+  },
+  "claim_op_name": {
+    "op": "kda_sub1_gate_a2_kernel",
+    "second_build_raised": true,
+    "error_type": "AclError",
+    "message": "算子名 KdaSub1GateA2Kernel 在本进程里已由另一份 build 提供："
+  }
+}

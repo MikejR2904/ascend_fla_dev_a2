@@ -103,6 +103,12 @@ Device time = msprof `Task Duration` summed over all kernel-op launches / launch
 *batch8 bd8 estimated from ceil(128/8)=16 vs ceil(128/40)=4 rounds; single-sequence
 rows are directly measured at both block_dims.
 
+**bd40 column is the block_dim snapshot (recompute backward), so the speedup isolates the
+block_dim=8→40 effect.** The shipped kernels have since gained the delta-checkpoint (below)
+and the muladddst fusion; **current** bd40 msprof Task Duration is **fwd train 175.7, bwd
+train 658.8, fwd decode 11.3, bwd decode 17.9 µs** — the block_dim structure (≈2× single-seq,
+≈4× batch) is unchanged.
+
 Reading: single-sequence training (B*H=16) halves (2 rounds -> 1). Batched training
 (B*H=128) is ~4x as the launch now spans all 40 vector cores at full occupancy
 (16 serial rounds -> 4). Decode (T=1) is per-op-fixed-cost bound, not compute bound,
@@ -128,3 +134,21 @@ at B8), net training step 1.06-1.09x, numerics identical to the recompute versio
 Not done (with reason): caching `states[t]` in UB to cut its reloads needs a 3rd full
 [128,128] tile, but 3 tiles = 192KB = the whole UB (no room for temps); and the pipe
 data shows the backward is not DMA-bound anyway.
+
+## Third optimization: muladddst fusion (both kernels)
+
+Still VEC-bound, so the remaining win is fewer vector ops. Each rank-1 state update — the
+forward `state += k⊗delta` and the two backward `dS += q⊗do` / `dS += bk⊗derase` — was an
+outer-product (2 mul) + add (2 add) = 4 ops. `muladddst` (`dst = dst + src1·src2`) does it in
+2. On the a2 vector unit `muladddst` is **bit-identical** to the mul-then-add it replaces
+(forward `o`/`final_state` and all 7 gradients unchanged to every digit; real 370M/1.3B
+checkpoints re-validated, all ≤ 8e-6). Device (msprof, block_dim=40, T=64): forward
+179.1→**175.7** (~2%), backward 667.9→**658.8** (~1.4%), both bit-exact. Shipped.
+
+## Inference fast-path (no gradient needed)
+
+`gdn2_recurrent` dispatches to a checkpoint-free forward (`kernels/fwd_infer.py`, same
+arithmetic, no `states`/`delta_ckpt`, no autograd node) when no grad is needed — bit-identical
+outputs, ~120 µs less host overhead per call. Eager wall 1×64×16: a2 inference forward 301 µs
+vs fla Triton `fused_recurrent` 328 µs (a2 wins like-for-like). This is the throughput-relevant
+path for inference/decode; training still uses the checkpointing forward. See BENCHMARK_TRITON.md.

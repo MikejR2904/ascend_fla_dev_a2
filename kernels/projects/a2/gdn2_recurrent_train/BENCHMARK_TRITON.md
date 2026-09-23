@@ -16,8 +16,8 @@ fed to both — otherwise the a2 kernel pays for a normalization that fla skips.
 
 | kernel | device µs/call | note |
 |---|---|---|
-| **a2 `gdn2_recurrent` (fwd)** | **197.5** | 110 ops/100 calls; **also checkpoints all T states for the backward** (extra work fla's inference kernel skips); VEC-bound aiv_vec_ratio 0.879 |
-| fla_recur (Triton `fused_recurrent_gdn2`) | 206.6 | 220 ops/100 calls; l2norm is a separate pass (+43µs over the no-norm 163.7) |
+| **a2 `gdn2_recurrent` (fwd)** | **175.7** | msprof Task Duration, block_dim=40, T=64, post-`muladddst` fusion (76 vec ops/step); **also checkpoints all T states for the backward** (extra work fla's inference kernel skips); VEC-bound aiv_vec_ratio 0.885 |
+| fla_recur (Triton `fused_recurrent_gdn2`) | 206.6 | prior run, kernel unchanged; 220 ops/100 calls; l2norm is a separate pass (+43µs over the no-norm 163.7) |
 | fla_chunk (Triton `chunk_gdn2`) | ≫ | chunk path far slower on this recurrence shape |
 
 ## Wall time (µs/call, host `torch.npu.synchronize` loop, forward, both l2-normalizing)
@@ -29,6 +29,10 @@ fed to both — otherwise the a2 kernel pays for a normalization that fla skips.
 | (2, 64, 16)  | 442.6 | 374.3 | 5093.4 |
 
 Correctness (rel-L2 vs `naive_recurrent_gdn2`): a2 **5.3e-6**, fla_recur 2.3e-7, fla_chunk 4.1e-7.
+
+_These a2 wall numbers are the training-forward path (checkpoints + autograd) — measured before the
+inference fast-path was added. A no-grad `gdn2_recurrent` call now dispatches to the checkpoint-free
+kernel at **301 µs** (1×64×16), beating fla_recur's 328 µs; see the decomposition below._
 
 ## NPU-Graph (dispatch removed, fair: both graph-captured), wall µs/call, 1×64×16
 
@@ -100,17 +104,17 @@ gradient is needed, and to the checkpointing training forward otherwise.
 
 ## Reading
 
-- **On device time (the dispatch-agnostic, fair kernel comparison), the a2 kernel WINS: 197.5 vs
-  206.6 µs (~5% faster)** — while doing *more* work (per-step state checkpointing for the backward).
-  fla's fused-recurrent Triton pays ~43µs for its separate l2norm pass; the a2 kernel fuses it into
-  the recurrence.
+- **On device time (the dispatch-agnostic, fair kernel comparison), the a2 kernel WINS: 175.7 vs
+  206.6 µs** (a2 forward re-measured post-fusion; fla's kernel unchanged) — while doing *more* work
+  (per-step state checkpointing for the backward). fla's fused-recurrent Triton pays ~43µs for its
+  separate l2norm pass; the a2 kernel fuses it into the recurrence.
 - The a2 kernel **beats fla's chunk Triton ~8-11×** on this recurrent shape.
 - **On eager wall, like for like (both inference), the a2 kernel also WINS: 301 vs 328 µs.** The
   training forward's higher wall (425 µs) is host-side checkpoint + autograd overhead, not the
   kernel — and NPU-Graph capture, which elides all host overhead, confirms it (200.1 vs 202.0 µs).
-- Remaining stretch goal: push VEC utilization from 0.879 to **> 90%** (needs op-reduction beyond the
-  frozen-arithmetic delta-checkpoint) — the `muladddst` fusion already trimmed 2 vec ops/step at
-  bit-exact accuracy (~2% device-time win; see STALL_ANALYSIS.md §4).
+- Remaining stretch goal: push VEC utilization from 0.885 to **> 90%** (needs op-reduction beyond the
+  bit-exact op stream) — the `muladddst` fusion already trimmed 2 vec ops/step in the forward and 4 in
+  the backward at bit-exact accuracy (~2% device-time win; see STALL_ANALYSIS.md §4).
 
 _Measured on Ascend 910B3, CANN 9.2.0-beta.1, torch_npu 2.10, ascriptor library 90cfcdc / kernels
 b3b3f9c; fla pinned commit e52dbc0 (0.6.0) via the integrated triton-ascend backend._

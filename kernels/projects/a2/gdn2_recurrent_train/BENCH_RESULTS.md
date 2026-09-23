@@ -22,11 +22,13 @@ Per-process builds (one block_dim per process). us/call.
 
 Chosen: **block_dim=40** (fills all 40 vector cores; minimizes serial rounds at every B*H).
 
-## 2. msprof device time per launch — block_dim=8 vs 40
+## 2. msprof device time per launch — block_dim=8 vs 40 (block_dim snapshot)
 
-Device time = msprof `Task Duration` summed over kernel-op launches / launches.
+Device time = msprof `Task Duration` summed over kernel-op launches / launches. This table is the
+**block_dim comparison snapshot** — both columns taken with the then-current *recompute* backward, so
+the speedup column isolates the block_dim=8→40 effect. Current shipped numbers are below the table.
 
-| Case (B,T,H) | bd8 device us | bd40 device us | speedup |
+| Case (B,T,H) | bd8 device us | bd40 device us | block_dim speedup |
 |---|---|---|---|
 | fwd decode (1,1,16)  | 11.6  | 11.3  | ~1.0x |
 | fwd train  (1,64,16) | 347.6 | 179.1 | 1.94x |
@@ -37,16 +39,24 @@ Device time = msprof `Task Duration` summed over kernel-op launches / launches.
 
 *batch8 bd8 estimated from serial-round ratio (directly measured at bd8 for B<=4).
 
-## 3. Pipe utilization (msprof PipeUtilization, block_dim=40, train T=64)
+**Current shipped kernels** (delta-checkpoint §5 + muladddst fusion §7), block_dim=40, msprof
+Task Duration: **fwd train 175.7, bwd train 658.8, fwd decode 11.3, bwd decode 17.9 µs**. The
+delta-checkpoint cut the backward from the 754.8 above to ~668, and the muladddst fusion trimmed it
+further to 658.8 (fwd 179.1→175.7); the ≈2× single-sequence / ≈4× batch block_dim structure is
+unchanged. (batch8 not re-profiled here — device 0 was memory-contended; it scales with the per-step.)
+
+## 3. Pipe utilization (msprof PipeUtilization, block_dim=40, train T=64, current kernels)
+
+Current shipped kernels (delta-checkpoint §5 + muladddst fusion §7):
 
 | pipe | fwd train | bwd train |
 |---|---|---|
-| Task Duration (us)   | 179.9 | 750.6 |
-| aiv_time (us)        | 73.8  | 302.1 |
-| aiv_vec_ratio        | 0.879 | 0.863 |
-| aiv_scalar_ratio     | 0.105 | 0.064 |
-| aiv_mte2_ratio (DMA in)  | 0.082 | 0.151 |
-| aiv_mte3_ratio (DMA out) | 0.162 | 0.064 |
+| Task Duration (us)   | 175.7 | 658.8 |
+| aiv_time (us)        | 71.9  | 265.2 |
+| aiv_vec_ratio        | 0.885 | 0.895 |
+| aiv_scalar_ratio     | 0.118 | 0.069 |
+| aiv_mte2_ratio (DMA in)  | 0.075 | 0.133 |
+| aiv_mte3_ratio (DMA out) | 0.203 | 0.071 |
 | cube_utilization     | 0 (pure vector) | 0 |
 
 Both kernels are **VEC-bound** (vec_ratio ~0.87) — not DMA-bound. `aiv_time` is only
@@ -106,3 +116,23 @@ single-step reverse loop tripped a fault in the `states[t]` reload + eg/bk rowsc
 row-reduce block. The delta-checkpoint optimization (§5) removes that whole block, so
 T=1 now runs cleanly and correctly (autograd fwd+bwd worst grad relL2 2.6e-6 at T=1,
 4.2e-6 at T=2). T=1/T=2 are covered by `test_backward.py` and `validation/verify_t1.py`.
+
+## 7. muladddst fusion (op reduction, both kernels)
+
+Still VEC-bound (§3), so the next win is fewer vector ops. Each rank-1 state update
+(`state += k⊗delta` in the forward, `dS += q⊗do` and `dS += bk⊗derase` in the backward)
+was an outer-product (2 mul) + add (2 add) = 4 ops; `muladddst` (`dst = dst + src1·src2`)
+does it in 2. On the a2 vector unit `muladddst` is **bit-identical** to the mul-then-add it
+replaces — forward `o`/`final_state` and all 7 gradients unchanged to every digit; real
+370M/1.3B checkpoints re-validated (all ≤ 8e-6). Device (msprof Task Duration, block_dim=40,
+T=64): forward 179.1→**175.7** (~2%), backward 667.9→**658.8** (~1.4%). This is the shipped
+implementation.
+
+## 8. Inference fast-path (no-grad forward)
+
+`gdn2_recurrent` dispatches to a checkpoint-free kernel (`kernels/fwd_infer.py`, same
+arithmetic, no `states`/`delta_ckpt`) when no gradient is needed — bit-identical `o`/
+`final_state`, but no 68 MB checkpoint allocation and no autograd node, cutting ~120 µs of
+host-side per-call overhead. Eager wall (1×64×16): a2 inference forward **301 µs** vs fla's
+Triton `fused_recurrent` **328 µs** — the a2 kernel wins the eager wall like-for-like. See
+`BENCHMARK_TRITON.md`.

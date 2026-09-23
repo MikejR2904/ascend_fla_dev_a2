@@ -57,7 +57,10 @@ Captured at first / middle / last layers, B=1, T=64, H=16, on the real hidden st
 Every output, final state and gradient matches the fp32 oracle to relative-L2 < 1e-5
 (worst case 8.1e-6, on `db`), including at layer 17 where the decay reaches exp(-56)
 (underflow-adjacent) and the gates saturate the full [0,1] range. Identical numbers at
-block_dim=8 and block_dim=40 (the parallelism change does not touch the arithmetic).
+block_dim=8 and block_dim=40 (the parallelism change does not touch the arithmetic), and
+identical again after the `muladddst` fusion of the forward and backward rank-1 state
+updates — `muladddst` is bit-exact vs the outer-product-then-add on a2, so these results
+hold unchanged for the current shipped kernels (re-run on both checkpoints post-fusion).
 
 ## Reproduce
 

@@ -5366,6 +5366,10 @@
         {
           "at": "2026-09-23T07:30",
           "summary": "ASSIGN（PM，按 2026-09-21T07:52Z 既定排序，BF-09 CLOSE 后直接派，session 01a0b7ce-…，发现者优先）：规格 docs/pm/tasks/A5K-03.md（只定位不修）；写集 kernels/projects/a5/kda_scan_diag/**、docs/research/kda_scan_dh0_nondeterminism.md、tests/test_kda_scan_diag.py；实验性派生单元，不接公开调度、不改上游/生产。"
+        },
+        {
+          "at": "2026-09-23T13:24",
+          "summary": "ACK（13:23Z，自述，#120，session 01a0b7ce-…，ETA 24h）：读了规格与协议文档。计划：新工作树、重跑完整 workload；至少两张健康共享卡各 N≥50 固定输入重放，记录四输出哈希/失败张量/零失败概率上界，补 CANN 9.2 对照；从真实失败边界查事件/信用/槽位、先记录可证伪预测再做单变量干预与负对照；不改上游/生产调度/预算。"
         }
       ],
       "result": null,

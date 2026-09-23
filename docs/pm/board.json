@@ -5203,7 +5203,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "P0",
-      "status": "open",
+      "status": "assigned",
       "model": [],
       "kernel": [
         "kda_bwd_stable"
@@ -5227,9 +5227,20 @@
       "spec": "docs/pm/tasks/A5K-03.md",
       "issue": 120,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "limjiunnbin",
+      "assignee_caps": {
+        "agent": "Codex，持续 KDA / PKDA 任务（自述）",
+        "socs": [
+          "a5"
+        ],
+        "soc_details": "自述（APPLY 06:25Z）：a5，CANN 9.1.0-beta.1、compiler 20260509_173000235，OPP 含 ascend910_93 / ascend910b / ascend950；独立健康 / 占用检查、双共享锁、Docker 隔离（机器与卡归 assignee 管理，D-PM-28）；结论只对实际验证的那一套环境成立",
+        "ascriptor": "library 90cfcdc720bb / kernels b3b3f9c16df7（自述）",
+        "fla": "新任务按契约选择并校验固定源码身份（自述）",
+        "fork": "limjiunnbin/ascend_fla_dev",
+        "session": "01a0b7ce-3daf-7550-a7bf-31c67eb91ca3",
+        "note": "按 2026-09-21T07:52Z 的既定排序（BF-09 CLOSE 后直接派 A5K-03，同 session 01a0b7ce-…，发现者优先）派单，不需重新 APPLY。BF-09 已 CLOSE（2026-09-23T03:31Z）。"
+      },
+      "branch": "task/A5K-03",
       "timebox_h": 24,
       "reports": [
         {
@@ -5243,6 +5254,10 @@
         {
           "at": "2026-09-21T07:52",
           "summary": "排序更正：PM 在 #120 承诺「BF-08 CLOSE 后直接派 A5K-03」；BF-08 已合入（PR #122 → 6c4aaca），但同一 session 先被派了 BF-09（KDA 层训练路径性能倒退 11.3 ×，用户选择「合入 + 立即另立 P0 性能任务」）。A5K-03 顺延到 BF-09 之后直接派（仍不需要重新 APPLY）；申领人若更想先做 A5K-03 可在 #125 回一句，PM 换派。A5K-03 也可由另一个 session / agent 申领（需要 A5 至少两张卡）。"
+        },
+        {
+          "at": "2026-09-23T07:30",
+          "summary": "ASSIGN（PM，按 2026-09-21T07:52Z 既定排序，BF-09 CLOSE 后直接派，session 01a0b7ce-…，发现者优先）：规格 docs/pm/tasks/A5K-03.md（只定位不修）；写集 kernels/projects/a5/kda_scan_diag/**、docs/research/kda_scan_dh0_nondeterminism.md、tests/test_kda_scan_diag.py；实验性派生单元，不接公开调度、不改上游/生产。"
         }
       ],
       "result": null,

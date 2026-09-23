@@ -5387,7 +5387,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "P0",
-      "status": "assigned",
+      "status": "done",
       "model": [],
       "kernel": [
         "kda_bwd_stable"
@@ -5410,7 +5410,7 @@
       },
       "spec": "docs/pm/tasks/A5K-03.md",
       "issue": 120,
-      "pr": null,
+      "pr": 133,
       "assignee": "limjiunnbin",
       "assignee_caps": {
         "agent": "Codex，持续 KDA / PKDA 任务（自述）",
@@ -5462,9 +5462,24 @@
         {
           "at": "2026-09-23T14:52",
           "summary": "STATUS（14:43Z，自述，#120）：更正 PM 在 9b8c7e8 里对 14:33Z 摘要的一处转述错误——SPINS64 不是\"baseline/负对照 50/50 错误\"，那是把\"偏离 anchor\"误读成\"相对正确结果的错误率\"；真正 50/50 错误、ring 副本 50/50 修复的是 SPINS256/1024/4096。PM 已改正上一条报告的原文（原始 STATUS 与回执本身没有错，是 PM 转述时读错）。另：main 一度出现 README/board 不同步导致的主机全套唯一失败（起点 5a08575，1224 passed/6 skipped），PM 已在 e494f8d 修复，本 session 快进到 9b8c7e8 复测，423 个真机源码文件 SHA 全部不变；未改动 PM 保留文件。"
+        },
+        {
+          "at": "2026-09-23T16:11",
+          "summary": "DONE（15:13Z，自述，#120，PR #133，头最终 1340a5f，4 个提交）：定位完成——seed_ub 槽位与 CvMutex 信用跨 BHV 不匹配导致的 WAR，反事实解释 99.98% 异常元素，受控时序干预复现机制但自然复现仍未出现，如实划清边界。PM 深度审查（NPU-free，本机排除 torch_npu）：写集/reserved_paths 干净、480 blob 隐私扫描 0 命中；228 行研究文档全文读过，方法论核实符合 AGENTS.md §6.5；**从原始 counterfactual.json 的 12 条 trial 记录独立重新加总**复现 51990/52001，逐位相同；排查了一处看似的数字不一致（Clopper-Pearson 上界），确认是 PM 自己朴素公式的浮点精度问题，申领人交付的代码用 math.expm1 更稳定、与文档/证据/DONE 完全一致——PM 的误判已在评审记录里写明。独立跑新测试 11 passed，全量合入前后均 1234 passed/15 skipped（净增 11，0 回归，与 DONE 报的\"1225/6\"不同是因为对比基准不同——申领人测的是 A2-12 合入前的旧 main，已在评审中说明）。**REVIEW accept，按 D-PM-33 自行合入**（squash → 6619475；只定位不修，不碰生产/预算/闸/域，无写集越界，无争议）。合入后 main 全量复跑同为 1234 passed/15 skipped，合入树与已审内容逐字节相同。gaps.json 的 kda-bwd-scan-dh0-nondeterministic 已按此更新（PM 记账：机制已定位，仍需用户批准 kernel 批次才能修复，requires_kernel_change 保持 true）。"
         }
       ],
-      "result": null,
+      "result": {
+        "commits": [
+          "1340a5f",
+          "6619475"
+        ],
+        "evidence": [
+          "PR #133",
+          "docs/research/kda_scan_dh0_nondeterminism.md",
+          "kernels/projects/a5/kda_scan_diag/evidence/"
+        ],
+        "numbers": "只定位不修，不碰生产/上游路径。机制：seed_ub 每个 BHV 边界重置槽 0，CvMutex(3,depth=2) 信用跨 BHV 连续，奇数 chunk 数时下一 BHV 首次发布（277 行）可覆盖上一 BHV 最终 VF 读取（358 行，load 160-161 行）尚未消费的槽 0——WAR 冒险。危险对数（B2/HV4/C3 按 block_dim）：14/12/10/8。方法论：可证伪预测预注册 + 单变量干预（连续槽号，仅改 4 处索引）+ 无关注释负对照（AST/CCE 验证相同）——连续槽号模型在原模型报 14/12/10/8/8/0/2 处 WAR 的地方全部归零。反事实替换（不拟合系数）解释 12 次历史重放的51990/52001 个异常元素（PM 从原始 counterfactual.json 独立加总复现，逐位相同）；竞争假设各仅解释 1-7 个。受控时序干预（3 卡 2 套 CANN）大 SPINS 值下稳定复现 50/50 次 dh0 错误，连续槽号版本 0/50 且逐位一致，但健康卡自然复现（9900 次无扰动重放）仍未出现——如实区分受控因果证据与自然复现，不声称已修复。PM 独立复核：写集/reserved_paths 干净（553 文件）；480 个新增 blob 隐私扫描 0 命中，最大 blob 1,062,844 字节（<5MB）；228 行研究文档读全文确认方法论符合 AGENTS.md §6.5；从原始 JSON 独立加总复现 51990/52001；排查了一处表面数字差异（Clopper-Pearson 界），确认是 PM 自己朴素复算方法精度不够，不是申领人的错误；独立跑测试文件 11 passed，全量测试合入前后均 1234 passed/15 skipped（较合入前净增 11，与本 PR 新增测试精确对应，0 回归）；合入树与已审内容逐字节相同。gaps.json 的 kda-bwd-scan-dh0-nondeterministic 已按此更新（机制已定位，requires_kernel_change 仍为 true，修复仍需用户批准 kernel 批次）。"
+      },
       "origin": {
         "kind": "user",
         "note": "用户 2026-09-20 直接指令（D-PM-46）：scan_fused 的 dh0 不确定性需要定位（只定位）"

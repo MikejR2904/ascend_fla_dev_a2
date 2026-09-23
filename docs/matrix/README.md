@@ -259,7 +259,7 @@ P0 2 项 · P1 23 项 · P2 16 项 · 已解决 13 项 · 共 54 项
 | `gdn2-chunk-gate-range` | P1 | 新建 gdn2 chunk fwd/bwd 时必须从一开始采用覆盖至少已观测 1461 局部跨度的数值表示；禁止直接复制 KDA stable 的 105/155 跨度实现。 |
 | `gdn2-decode-fragmentation` | P1 | BF16 raw-gate recurrent+output-norm、qkv short-conv+cache、RMSNorm2+paired W1/W2+SiLU×Mul三个模型专用CCE单元均已通过整网/profile。后续大步优化需新建weight-only低精度GEMV及质量验证链。 |
 | `kda-bwd-inverse-mm-mutex-over-budget` | P1 | 要改 ascriptor 的 `a5.kda_bwd/kernels/inverse_mm.py`：`l0c_dvh`、`l0c_dvbeta` 由 `DBuff` 改为单槽 `Tensor`（并去掉这两块在使用点的 `[pipe_work]` 下标），互斥锁 34→32；算式、事件信用、循环、lookahead 不动。本仓派生单元已落地并通过原生验证（见 proposed_action），上游源码仍未改。 |
-| `kda-bwd-scan-dh0-nondeterministic` | P1 | 疑在上游只读 `kda_bwd/kernels/scan_fused.py:358-362`（最终 state 更新 / 发布区域）；机制未定位，动手前必须先定位（§6.5）——是缺同步 / 信用与槽数不匹配（同 c1-multihead-o-corrupt 型）还是别的都未知。修法只能是本仓派生 scan 单元，不改上游。 |
+| `kda-bwd-scan-dh0-nondeterministic` | P1 | 疑在上游只读 `kda_bwd/kernels/scan_fused.py`：`seed_ub`（241 行声明）在每个 BHV 边界重置槽 0，与 `seed_mutex`（212 行，`CvMutex(3, depth=2)`）的跨 BHV 连续信用流转冲突，在奇数 chunk 数时对下一 BHV 首次发布（277 行）与上一 BHV 最终 VF 读取（358 行，实际 load 160-161 行）之间产生 WAR。A5K-03 已给出精确机制与两个可证伪预测的正向证据（详见 evidence 字段），修法方向已提出但未验收（维持跨 BHV 槽相位连续，或设计归还协议；信用不能简单降到 1）。修法只能是本仓派生 scan 单元，不改上游；要用户批准 kernel 批次。 |
 | `layout-not-token-major` | P1 | gdn / delta_rule 的公开布局改 token-major。 |
 | `no-tail-path` | P1 | kda kernel 加 partial chunk 的 tail 路径，解除 T % 64 == 0。 |
 | `no-varlen` | P1 | kda kernel 支持 cu_seqlens（变长序列打包）。 |
@@ -557,10 +557,14 @@ PM 在权威 workspace 上独立跑了 `benchmarks/diag_c1_multihead.py`，**上
 - 直接重放（自述）：固定完全相同的输入与 bd4 / B2 / HV4 / C3，直接调用已编译的原始（上游只读）scan vendor 重复 12 次（每次独立输出、NaN 预填、设备同步）：**第一张卡上后 11 次的 dh0 字节都偏离第一次**（差异元素数 1917–8184），dAqk / dh / dv 的 12 次结果全部逐位相同；**另一张健康空闲的物理设备上（同宿主、同 CANN、同 vendor、同生成输入）12 次直接重放全部逐位相同**。
 - 旧公共路径（自述，同一 B2/T192/H2/HV4 输入、完整旧 autograd 路径重复 12 次、不加内部同步）：FP32 h0 梯度出现 5 个不同哈希（频次 2/1/7/1/1），其余 7 项输出 / 梯度各只有 1 个哈希；h0 对 CPU FP32 的相对 L2 是 0.002337 ×7、0.008439、0.153270、0.357131、0.358643 ×2，**4 次超过原 0.05 预算**。BF16 dh0 在任何 widen 之前就已不同；新 kernel widen 与旧 Torch widen 各自逐位等于 CPU FP32 转换；候选 12 次同哈希（等于旧路径的多数哈希），但同步 / 捕获边界会改变复现概率，不能当修复。
 - 定位（自述，机制未定位）：首个差异隔离到 `kda_bwd/kernels/scan_fused.py:358-362`（最终 state 更新 / 发布区域）的 dh0 输出。
+
+**A5K-03 更新（2026-09-23，PR #133 → 6619475，squash 合入，只定位不修，PM 独立复核关键数字）**：机制已定位——`seed_ub` 缓冲在每个 BHV 边界重置回槽 0，但 `CvMutex(3, depth=2)` 的信用协议跨 BHV 连续流转；奇数 chunk 数时，下一 BHV 的首次 seed 发布（277 行）可以用上一 BHV 归还的信用覆盖槽 0，而上一 BHV 的最终 VF 读取（358 行，实际 load 在 160-161 行）还没读完——WAR 冒险，不是缺 barrier（本地 32-ID 自动同步命名空间本来就建立不了这条跨侧边）。危险对数按 block_dim（B2/HV4/C3）：14/12/10/8。**方法论**：执行前记录可证伪预测（H1/H2），单变量干预（只把 4 处 seed 索引改成连续相位，缓冲/信用/算术不变）+ 无关注释负对照（AST/CCE 验证与 baseline 相同）：连续槽号模型在原模型报 14/12/10/8/8/0/2 处 WAR 的地方全部归零。反事实替换（不拟合系数）解释了 12 次历史重放里 51990/52001 个异常 BF16 元素（PM 从原始 `counterfactual.json` 的 12 条 trial 记录独立加总复现，逐位相同）；受控时序干预（三张卡、两套 CANN）在大 SPINS 值下稳定复现 50/50 次 dh0 错误，连续槽号版本 0/50 且与未扰动结果逐位一致，但健康卡上的自然复现（9,900 次无扰动重放）仍未出现——如实区分「受控因果证据」与「自然复现」，不混为一谈，不声称已修复。详见 `docs/research/kda_scan_dh0_nondeterminism.md` 与 `kernels/projects/a5/kda_scan_diag/evidence/`。
 - **影响** **静默错误候选**（无报错、输出有限，只是 dh0 有时是错的，最差相对 L2 0.36）。目前只知道：KDA 反向的 dh0（初始 state 的梯度）；只在 CANN 9.1.0-beta.1 环境里的一张卡上复现，另一张卡与此前 CANN 9.2.0 环境的历史证据里没有观察到——**这不等于没有问题**：竞态类缺陷的复现概率依赖时序（与 `c1-multihead-o-corrupt` 同类，也藏过）。也可能是那张卡 / 那个 CANN beta 环境本身的问题（申领人自己管理的机器，D-PM-28）——机制未定位前两种都不能排除。
 - **建议** 1. **先定位**（§6.5，不许照症状改）：FMT-02 交最小复现包（固定输入、直接重放脚本、两张卡的哈希分布、原始张量哈希）后，由后续任务定位 `scan_fused.py:358-362` 最终 state 发布区域缺哪一次同步，或证明是环境问题。2. 在 CANN 9.2.0 环境或别的卡上复核同一组直接重放，区分环境 / 卡与 kernel 竞态（机器归各申领人自己管，D-PM-28）。3. 若确认是上游 scan_fused 的缺陷：修在本仓派生 scan 单元（上游不改，AGENTS §3），进 kernel 批次，**要用户批准**；批准前不动 scan、不用 host 同步掩盖。4. 结论之前，依赖 dh0 的调用方应知道它在该环境下可能不确定。
 
 **2026-09-20 用户指示「scan fused 需要定位」（D-PM-46）：已立项 A5K-03（只定位、不修，实验性派生单元、不接公开调度；机制 + 可证伪预测 + 干预实验；结论可能是 kernel 竞态也可能是环境 / 卡问题）。**修复仍要在定位出精确机制之后由用户另批 kernel 批次（本条仍是 `requires_kernel_change`，仍在队列里）。
+
+**2026-09-23 A5K-03 完成定位**：机制已查明（见 evidence 字段），不是环境/卡问题（跨卡、跨 CANN 的受控干预复现同一机制）。修法方向：维持跨 BHV 的 seed 槽相位连续，或设计明确归还全部在途槽的边界协议；不能简单把信用降到 1（预取在消费之前，可能死锁，需另行分析）。**修复仍需用户批准 kernel 批次**，本条继续在 `kernel_fix_queue`。
 
 #### `kda-prep-backward-training-step-slowdown` — KDA raw flags 训练路径（BF-08 合入后）的完整前向 + 反向训练步比旧 host 图慢 11.3 ×：一个 gate backward 第一阶段 kernel 的补偿算术占 375 ms（T4096）
 

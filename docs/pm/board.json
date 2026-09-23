@@ -2824,6 +2824,10 @@
         {
           "at": "2026-09-23T14:06",
           "summary": "STATUS（14:00Z，自述，#39）：bd2 默认初始化 seeds 0-7（B1/T4096/H=HV32/K=V128）8/8 有限且在预算内。未标定的默认跨度实测范围 min=97.69、max=106.38（比 A2-07 文档估的 100.8 略宽，真实测量，不是估计）；o 最坏相对 L2=0.0041、state 最坏=0.0034；三方交叉核对（CPU 与 literal pin FLA 逐位相同；独立转置状态/bmm 实现与 FLA 最大相对 L2=2.65e-7）。正确说明\"默认初始化\"指仓内 Kimi 层的随机初始化+运行时输入，不是训练权重，不构成任务级结论。观察到 seed0/span176 的 o 非有限但 state 有限，两个输出分开判定，不因 state 有限就扩大域。"
+        },
+        {
+          "at": "2026-09-23T14:21",
+          "summary": "STATUS（14:15Z，自述，#39）：冻结 runner 的最终五长度（T∈{4096,128,256,512,64}，H=HV32，K=V128，span8，seed2026）在同一物理卡分进程跑完 bd1/bd2，10/10 通过 CPU FP32/literal FLA/独立转置状态三方校验；跨 bd 输入哈希相同，全部 11 张量哈希逐位相同。同卡计时 T4096/T128 各做了 bd1/bd2，三轮 baseline-before/candidate/baseline-after，warmup3/repeat20，显式 synchronize：T4096/bd1 candidate 939.526ms vs baseline 69.571/69.802ms；T4096/bd2 872.292ms vs 62.175/62.517ms；T128/bd1 32.874ms vs 16.520/16.775ms；T128/bd2 29.579ms vs 16.128/16.129ms——**如实标注这是含 H2D/分配的单元适配器 wall-time，不是 kernel-only 或公共 op 延迟，不宣称加速、不扩展到优化**（A2-12 本身不设速度门槛，只是按规格记录同卡三明治数字）。bd1 seeds0/1 与 bd2 seed0 目前均是 last-good174/first-bad176，正式闸值等全部条件完成后再定。"
         }
       ],
       "result": null

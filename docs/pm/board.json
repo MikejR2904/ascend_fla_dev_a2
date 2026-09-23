@@ -2709,8 +2709,8 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "gated",
-      "gate": "用户已放行（D-PM-43），待前置任务与规格",
+      "status": "assigned",
+      "gate": null,
       "model": [
         "kimi-linear-48b-a3b"
       ],
@@ -2734,17 +2734,37 @@
         "ascriptor": true,
         "fla": true
       },
-      "spec": null,
+      "spec": "docs/pm/tasks/A2-12.md",
       "issue": 39,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "limjiunnbin",
+      "assignee_caps": {
+        "agent": "Codex / GPT-6, operated by limjiunnbin",
+        "socs": [
+          "a2"
+        ],
+        "soc_details": "自述（APPLY 03:13Z / 03:22Z）：a2，Ascend 910B3（20 AI cores / 40 vector cores、UB 192KB、AIV 1.8GHz）、CANN 9.2.0-beta.1、内置算子包含 910B3 平台、torch 2.10.0 / torch_npu 2.10.0.post2、Python 3.11（机器与卡归 assignee 管理，D-PM-28）；A2 真机数字在 A2-11 之前只是观测记录",
+        "ascriptor": "A2-07 期间已按自述固定到 library 90cfcdc / kernels b3b3f9c；A2-10 每份回执带这两个修订，对不上先发 RISK",
+        "fla": "有（自述）",
+        "fork": "MikejR2904/ascend_fla_dev_a2（真 fork，parent ddddwee1；APPLY 里原写的同名非 fork 仓跨仓 PR 不认）",
+        "availability": "异步",
+        "note": "本次 APPLY（10:20Z）实查确认 a2 访问：910B3，CANN 9.0.0（V100R001C10SPC001B250），opp 含 ascend910b/ascend910_93；正式执行前会重查占用/健康、取共享锁。A2-11 的新约束已读（BF16/FP16 splitk@M<64 永久拒绝、barrier 纪律）。",
+        "session": "dev-20260923T071242Z-cc710a24"
+      },
+      "branch": "task/A2-12",
       "timebox_h": 16,
       "reports": [
         {
           "at": "2026-09-20T03:48",
           "summary": "用户 2026-09-20 放行（D-PM-43「其他的也放行」）：原 gate = machines:a2。规格未写、前置未完成，所以状态位仍是 gated、gate 文案改成「用户已放行，待前置任务与规格」；PM 在前置完成、规格写好时改 open，不再问用户。"
+        },
+        {
+          "at": "2026-09-23T10:27",
+          "summary": "PM 补全规格（docs/pm/tasks/A2-12.md）：范围锁定 A2-03 明确留下的两项（真实 Kimi-Linear 形状 H=HV=32/K=V=128、门控跨度重测）+ (C,HV) 网格补 HV=32 边界 + 把实测数字填进 ascend_fla/platform.py 的 CAPABILITIES[\"a2\"]（qualified 仍留 False，合并时由 PM 改）。方法论借用 A5 的双边约束闸校准（AGENTS.md §6），阈值不沿用 A5 的 155。前置 A2-03/A2-11 均已完成，按 D-PM-43 不再问用户，gate → open。"
+        },
+        {
+          "at": "2026-09-23T10:28",
+          "summary": "ASSIGN（PM，规格已补全，session dev-20260923T071242Z-cc710a24）：规格 docs/pm/tasks/A2-12.md。范围：真实 Kimi-Linear 形状 + 门控跨度重测（方法论借 A5 的双边约束校准，阈值不沿用 155）+ (C,HV) 网格补 HV=32 边界 + 把实测数字填进 platform.py 的 CAPABILITIES[\"a2\"]（qualified 仍留 False，PM 审过再改）。写集：tests/test_kda_fwd_npu.py、benchmarks/verify_real_shapes.py（均扩展现有 A5 文件，不删不改既有断言）、ascend_fla/platform.py（只改 CAPABILITIES[\"a2\"] 字面量）。"
         }
       ],
       "result": null

@@ -1,0 +1,4 @@
+# BF16/FP16 split-K M32 on 910B3 (A2): AI Core exception raised at aclrtSynchronizeStream.
+# Raw lines from the aclnn harness verification run (test.cpp); machine paths scrubbed.
+#
+test.cpp:53 aclrtSynchronizeStream(stream) failed: 507015

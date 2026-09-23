@@ -1,0 +1,81 @@
+{
+ "all_bitwise": true,
+ "block_dim": 1,
+ "card": "0",
+ "case": {
+  "K": 16,
+  "M": 16,
+  "N": 16,
+  "barrier": false,
+  "bias": false,
+  "dtype": "f32",
+  "expect": "probe",
+  "id": "chain_f32_m16_n16_k16_t2_nobar",
+  "jitter": 0,
+  "kind": "chain",
+  "splitk": 0,
+  "terms": 2,
+  "why": "KDA/GDN triangular-inverse construct; 2 matmuls into one L0C, no barrier"
+ },
+ "ir": {
+  "barrier_M": 0,
+  "barrier_M_settle": 0,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": [
+   "_a2_family_unsettled_fp32_mmad: fp32 MMAD accumulation reads %l0c after an earlier MMAD on at least one path with no PIPE_M/PIPE_ALL barrier between them"
+  ]
+ },
+ "kernel_source_sha256": "c9d84b16d02b2dd934456982c0e0fb373f22a57f434ec1aca37915104e87ba6e",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T03:46:15Z",
+ "reference_sha256": "0b1dbcfcd44549a09aadb13ff7bc14c99361d48011ef7bbab8373071d0a7d71f",
+ "run_samples": {
+  "device_error": [],
+  "first": [
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "0b1dbcfcd44549a09aadb13ff7bc14c99361d48011ef7bbab8373071d0a7d71f",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 1,
+    "wall_s": 35.752
+   },
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "0b1dbcfcd44549a09aadb13ff7bc14c99361d48011ef7bbab8373071d0a7d71f",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 2,
+    "wall_s": 4.45
+   },
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "0b1dbcfcd44549a09aadb13ff7bc14c99361d48011ef7bbab8373071d0a7d71f",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 3,
+    "wall_s": 5.403
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 1000,
+  "device_error": 0,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 1000,
+  "wrong_finite": 0
+ }
+}

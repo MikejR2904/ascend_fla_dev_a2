@@ -1,0 +1,81 @@
+{
+ "all_bitwise": false,
+ "block_dim": 1,
+ "card": "1",
+ "case": {
+  "K": 128,
+  "M": 32,
+  "N": 64,
+  "barrier": false,
+  "bias": false,
+  "dtype": "bf16",
+  "expect": "probe",
+  "id": "splitk_bf16_m32_n64_k128_s16",
+  "jitter": 0,
+  "kind": "splitk",
+  "splitk": 16,
+  "terms": 1,
+  "why": "bf16 split-K sweep: 8 K fragments, M32"
+ },
+ "device_error_runs": 100,
+ "ir": {
+  "barrier_M": 0,
+  "barrier_M_settle": 0,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": []
+ },
+ "kernel_source_sha256": "8dc29f90293b675f3cf5f048b0acbce1361238339709fd7be0deca373e00f47c",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T04:23:12Z",
+ "reference_sha256": "ef1fe6484b607387a03e3e9cd6fc9c8c0ae64163b1b75f95f440dc36fd6edda5",
+ "run_samples": {
+  "device_error": [
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 1,
+    "wall_s": 34.93
+   },
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 2,
+    "wall_s": 3.998
+   },
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 3,
+    "wall_s": 3.998
+   }
+  ],
+  "first": [
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 1,
+    "wall_s": 34.93
+   },
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 2,
+    "wall_s": 3.998
+   },
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 3,
+    "wall_s": 3.998
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 0,
+  "device_error": 100,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 100,
+  "wrong_finite": 0
+ }
+}

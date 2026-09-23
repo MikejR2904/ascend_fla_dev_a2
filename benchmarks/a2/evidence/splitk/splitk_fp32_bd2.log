@@ -1,0 +1,23 @@
+# a2 (910B3) A2-11 reproduction console - FP32 split-K (repaired), block_dim=2, 1000 reps
+# Machine paths scrubbed to <path>; [lint] repetition and bulk per-run CASE lines elided (full counts in the receipts).
+#
+ENV {"device": {"builtin_op_packages": ["ascend910_93", "ascend910b", "config"], "cann_version": "9.2.0-beta.1", "cube_core_num": 20, "soc": "Ascend910B3", "torch_npu": "2.10.0.post2", "vector_core_num": 40}, "versions": {"ascriptor_commit": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5", "ascriptor_desugar_sha256": "900610ea92dcb97afd1bbea1f4abc6b306adc5fe98547bdbedde37eca34cc295", "ascriptor_lint_sha256": "c2e4662604224cb4e84522859577872b6eeb87f90ac15736c36550ecd61b3a2e", "ascriptor_version": "0.1.0", "numpy": "1.26.4", "python": "3.11.15", "torch": "2.10.0+cpu"}}
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=1/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=2/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=3/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=4/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=5/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=6/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=7/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=8/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+... CASE lines elided; full counts in run_summary ...
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=993/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=994/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=995/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=996/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=997/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=998/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=999/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+CASE splitk_f32_m64_n64_k128_s64 profile=a2 launcher=aclnn run=1000/1000 expect=bitwise bitwise=True max_abs_diff=0 rel_l2=0 mismatched=0/4096 non_finite=0 poison_left=0 sha=f1b0b9afd2568662 ir_settle=1 ir_barrier_M=1 traps=0
+SUMMARY profile=a2 launcher=aclnn cases=1 all_bitwise=1 errors=0 failed_expectation=[]
+=== splitk_f32_m64_n64_k128_s64 bd2 rc=0 ===

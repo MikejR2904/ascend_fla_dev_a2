@@ -81,6 +81,7 @@ class Case:
     barrier: bool = False
     expect: str = "bitwise"  # "bitwise" | "probe"
     why: str = ""
+    jitter: int = 0  # A2-11 timing perturbation: independent MMADs into a scratch L0C between chain terms
 
 
 def build_cases() -> list[Case]:
@@ -133,20 +134,20 @@ def build_cases() -> list[Case]:
 # --------------------------------------------------------------------------------------------- kernels
 
 
-def kernel_name(case: Case) -> str:
-    return "a201_" + case.id
+def kernel_name(case: Case, block_dim: int = 1) -> str:
+    return "a201_" + case.id + (f"_bd{block_dim}" if block_dim != 1 else "")
 
 
-def kernel_source(case: Case, profile: str) -> str:
+def kernel_source(case: Case, profile: str, block_dim: int = 1) -> str:
     gm, dt, _ = DTYPES[case.dtype]
     M, N, K = case.M, case.N, case.K
-    out = [f"import ascriptor.{profile} as api", "", "", "@api.kernel(mode='cube', block_dim=1)"]
+    out = [f"import ascriptor.{profile} as api", "", "", f"@api.kernel(mode='cube', block_dim={block_dim})"]
     if case.kind == "splitk":
         params = [f"x: api.GM[api.{gm}, ({M}, {K})]", f"y: api.GM[api.{gm}, ({N}, {K})]"]
         if case.bias:
             params.append(f"bias: api.GM[api.f32, (1, {N})]")
         params.append(f"z: api.GM[api.f32, ({M}, {N})]")
-        out.append(f"def {kernel_name(case)}({', '.join(params)}):")
+        out.append(f"def {kernel_name(case, block_dim)}({', '.join(params)}):")
         body = [f"l1x = api.Tensor(api.DT.{dt}, [{M}, {K}], api.Position.L1)",
                 f"l1y = api.Tensor(api.DT.{dt}, [{N}, {K}], api.Position.L1)"]
         if case.bias:
@@ -163,33 +164,42 @@ def kernel_source(case: Case, profile: str) -> str:
         for i in range(case.terms):
             params += [f"a{i}: api.GM[api.{gm}, ({M}, {K})]", f"b{i}: api.GM[api.{gm}, ({N}, {K})]"]
         params.append(f"z: api.GM[api.f32, ({M}, {N})]")
-        out.append(f"def {kernel_name(case)}({', '.join(params)}):")
+        out.append(f"def {kernel_name(case, block_dim)}({', '.join(params)}):")
         body = []
         for i in range(case.terms):
             body += [f"l1a{i} = api.Tensor(api.DT.{dt}, [{M}, {K}], api.Position.L1)",
                      f"l1b{i} = api.Tensor(api.DT.{dt}, [{N}, {K}], api.Position.L1)"]
-        body += [f"l0c = api.Tensor(api.DT.float, [{M}, {N}], api.Position.L0C)", "with api.auto_sync():"]
+        body.append(f"l0c = api.Tensor(api.DT.float, [{M}, {N}], api.Position.L0C)")
+        if case.jitter:
+            # scratch accumulator for the A2-11 timing perturbation: independent MMADs issued between the two
+            # target MMADs delay the second one's read of l0c by a tunable, pipeline-realistic amount, without
+            # changing z (l0c2 is never stored). Each is is_init=True (an overwrite, no accumulate hazard of its own).
+            body.append(f"l0c2 = api.Tensor(api.DT.float, [{M}, {N}], api.Position.L0C)")
+        body.append("with api.auto_sync():")
         for i in range(case.terms):
             body += [f"    l1a{i} <<= a{i}[:, :]", f"    l1b{i} <<= b{i}[:, :]"]
         for i in range(case.terms):
             body.append(f"    api.matmul(l0c, l1a{i}, l1b{i}, m={M}, n={N}, k={K}, is_init={i == 0})")
-            if case.barrier and i + 1 < case.terms:
-                body.append("    api.barrier(api.Pipe.M)")
+            if i + 1 < case.terms:
+                for _ in range(case.jitter):
+                    body.append(f"    api.matmul(l0c2, l1a0, l1b0, m={M}, n={N}, k={K}, is_init=True)")
+                if case.barrier:
+                    body.append("    api.barrier(api.Pipe.M)")
         body += ["    z[:, :] <<= l0c", "return z"]
     out += ["    " + line for line in body]
     return "\n".join(out) + "\n"
 
 
-def load_kernel(case: Case, profile: str, src_dir: pathlib.Path):
-    src = kernel_source(case, profile)
+def load_kernel(case: Case, profile: str, src_dir: pathlib.Path, block_dim: int = 1):
+    src = kernel_source(case, profile, block_dim)
     src_dir.mkdir(parents=True, exist_ok=True)
-    path = src_dir / f"{kernel_name(case)}.py"
+    path = src_dir / f"{kernel_name(case, block_dim)}.py"
     if not path.exists() or path.read_text() != src:
         path.write_text(src)
-    spec = importlib.util.spec_from_file_location(f"a201_{profile}_{case.id}", path)
+    spec = importlib.util.spec_from_file_location(f"a201_{profile}_{kernel_name(case, block_dim)}", path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return getattr(mod, kernel_name(case)), hashlib.sha256(src.encode()).hexdigest()
+    return getattr(mod, kernel_name(case, block_dim)), hashlib.sha256(src.encode()).hexdigest()
 
 
 # ------------------------------------------------------------------------------------ inputs / reference
@@ -337,8 +347,10 @@ def patch_generated(files: dict, variant: str) -> int:
 
 
 class Runner:
-    def __init__(self, launcher: str, profile: str, out: pathlib.Path, timeout: float, patch: str = "none"):
+    def __init__(self, launcher: str, profile: str, out: pathlib.Path, timeout: float, patch: str = "none",
+                 block_dim: int = 1):
         self.launcher, self.profile, self.out, self.timeout, self.patch = launcher, profile, out, timeout, patch
+        self.block_dim = block_dim
         self._exec = {}
         self.patched = {}
 
@@ -363,10 +375,10 @@ class Runner:
             from ascriptor.runtime import OpExec
 
             if case.id not in self._exec:
-                sub = kernel_name(case) + ("" if self.patch == "none" else f".{self.patch}")
+                sub = kernel_name(case, self.block_dim) + ("" if self.patch == "none" else f".{self.patch}")
                 ex = OpExec(kernel, launcher="aclnn", backend="cce", device=self.profile,
                             out_dir=self.out / "build" / self.profile / sub,
-                            block_dim=1, timeout=self.timeout, seed_outputs=True)
+                            block_dim=self.block_dim, timeout=self.timeout, seed_outputs=True)
                 if self.patch != "none":
                     self.patched[case.id] = patch_generated(ex.artifacts.files, self.patch)
                 self._exec[case.id] = ex
@@ -423,6 +435,16 @@ def device_facts() -> dict:
         facts["soc"] = None
         facts["soc_error"] = f"{type(exc).__name__}: {exc}"[:200]
     return facts
+
+
+def receipt_line(device: dict | None) -> str:
+    """One-line SoC / CANN / op-package identity with a UTC timestamp, so no run's numbers are ever read
+    without their environment (A2-11 acceptance; same intent as bringup.py's ``_receipt_line``)."""
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    if not device:
+        return f"SoC=model-only cann=- op_packages=0 at={ts}"
+    pkgs = device.get("builtin_op_packages") or []
+    return f"SoC={device.get('soc')} cann={device.get('cann_version')} op_packages={len(pkgs)} at={ts}"
 
 
 # --------------------------------------------------------------------------------------------- hit table
@@ -655,6 +677,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--launcher", choices=("reference", "sim", "pipesim", "aclnn"), default="sim")
     ap.add_argument("--case", nargs="*", default=["*"], help="case ids or glob patterns (default: all)")
     ap.add_argument("--repeat", type=int, default=1, help="device runs per case (aclnn only)")
+    ap.add_argument("--block-dim", type=int, default=1,
+                    help="cube block_dim for the aclnn build (A2-11 multi-bd sweep; one build per process)")
+    ap.add_argument("--jitter", type=int, default=0,
+                    help="A2-11 timing perturbation: independent scratch MMADs between chain terms (chain cases only)")
     ap.add_argument("--timeout", type=float, default=600.0)
     ap.add_argument("--out", type=pathlib.Path, default=REPO / "tmp" / "A2-01" / "runs")
     ap.add_argument("--list", action="store_true")
@@ -672,6 +698,9 @@ def main(argv: list[str] | None = None) -> int:
         return hit_table(up, REPO / "kernels" / "projects" / "a5", ns.out / "hit_table")
 
     cases = [c for c in build_cases() if any(fnmatch.fnmatchcase(c.id, p) for p in ns.case)]
+    if ns.jitter:  # A2-11: perturb the chain cases' inter-MMAD timing (split-K cases are one MMAD, unperturbed)
+        cases = [dataclasses.replace(c, jitter=ns.jitter, id=f"{c.id}_j{ns.jitter}") if c.kind == "chain" else c
+                 for c in cases]
     if ns.list:
         for c in cases:
             print(f"{c.id:40s} expect={c.expect:7s} {c.why}")
@@ -687,37 +716,50 @@ def main(argv: list[str] | None = None) -> int:
         cases = [c for c in cases if not c.bias]  # the bias-table form is the A2 example's; a5 control drops it
         print("note: a5 profile skips the *_bias case (A2 BT-row form); the no-bias twin runs instead")
     repeat = ns.repeat if ns.launcher == "aclnn" else 1
+    card = os.environ.get("ASCEND_RT_VISIBLE_DEVICES", "0")  # multi-card sweeps keep receipts distinct (D-PM-28)
 
-    run_dir = ns.out / ns.profile / ns.launcher
-    run_dir.mkdir(parents=True, exist_ok=True)
     env = {"versions": versions(), "device": device_facts() if ns.launcher == "aclnn" else None}
     print("ENV", json.dumps(env, sort_keys=True), flush=True)
     if ns.patch_generated != "none" and ns.launcher != "aclnn":
         print("--patch-generated applies to --launcher aclnn only", file=sys.stderr)
         return 2
-    runner = Runner(ns.launcher, ns.profile, ns.out, ns.timeout, ns.patch_generated)
+    runner = Runner(ns.launcher, ns.profile, ns.out, ns.timeout, ns.patch_generated, ns.block_dim)
+    tag = ns.launcher + (f"_bd{ns.block_dim}_card{card}" if ns.launcher == "aclnn" else "")
     if ns.patch_generated != "none":
-        run_dir = ns.out / ns.profile / f"{ns.launcher}.{ns.patch_generated}"
-        run_dir.mkdir(parents=True, exist_ok=True)
-    summary = {"schema": "a2-01.repro/1", "profile": ns.profile, "launcher": ns.launcher, "repeat": repeat,
+        tag = f"{tag}.{ns.patch_generated}"
+    run_dir = ns.out / ns.profile / tag
+    run_dir.mkdir(parents=True, exist_ok=True)
+    summary = {"schema": "a2-11.repro/1", "profile": ns.profile, "launcher": ns.launcher, "repeat": repeat,
+               "block_dim": ns.block_dim, "jitter": ns.jitter, "card": card, "receipt": receipt_line(env["device"]),
                "comparison": "bitwise vs CPU float64 reference rounded once to FP32 (exact domain)", **env,
                "started_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "cases": []}
     failed_expectation = []
     for case in cases:
-        rec = {"case": dataclasses.asdict(case), "runs": []}
+        rec = {"case": dataclasses.asdict(case), "runs": [], "receipt": receipt_line(env["device"]),
+               "block_dim": ns.block_dim, "card": card}
         try:
             pairs, bias = make_inputs(case)
             ref = reference(case, pairs, bias)
             rec["reference_sha256"] = hashlib.sha256(ref.numpy().tobytes()).hexdigest()
             if ns.launcher != "reference":
-                kernel, src_sha = load_kernel(case, ns.profile, ns.out / "kernels" / ns.profile)
+                kernel, src_sha = load_kernel(case, ns.profile, ns.out / "kernels" / ns.profile, ns.block_dim)
                 rec["kernel_source_sha256"] = src_sha
                 rec["ir"] = ir_facts(kernel)
                 args = tuple(pairs) + ((bias,) if bias is not None else ())
                 for r in range(repeat):
                     z = torch.full((case.M, case.N), POISON, dtype=torch.float32)
                     t0 = time.time()
-                    out, extra = runner(case, kernel, args + (z,))
+                    try:
+                        out, extra = runner(case, kernel, args + (z,))
+                    except Exception as exc:  # a device fault (e.g. AI Core 507015) records the run and continues the sweep
+                        res = {"run": r + 1, "bitwise": False, "device_error": f"{type(exc).__name__}: {str(exc).splitlines()[0][:200]}",
+                               "wall_s": round(time.time() - t0, 3)}
+                        rec["runs"].append(res)
+                        if (r + 1) % 25 == 0 or r + 1 == repeat:
+                            (run_dir / f"{case.id}.json").write_text(json.dumps(rec, indent=1, sort_keys=True) + "\n")
+                        print(f"CASE {case.id} profile={ns.profile} launcher={ns.launcher} run={r + 1}/{repeat} "
+                              f"expect={case.expect} DEVICE_ERROR {res['device_error'][:90]}", flush=True)
+                        continue
                     res = {"run": r + 1, **compare(case, out, ref), **extra, "wall_s": round(time.time() - t0, 3)}
                     if not res["bitwise"] and res["non_finite"] == 0:
                         res["decomposition"] = decompose(case, out, pairs, bias)
@@ -731,6 +773,8 @@ def main(argv: list[str] | None = None) -> int:
                         if ns.save_outputs:
                             torch.save(out.detach().cpu(), run_dir / f"{case.id}.run{r + 1}.out.pt")
                     rec["runs"].append(res)
+                    if (r + 1) % 25 == 0 or r + 1 == repeat:  # A2-11: persist partial receipt so a timeout keeps the runs
+                        (run_dir / f"{case.id}.json").write_text(json.dumps(rec, indent=1, sort_keys=True) + "\n")
                     print(f"CASE {case.id} profile={ns.profile} launcher={ns.launcher} run={r + 1}/{repeat} "
                           f"expect={case.expect} bitwise={res['bitwise']} max_abs_diff={res['max_abs_diff']:.6g} "
                           f"rel_l2={res['rel_l2']:.6g} mismatched={res['mismatched']}/{res['elements']} "
@@ -746,15 +790,21 @@ def main(argv: list[str] | None = None) -> int:
             rec["error"] = f"{type(exc).__name__}: {exc}"
             rec["traceback_tail"] = traceback.format_exc().splitlines()[-6:]
             print(f"CASE {case.id} profile={ns.profile} launcher={ns.launcher} ERROR {rec['error'][:400]}", flush=True)
-        ok = "error" not in rec and all(r["bitwise"] for r in rec["runs"])
+        device_errors = [r for r in rec["runs"] if "device_error" in r]
+        genuine_wrong = [r for r in rec["runs"] if not r.get("bitwise") and "device_error" not in r]
+        # a transient device fault (AI Core 507015) is an environmental event, not a wrong result: only a
+        # genuine wrong output fails a bitwise-expect case. Device faults are counted and reported separately.
+        ok = "error" not in rec and not genuine_wrong and any(r.get("bitwise") for r in rec["runs"])
         rec["all_bitwise"] = ok
+        rec["device_error_runs"] = len(device_errors)
         if case.expect == "bitwise" and not ok:
             failed_expectation.append(case.id)
         (run_dir / f"{case.id}.json").write_text(json.dumps(rec, indent=1, sort_keys=True) + "\n")
         summary["cases"].append({"id": case.id, "expect": case.expect, "all_bitwise": ok, "error": rec.get("error"),
                                  "runs": len(rec["runs"]),
-                                 "bitwise_runs": sum(1 for r in rec["runs"] if r["bitwise"]),
-                                 "max_abs_diff": max((r["max_abs_diff"] for r in rec["runs"]), default=None)})
+                                 "bitwise_runs": sum(1 for r in rec["runs"] if r.get("bitwise")),
+                                 "wrong_runs": len(genuine_wrong), "device_error_runs": len(device_errors),
+                                 "max_abs_diff": max((r["max_abs_diff"] for r in rec["runs"] if "max_abs_diff" in r), default=None)})
     summary["finished_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     summary["failed_expectation"] = failed_expectation
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n")

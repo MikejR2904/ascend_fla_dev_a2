@@ -1,0 +1,80 @@
+{
+ "all_bitwise": true,
+ "block_dim": 1,
+ "card": "6",
+ "case": {
+  "K": 128,
+  "M": 64,
+  "N": 64,
+  "barrier": false,
+  "bias": false,
+  "dtype": "f32",
+  "expect": "bitwise",
+  "id": "splitk_f32_m64_n64_k128_s64",
+  "jitter": 0,
+  "kind": "splitk",
+  "splitk": 64,
+  "terms": 1,
+  "why": "KDA kda_fwd(_stable)/intra.py shape: FP32 [64,128]x[64,128]^T, split-K 64"
+ },
+ "device_error_runs": 0,
+ "ir": {
+  "barrier_M": 1,
+  "barrier_M_settle": 1,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": []
+ },
+ "kernel_source_sha256": "5a1423e99aab9a51fdc07b61174415d314f6cf964eba19de0b26ee51406d304d",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T04:03:30Z",
+ "reference_sha256": "f1b0b9afd2568662f444f6519610d5873bfab1cd4ed2b99870f85e297a6a181b",
+ "run_samples": {
+  "device_error": [],
+  "first": [
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "f1b0b9afd2568662f444f6519610d5873bfab1cd4ed2b99870f85e297a6a181b",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 1,
+    "wall_s": 42.655
+   },
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "f1b0b9afd2568662f444f6519610d5873bfab1cd4ed2b99870f85e297a6a181b",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 2,
+    "wall_s": 5.348
+   },
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "f1b0b9afd2568662f444f6519610d5873bfab1cd4ed2b99870f85e297a6a181b",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 3,
+    "wall_s": 4.348
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 1000,
+  "device_error": 0,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 1000,
+  "wrong_finite": 0
+ }
+}

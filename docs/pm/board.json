@@ -2611,7 +2611,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P0",
-      "status": "assigned",
+      "status": "done",
       "model": [],
       "kernel": [],
       "dtype": [
@@ -2634,7 +2634,7 @@
       },
       "spec": "docs/pm/tasks/A2-11.md",
       "issue": 38,
-      "pr": null,
+      "pr": 130,
       "assignee": "MikejR2904",
       "assignee_caps": {
         "agent": "Claude Opus 4.8 (Claude Code)，operated by MikejR2904（自述）",
@@ -2674,9 +2674,26 @@
         {
           "at": "2026-09-23T06:06",
           "summary": "DONE（05:38Z，自述，#38，PR #130，头 ec458fc，单提交，写集 4 项）：三类最小复现（FP32 split-K 2000/2000 逐位一致；BF16 M16 500/500 全错且 500 个哈希两两不同；BF16/FP16 M32 200/200 触发 AI Core 异常 507015；BF16 M64 199/200 正确；FP32 无 barrier 累加链 2000/2000 未复现）+ barrier 版绕行验证（2000/2000 逐位一致，多 bd/多卡）+ 静态测试守卫 + 研究文档建议清单。**PM 完整技术审查**（NPU-free，本机排除 torch_npu）：写集 4 项全部落在声明范围、reserved_paths 0 命中；120KB 新增内容隐私扫描 0 命中；AST 静态守卫 6/6 通过，独立复现负对照（删 kda_fwd_stable/kernels/recurrent.py:187 的 barrier → test_every_accumulate_has_settle_barrier 按预期变红，还原后复绿）；**逐个核对全部 11 份 evidence JSON 的 run_summary，与研究文档表格及 DONE 消息的数字逐项精确吻合**（FP32 split-K bd1+bd2=1000+1000 bitwise；chain barrier 版 bd1+bd2=1000+1000 bitwise；chain nobar t2+t8=1000+1000 bitwise 未复现；BF16 M16 500 wrong/500 distinct hashes；BF16 M32+FP16 M32=100+100 device_error；BF16 M64=199 bitwise/1 device_error）；BF16 M16 的 decomposition_example 原始系数数据（15/16 行系数 ≈[0,1,0,1,0,1,0,1]、残差 ~1e-16）与「隔片丢弃」判定吻合，非编造；m32_aicore_exception.txt 原文与引用逐字相同；全量测试合入前后 1201→1207（净增 6，静态守卫测试）、0 failed。**技术判据全过、证据质量高、无争议**。但本任务的交付物本身就是「A2 结论能否算数」的证据与建议——按任务文件与研究文档原文（两处都写明「这一步是用户的决定，PM 或申领人都不放宽」）以及 D-PM-33 的「A2 上的结论」一栏，PM 不自行合入/裁定，转交用户。"
+        },
+        {
+          "at": "2026-09-23T07:25",
+          "summary": "用户直接裁定：\"accept A2-11 and merge PR #130\"（本轮用户直接消息，不是转述）。合入（squash → 652dfc0），main 全量复跑 1207 passed / 13 skipped / 0 failed，与合入前预测一致。AGENTS.md 已更新：§2 记 A2-11 完成与用户裁定，§7 加 A2 系 BF16/FP16 splitk@M<64 永久禁止条款；gaps.json 的两条相关 gap 已补 A2-11 的真机确认证据（不改 requires_kernel_change/kernel_fix_queue，那部分需要单独核实 A2-03/A2-09 现状，超出本次范围）。A2-11 是 A2 波次总闸，A2-12～A2-16、A2-K1 现在依赖已解除，可以考虑派单。"
         }
       ],
-      "result": null
+      "result": {
+        "commits": [
+          "ec458fc",
+          "652dfc0"
+        ],
+        "evidence": [
+          "PR #130",
+          "docs/research/a2_splitk_gate.md",
+          "tests/test_a2_accumulate_barriers.py",
+          "benchmarks/a2/evidence/splitk/",
+          "benchmarks/a2/repro_splitk_fp32.py"
+        ],
+        "numbers": "**用户 2026-09-23 直接裁定接受**（\"accept A2-11 and merge PR #130\"）：A2 算子结论从此不再仅是观测，满足研究文档四项前提（pin 修订、静态守卫、FP32 split-K 真机确认、FP32 手写链残余风险显式守卫）的可以算数（AGENTS.md §2 已更新）。真机（910B3，pin 90cfcdc/b3b3f9c，aclnn，逐位对 CPU fp64 参考）：FP32 split-K 2000/2000 逐位一致（bd1+bd2 各 1000）；BF16 split-K@M16 500/500 全错、500 个输出哈希两两不同（硬件时序竞争，非确定性 miscompile，最小二乘分解显示隔片丢弃的陈旧累加器特征）；BF16/FP16 split-K@M32 200/200 触发 AI Core 异常（507015）；BF16 split-K@M64 199/200 正确；FP32 无 barrier 手写累加链 2000/2000 未复现（如实标注\"未复现≠安全\"，保守保留 barrier）；barrier 绕行版 2000/2000 逐位一致（多 bd、多卡）。AGENTS.md §7 已加入永久禁止条款：A2 系 BF16/FP16 splitk 在 M<64 必须显式报错。PM 独立复核：写集 4 项无越界、reserved_paths 0 命中、隐私扫描 0 命中；AST 静态守卫 6/6 通过，独立复现负对照（删 kda_fwd_stable/kernels/recurrent.py:187 的 barrier → 按预期变红，还原后复绿）；逐个核对 11 份 evidence JSON 的 run_summary 与研究文档/DONE 消息数字精确吻合，含 BF16 M16 的原始最小二乘分解系数数据；全量测试合入前后 1201→1207（净增 6）、0 failed，合入的树与已审分支内容逐位相同（board.json 之外无差异）。gaps.json 的 a2-splitk-fp32-cube / a2-splitk-bf16-fp16-unsettled 已补 A2-11 确认证据。"
+      }
     },
     {
       "id": "A2-12",

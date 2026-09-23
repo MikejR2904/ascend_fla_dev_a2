@@ -519,6 +519,8 @@ PM 在权威 workspace 上独立跑了 `benchmarks/diag_c1_multihead.py`，**上
 - 命中表初版（25 个在用 kernel，自述）：FP32 split-K 1 个（KDA scores/intra，pin 已自动 settle）；**FP32 手写累加链未 settle 3 个：KDA triangular inverse、GDN triangular inverse、GDN bwd finalize，正是 M16 失效形状**；BF16 累加链 2 个见 `a2-splitk-bf16-fp16-unsettled`；其余 19 个未命中。
 - 模型看不出：sim / pipesim 在 a2、a5 两个 profile 下全部逐位、0 hazard——模型不表达这个同管线 L0C RAW，复现只能靠真机。
 - 手写 FP32 链（M16/32/64，2~3 项；M16/N64 的 8 项孪生）共 45 个独立 case 在卡 A/B 上全部 5/5 逐位：发射节奏没有背靠背，不是安全证据（BF16 的 split-K 孪生就错，同样写法的手写 BF16 链不错）。
+
+**A2-11 更新（2026-09-23，PR #130 → 652dfc0，用户已裁定接受结论）**：手写 FP32 累加链在真机上加了时序扰动（--jitter：两目标 MMAD 间插独立 scratch-L0C MMAD）跑了 2000 次（t2+t8 各 1000），仍**未复现出错**——比 A2-01 最初的 45 次样本量大得多，但结论不变：**「未复现」不是「安全」**，`barrier(Pipe.M)` 绕行保守保留。绕行本身在真机上 2000 次逐位稳定（多 bd、多卡）。已合入的 a2 单元现在有静态 AST 守卫（`tests/test_a2_accumulate_barriers.py`：每个 `is_init=False` matmul 前必须紧邻 `barrier(Pipe.M)`），main 上 0 违规，未来改动漏加 barrier 会被测试拦住（负对照：PM 删掉 `kda_fwd_stable/kernels/recurrent.py:187` 的 barrier，测试按预期变红，还原后复绿）。A2-11 是本条目在「A2 结论算数」条件下的总闸，已完成，见 `docs/research/a2_splitk_gate.md`。
 - **影响** A2 上凡是写同一块 L0C 的 FP32 累加链（KDA / GDN 的三角求逆、GDN 反向 finalize）在 M=16 形状下可能读到未落定的累加器，输出有限、量级正常但内容错（真机尚未复现出错，时序没踩到不等于安全）。A5 现有路径不受影响（这是 A2 系的硬件行为）。A2 派生单元（A2-03）要逐个核对，A2-11 才是真机复现与绕行验证。**AGENTS.md §2 原先写的「没解决的 split-K FP32 cube 缺陷」太窄**：FP32 split-K 在 pin 里已有修复，没解决的是 FP32 手写链与 BF16/FP16 split-K，已于 2026-09-19 改写（用户同意）。
 - **建议** 1. 转给 ascriptor 所有者（本仓不改 ascriptor）：把 M10-081 的 settle 扩到手写累加链，或提供自动检测。2. 本仓侧：a2 派生单元对所有写同一块 L0C 的累加链显式 `barrier(Pipe.M)`，不分 dtype 与写法（A2-03 / A2-09 起；属 kernel 批次 A2-K1 的「split-K 绕行」）；ascriptor 修好前，对不能证明安全的形状入口按 `AGENTS.md` §7 显式报错。3. A2-11 在真机上做复现与绕行验证（含手写链的时序压力）。
 
@@ -532,6 +534,8 @@ PM 在权威 workspace 上独立跑了 `benchmarks/diag_c1_multihead.py`，**上
 - 手写孪生（8 次 K16 matmul 写同一 L0C，不加 barrier）真机 5/5 逐位：split-K 循环里 MMAD **背靠背发出**才踩到。
 - 功能模拟与 pipesim 在 a2/a5 两个 profile 下全部逐位、0 hazard，模型看不出。
 - 运行时日志（`m32_bf16_k32_cann_runtime_errors.log`）明写 `L0C read/write conflict` 与 `retCode=0x26 [aicore exception]`，与 M10-081 的机理一致；错误输出不是任何 K 分片或交叉分片乘积的组合（最小二乘残差约 0.97~0.99），输出范数约为参考的 5 倍，5 次输出哈希相同（确定性错误）。
+
+**A2-11 更新（2026-09-23，PR #130 → 652dfc0，用户已裁定接受结论）**：真机大样本复现确认了危险性质——BF16 split-K @M16：**500/500 次全错，500 个输出哈希两两不同**（完美非确定 = 硬件时序竞争，非确定性 miscompile，不是可复现的固定错误；最小二乘分解显示「隔片丢弃」的陈旧累加器系数特征，15/16 行系数精确落在 [0,1,0,1,...] 附近）；BF16/FP16 split-K @M32：**200/200 次触发 AI Core 异常**（`aclrtSynchronizeStream failed: 507015`，设备故障，不是数值错误）；BF16 split-K @M64：199/200 逐位正确（唯一 1 次是瞬时设备故障，非错误结果）。**AGENTS.md §7 已加入永久禁止条款**：A2 系 kernel 里 BF16/FP16 `splitk` 在 `M<64` 时必须显式报错，不接受任何绕过；`tests/test_a2_accumulate_barriers.py` 的 `test_no_splitk_below_m64` 是这条的静态守卫。详见 `docs/research/a2_splitk_gate.md`。
 - **影响** **静默错误类**（输出有限、无报错）。本仓现有 25 个在用 kernel 都不用 BF16/FP16 split-K，A5 现有路径不受影响；KDA recurrent 与 GDN bwd wu 有 BF16 累加链（是否满足踩踏条件未定，手写孪生没踩到）；A2 派生单元（A2-03 / A2-09）若因 L0 容量改用 BF16/FP16 `splitk` 就会中招。D-PM-35 的 BF16 优先叠加 A2 优先，BF16 的 KDA 在 910B 上要先过这一关。
 - **建议** 1. 转给 ascriptor 所有者：M10-081 的 settle 规则按 dtype 收窄在 910B3 上不成立，应扩到 BF16/FP16，并修 M32 的异常。2. 本仓侧（A2-03 / A2-09 起）：a2 路径不用 M<64 的 BF16/FP16 `splitk`，入口按 `AGENTS.md` §7 显式报错；a2 派生单元对所有 L0C 累加链显式 barrier，不分 dtype。3. A2-11 真机复现（含 M32 异常）。
 

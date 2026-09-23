@@ -2749,7 +2749,8 @@
         "tests/test_kda_fwd_npu.py",
         "benchmarks/verify_real_shapes.py",
         "ascend_fla/platform.py",
-        "benchmarks/a2/evidence/kda_fwd/**"
+        "benchmarks/a2/evidence/kda_fwd/**",
+        "tests/test_kda_fwd_a2.py"
       ],
       "needs": {
         "npu": true,
@@ -2799,6 +2800,10 @@
         {
           "at": "2026-09-23T13:29",
           "summary": "PM 更正 docs/pm/tasks/A2-12.md 第 3 条：C=1 且 HV=32 不预期报错，按正例处理并单独报数字（A2-03 只测过 HV≤4，HV=32 是新组合，值得单列，不要和其它形状混在一批平均里）。"
+        },
+        {
+          "at": "2026-09-23T13:32",
+          "summary": "RISK write-set-expansion（13:28Z，自述，#39）：请求新增 tests/test_kda_fwd_a2.py（新文件，CPU 可跑的A2 验证计划/回执/边界/错误输出负对照，真机部分以显式子进程调已授权的 benchmark，不改 conftest）+ 修改tests/test_platform.py::test_unqualified_socs_raise_on_use 函数体（原因：这条测试现在断言 a2/a3 的 max_gate_span 都是空表；本任务按已批准的规格第 4 条给 CAPABILITIES[\"a2\"] 填实测数字后，a2 的这条断言必然失效——不是抢功能，是规格本身的必然后果；a3 仍断言空表，qualified=False 时入口拒绝的断言不删）。**PM 批准**：理由站得住，只改一个既有测试函数体、新增一个不碰既有 A5 断言的文件，风险低，不需要问用户。test_kda_fwd_npu.py 保持原文（module-level NPU skip + A5 fixture 确实不适合塞 A2 断言，这是好的工程判断，不是绕过测试）。"
         }
       ],
       "result": null

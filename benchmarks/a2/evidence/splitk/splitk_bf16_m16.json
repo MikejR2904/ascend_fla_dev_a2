@@ -1,0 +1,381 @@
+{
+ "all_bitwise": false,
+ "block_dim": 1,
+ "card": "3",
+ "case": {
+  "K": 128,
+  "M": 16,
+  "N": 64,
+  "barrier": false,
+  "bias": false,
+  "dtype": "bf16",
+  "expect": "probe",
+  "id": "splitk_bf16_m16_n64_k128_s16",
+  "jitter": 0,
+  "kind": "splitk",
+  "splitk": 16,
+  "terms": 1,
+  "why": "BF16 operands: the settle rule is FP32-only, so no barrier is inserted"
+ },
+ "decomposition_example": {
+  "fragments": 8,
+  "rows": [
+   {
+    "coef": [
+     -0.0356,
+     1.0018,
+     -0.0843,
+     1.0495,
+     -0.2322,
+     0.9365,
+     -0.0453,
+     0.9327
+    ],
+    "rel_resid": 0.2791326702350303,
+    "row": 0
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 4.0169227799134927e-16,
+    "row": 1
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 3.337652809845293e-16,
+    "row": 2
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 3.5315106875596003e-16,
+    "row": 3
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 6.145064348919053e-16,
+    "row": 4
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 4.911440175169679e-16,
+    "row": 5
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 7.078166168598353e-16,
+    "row": 6
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 2.240264179851689e-16,
+    "row": 7
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 3.978809199901881e-16,
+    "row": 8
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 2.8588749560222115e-16,
+    "row": 9
+   },
+   {
+    "coef": [
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 5.807740299702524e-16,
+    "row": 10
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 3.138956034571363e-16,
+    "row": 11
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 5.235197592309416e-16,
+    "row": 12
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 3.8663257941531667e-16,
+    "row": 13
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     0.0,
+     1.0
+    ],
+    "rel_resid": 3.3199034942276186e-16,
+    "row": 14
+   },
+   {
+    "coef": [
+     -0.0,
+     1.0,
+     0.0,
+     1.0,
+     -0.0,
+     1.0,
+     -0.0,
+     1.0
+    ],
+    "rel_resid": 2.8975777788772563e-16,
+    "row": 15
+   }
+  ],
+  "run": 1,
+  "tile_coef": [
+   -0.0037,
+   1.0013,
+   -0.0065,
+   0.9994,
+   -0.0124,
+   0.9987,
+   -0.0004,
+   0.9956
+  ],
+  "tile_rel_resid": 0.07785256808172146
+ },
+ "ir": {
+  "barrier_M": 0,
+  "barrier_M_settle": 0,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": []
+ },
+ "kernel_source_sha256": "515379e2eba4f8964f921207c35bc4a8a3c0f6b3a13255a8ce76da0672f88433",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T03:46:16Z",
+ "reference_sha256": "ab27c067dd712d4fabc25d3f0101baa05a17cf1e2b1829989b9bbfea3984a2f4",
+ "run_samples": {
+  "device_error": [],
+  "first": [
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "a4b87c956ab82c0d66938c3ceec93b22de1350328d550fe7705f31f657bc8eb9",
+    "poison_left": 0,
+    "rel_l2": 0.6841838872952023,
+    "run": 1,
+    "wall_s": 45.775
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 9.515780448913574,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "b06cb93f8cea515965845c36e94b76765d4ef7f319729c4b09f3428a285dc247",
+    "poison_left": 0,
+    "rel_l2": 0.6810664269763735,
+    "run": 2,
+    "wall_s": 4.503
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "1562e48a9520ce545d4605ffa524063dbddae28e733c5d300c038a8a964b1fad",
+    "poison_left": 0,
+    "rel_l2": 0.6782860093703318,
+    "run": 3,
+    "wall_s": 5.608
+   }
+  ],
+  "wrong": [
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "a4b87c956ab82c0d66938c3ceec93b22de1350328d550fe7705f31f657bc8eb9",
+    "poison_left": 0,
+    "rel_l2": 0.6841838872952023,
+    "run": 1,
+    "wall_s": 45.775
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 9.515780448913574,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "b06cb93f8cea515965845c36e94b76765d4ef7f319729c4b09f3428a285dc247",
+    "poison_left": 0,
+    "rel_l2": 0.6810664269763735,
+    "run": 2,
+    "wall_s": 4.503
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "1562e48a9520ce545d4605ffa524063dbddae28e733c5d300c038a8a964b1fad",
+    "poison_left": 0,
+    "rel_l2": 0.6782860093703318,
+    "run": 3,
+    "wall_s": 5.608
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "ab27bbbf4ca7b871dba38c75a6979296467710972bffa23dd1a7ad785c62df03",
+    "poison_left": 0,
+    "rel_l2": 0.6820410175216967,
+    "run": 4,
+    "wall_s": 5.604
+   },
+   {
+    "bitwise": false,
+    "elements": 1024,
+    "max_abs_diff": 8.875,
+    "mismatched": 1022,
+    "non_finite": 0,
+    "output_sha256": "4252ba347f03905677f729fdd8c1eb2bc46e0bd3d92065a707901b659818eb61",
+    "poison_left": 0,
+    "rel_l2": 0.6804422021263303,
+    "run": 5,
+    "wall_s": 4.502
+   }
+  ]
+ },
+ "run_summary": {
+  "bitwise": 0,
+  "device_error": 0,
+  "distinct_wrong_output_hashes": 500,
+  "runs": 500,
+  "wrong_finite": 500
+ }
+}

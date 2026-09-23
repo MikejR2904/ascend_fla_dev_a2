@@ -1,0 +1,81 @@
+{
+ "all_bitwise": true,
+ "block_dim": 1,
+ "card": "2",
+ "case": {
+  "K": 16,
+  "M": 16,
+  "N": 64,
+  "barrier": false,
+  "bias": false,
+  "dtype": "f32",
+  "expect": "probe",
+  "id": "chain_f32_m16_n64_k16_t8_nobar",
+  "jitter": 0,
+  "kind": "chain",
+  "splitk": 0,
+  "terms": 8,
+  "why": "split-K twin: 8 K16 matmuls into one L0C, no barrier"
+ },
+ "ir": {
+  "barrier_M": 0,
+  "barrier_M_settle": 0,
+  "mmad": 8,
+  "mmad_accumulate": 7,
+  "trap_lints": [
+   "_a2_family_unsettled_fp32_mmad: fp32 MMAD accumulation reads %l0c after an earlier MMAD on at least one path with no PIPE_M/PIPE_ALL barrier between them"
+  ]
+ },
+ "kernel_source_sha256": "f535669c6d65d70eb72147587c8c0ba8b4f18e3a153c6d3958f2c2887e22fc63",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T03:46:16Z",
+ "reference_sha256": "52dc672145f958a04794e46f560b105e1eefe305e74eddd952095e36be63c934",
+ "run_samples": {
+  "device_error": [],
+  "first": [
+   {
+    "bitwise": true,
+    "elements": 1024,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "52dc672145f958a04794e46f560b105e1eefe305e74eddd952095e36be63c934",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 1,
+    "wall_s": 37.928
+   },
+   {
+    "bitwise": true,
+    "elements": 1024,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "52dc672145f958a04794e46f560b105e1eefe305e74eddd952095e36be63c934",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 2,
+    "wall_s": 4.42
+   },
+   {
+    "bitwise": true,
+    "elements": 1024,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "52dc672145f958a04794e46f560b105e1eefe305e74eddd952095e36be63c934",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 3,
+    "wall_s": 5.722
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 1000,
+  "device_error": 0,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 1000,
+  "wrong_finite": 0
+ }
+}

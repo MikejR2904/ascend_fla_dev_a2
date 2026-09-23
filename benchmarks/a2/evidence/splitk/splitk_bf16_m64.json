@@ -1,0 +1,87 @@
+{
+ "all_bitwise": true,
+ "block_dim": 1,
+ "card": "1",
+ "case": {
+  "K": 128,
+  "M": 64,
+  "N": 64,
+  "barrier": false,
+  "bias": false,
+  "dtype": "bf16",
+  "expect": "probe",
+  "id": "splitk_bf16_m64_n64_k128_s16",
+  "jitter": 0,
+  "kind": "splitk",
+  "splitk": 16,
+  "terms": 1,
+  "why": "bf16 split-K sweep: 8 K fragments, M64"
+ },
+ "device_error_runs": 1,
+ "ir": {
+  "barrier_M": 0,
+  "barrier_M_settle": 0,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": []
+ },
+ "kernel_source_sha256": "2d09841919bd05e8c02d1b402276d887c83504fde36b6b71723b6a2ef03a3dfd",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T04:03:30Z",
+ "reference_sha256": "643f08de08d1db0c457bf0675628a88bcb4043a84c22b5b7b7857e967f87975c",
+ "run_samples": {
+  "device_error": [
+   {
+    "bitwise": false,
+    "device_error": "BuildError: ./test_aclnnop . failed (exit 2); log: <path>",
+    "run": 100,
+    "wall_s": 160.816
+   }
+  ],
+  "first": [
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "643f08de08d1db0c457bf0675628a88bcb4043a84c22b5b7b7857e967f87975c",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 1,
+    "wall_s": 43.603
+   },
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "643f08de08d1db0c457bf0675628a88bcb4043a84c22b5b7b7857e967f87975c",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 2,
+    "wall_s": 4.35
+   },
+   {
+    "bitwise": true,
+    "elements": 4096,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "643f08de08d1db0c457bf0675628a88bcb4043a84c22b5b7b7857e967f87975c",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 3,
+    "wall_s": 4.35
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 199,
+  "device_error": 1,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 200,
+  "wrong_finite": 0
+ }
+}

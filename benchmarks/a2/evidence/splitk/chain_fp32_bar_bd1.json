@@ -1,0 +1,80 @@
+{
+ "all_bitwise": true,
+ "block_dim": 1,
+ "card": "4",
+ "case": {
+  "K": 16,
+  "M": 16,
+  "N": 16,
+  "barrier": true,
+  "bias": false,
+  "dtype": "f32",
+  "expect": "bitwise",
+  "id": "chain_f32_m16_n16_k16_t2_bar",
+  "jitter": 0,
+  "kind": "chain",
+  "splitk": 0,
+  "terms": 2,
+  "why": "KDA/GDN triangular-inverse construct; 2 matmuls into one L0C, barrier(Pipe.M) between"
+ },
+ "device_error_runs": 0,
+ "ir": {
+  "barrier_M": 1,
+  "barrier_M_settle": 0,
+  "mmad": 2,
+  "mmad_accumulate": 1,
+  "trap_lints": []
+ },
+ "kernel_source_sha256": "5d6b4f3135d557da1da2a771aa23c8285d372d1b9ff43a7f41b7848a05165ed0",
+ "receipt": "SoC=Ascend910B3 cann=9.2.0-beta.1 op_packages=3 at=2026-09-23T04:03:30Z",
+ "reference_sha256": "44237e65a68c3865dbdfe75ba33f1fe1d65c945903c3468b3f5fbb5d83ce8d43",
+ "run_samples": {
+  "device_error": [],
+  "first": [
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "44237e65a68c3865dbdfe75ba33f1fe1d65c945903c3468b3f5fbb5d83ce8d43",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 1,
+    "wall_s": 11.596
+   },
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "44237e65a68c3865dbdfe75ba33f1fe1d65c945903c3468b3f5fbb5d83ce8d43",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 2,
+    "wall_s": 5.552
+   },
+   {
+    "bitwise": true,
+    "elements": 256,
+    "max_abs_diff": 0.0,
+    "mismatched": 0,
+    "non_finite": 0,
+    "output_sha256": "44237e65a68c3865dbdfe75ba33f1fe1d65c945903c3468b3f5fbb5d83ce8d43",
+    "poison_left": 0,
+    "rel_l2": 0.0,
+    "run": 3,
+    "wall_s": 4.561
+   }
+  ],
+  "wrong": []
+ },
+ "run_summary": {
+  "bitwise": 1000,
+  "device_error": 0,
+  "distinct_wrong_output_hashes": 0,
+  "runs": 1000,
+  "wrong_finite": 0
+ }
+}

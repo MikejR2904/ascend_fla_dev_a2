@@ -2804,6 +2804,10 @@
         {
           "at": "2026-09-23T13:32",
           "summary": "RISK write-set-expansion（13:28Z，自述，#39）：请求新增 tests/test_kda_fwd_a2.py（新文件，CPU 可跑的A2 验证计划/回执/边界/错误输出负对照，真机部分以显式子进程调已授权的 benchmark，不改 conftest）+ 修改tests/test_platform.py::test_unqualified_socs_raise_on_use 函数体（原因：这条测试现在断言 a2/a3 的 max_gate_span 都是空表；本任务按已批准的规格第 4 条给 CAPABILITIES[\"a2\"] 填实测数字后，a2 的这条断言必然失效——不是抢功能，是规格本身的必然后果；a3 仍断言空表，qualified=False 时入口拒绝的断言不删）。**PM 批准**：理由站得住，只改一个既有测试函数体、新增一个不碰既有 A5 断言的文件，风险低，不需要问用户。test_kda_fwd_npu.py 保持原文（module-level NPU skip + A5 fixture 确实不适合塞 A2 断言，这是好的工程判断，不是绕过测试）。"
+        },
+        {
+          "at": "2026-09-23T13:35",
+          "summary": "STATUS（13:34Z，自述，#39）：第一次完整工作负载先于任何 sim/pipesim 执行——真实 B1/T4096/H=HV32/K=V128，bd1，q/k/v BF16，g/beta/h0 FP32，非零初态，低跨度 8：o relative_l2=0.00354393501766026、max_abs_diff=1.5920610167086124e-05；final_state relative_l2=0.0027484274469316006、max_abs_diff=6.678560748696327e-05；均有限，均在 0.05 预算内。独立 CPU FP32 递推参考对上，输入未改。静态 A2 累加/barrier/splitk 守卫 6 passed。环境：910B3/CANN 9.0.0，compiler/opp timestamp 20260428_134817545，opp 含 ascend910b/ascend910_93，library 90cfcdc/kernels b3b3f9c（与 A2-01 一致）。PM 两条 ACK 均已收到，C1 会按独立数值正例验证；仍待批的只剩测试文件的具体改动（已原则批准，写集已更新）。"
         }
       ],
       "result": null

@@ -29,7 +29,7 @@ fla 系列线性注意力算子在昇腾 NPU 上的高效实现库。后端用
 | KDA（Kimi Delta Attention） | `kda` | 可申领 | 7 | 10/23 |
 | GDN（Gated DeltaNet） | `gated_delta_rule` | 可申领 | 4 | 6/10 |
 | DeltaNet | `delta_rule` | 尚未排任务 | 2 | 2/2 单元有验证记录 |
-| GDN-2（Gated DeltaNet 2） | `gdn2` | 仓主轨道 | 6 | 3/5 |
+| GDN-2（Gated DeltaNet 2） | `gdn2` | 仓主轨道 | 6 | 4/5 |
 | 整网融合算子（模块 / 层级） | `fusion` | 可申领 | 4 | 1/4 |
 | Mamba-1/2/3 | `mamba` | 未排期 (G4) | — | — |
 | GLA（Gated Linear Attention） | `gla` | 未排期 (G4) | — | — |
@@ -184,7 +184,7 @@ _上游单元已存在，本仓尚未排任务_
 
 </details>
 
-<details><summary><b>GDN-2（Gated DeltaNet 2） —— 6 个 kernel，3/5 完成</b></summary>
+<details><summary><b>GDN-2（Gated DeltaNet 2） —— 6 个 kernel，4/5 完成</b></summary>
 
 _仓主并行轨道，见 docs/handoff.md §1。**例外**（D-PM-16，2026-09-17）：chunk 前向单独开放给 agent 轨道，见 GD2-01（前向，已合入）/GD2-02（真机+整网验证，待派）/GD2-03（性能优化，已合入），写集限定新文件、不碰 reserved_paths_
 
@@ -194,15 +194,15 @@ _仓主并行轨道，见 docs/handoff.md §1。**例外**（D-PM-16，2026-09-1
 | `gdn2_fused_decode` | 仓主轨道 | ✅ 原生 · A5 真机 | ❓ 未核 | 6/6 passed | _仓主轨道：模型专用融合 decode_ |
 | `gdn2_short_conv_decode` | 仓主轨道 | ✅ 原生 · A5 真机 | ❓ 未核 | 6/6 passed | _仓主轨道：打包短卷积 decode_ |
 | `gdn2_norm2_w12_swiglu` | 仓主轨道 | ✅ 原生 · A5 真机 | ❓ 未核 | 4/6 passed | _仓主轨道：融合 RMSNorm + SwiGLU_ |
-| `gdn2_chunk_fwd` | 可申领 | 🔁 API 加宽 · 仅主机侧 → BF-05 | ✅ 原生 · A5 真机 | 3/5 | [#62](https://github.com/ddddwee1/ascend_fla_dev/issues/62) GD2-01 |
+| `gdn2_chunk_fwd` | 可申领 | 🔁 API 加宽 · 仅主机侧 → BF-05 | ✅ 原生 · A5 真机 | 4/5 | [#62](https://github.com/ddddwee1/ascend_fla_dev/issues/62) GD2-01 |
 | `gdn2_chunk_fwd_bwd` | 仓主轨道 | ❓ 未核 | ❓ 未核 | — | _反向仍未排期；前向已由 agent 轨道完成，见 gdn2_chunk_fwd_ |
 
-<details><summary>gdn2_chunk_fwd —— 3/5 完成，起点 GD2-01</summary>
+<details><summary>gdn2_chunk_fwd —— 4/5 完成，起点 GD2-01</summary>
 
 | 任务 | issue | SoC | dtype | 状态 | 说明 |
 |---|---|---|---|---|---|
 | GD2-01 | [#62](https://github.com/ddddwee1/ascend_fla_dev/issues/62) | `a5` | bf16、fp32 | ✅ done | ★ 起点 |
-| BF-05 | [#104](https://github.com/ddddwee1/ascend_fla_dev/issues/104) | `a5` | bf16 | 🔵 in_progress |  |
+| BF-05 | [#104](https://github.com/ddddwee1/ascend_fla_dev/issues/104) | `a5` | bf16 | ✅ done |  |
 | GD2-02 | [#63](https://github.com/ddddwee1/ascend_fla_dev/issues/63) | `a5` | bf16、fp32 | ⬜ open |  |
 | GD2-03 | [#66](https://github.com/ddddwee1/ascend_fla_dev/issues/66) | `a5` | bf16、fp32 | ✅ done |  |
 | GD2-04 | [#72](https://github.com/ddddwee1/ascend_fla_dev/issues/72) | `a5` | bf16、fp32 | ✅ done |  |

@@ -2981,6 +2981,10 @@
         {
           "at": "2026-09-20T03:48",
           "summary": "用户 2026-09-20 放行（D-PM-43「其他的也放行」）：原 gate = kernel-batch-approval。规格未写、前置未完成，所以状态位仍是 gated、gate 文案改成「用户已放行，待前置任务与规格」；PM 在前置完成、规格写好时改 open，不再问用户。"
+        },
+        {
+          "at": "2026-09-23T09:24",
+          "summary": "APPLY（09:18Z，自述，#44，MikejR2904，同账号第三次合入者，D-PM-58 首次合入授权已用过、无需再问）：更正此前 A2-20 APPLY 里的修订号（是 90cfcdc/b3b3f9c，不是 5287adc）；前置 A2-04/A2-07/A2-11 均已 CLOSE（PM 核实一致）。PM 核实规格仍未写（spec: null），gate 是「用户已放行（D-PM-43），待前置任务与规格」——按 D-PM-43 原文「PM 在前置完成、规格写好时改 open，不再问用户」，写规格是 PM 自己的下一步，不需再问用户批准这个批次本身。PM 抽查确认：kda_fwd_stable/kernels/triangular_inverse.py 的 split-K barrier 已经是现状（A2-03/A2-09 范围内已做），gdn_fwd/gdn_bwd 的 A2 派生单元目前还不存在（kernels/projects/a2/ 下只有三个 kda_* 单元）——「split-K 绕行」这项对已有 KDA 单元基本已完成，「GDN ABI」这项需要新建两个单元，规格工作量不小，回复申领人：先确认前置满足，规格由 PM 起草，暂不能立即 ASSIGN，会另行通知。"
         }
       ],
       "result": null

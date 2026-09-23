@@ -1117,7 +1117,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "P0",
-      "status": "in_progress",
+      "status": "done",
       "model": [],
       "kernel": [
         "gdn2_chunk_fwd"
@@ -1141,7 +1141,7 @@
       },
       "spec": "docs/pm/tasks/BF-05.md",
       "issue": 104,
-      "pr": null,
+      "pr": 131,
       "assignee": "limjiunnbin",
       "assignee_caps": {
         "agent": "自述为与 A2-09 同一 agent（APPLY 里写「我手上的 A2-09」，session 值不同）",
@@ -1225,9 +1225,25 @@
         {
           "at": "2026-09-23T10:51",
           "summary": "STATUS（10:45Z，自述，#104）：门控跨度七点全部跑完（41，物理卡 1），全部有限且在 5.2354e-03 预算内，无随跨度退化趋势（最差 8.564e-05 出现在 635.4，不在最深的 2541.7 处），已越过 GD2-01 的 FP32 观测 1520.9。**如实标「上限未确立」**：测到 2541.7 为止都准，但没测到失效边界，不把 2541.7 当闸值——继续往上推才能定闸。**性能三明治负结果，如实披露不粉饰**：同卡三轮（baseline FP32/candidate BF16/baseline FP32，各 20 次+3 预热）中位数 43.007ms → 43.996ms，比 FP32 慢 2.3%；原因讲清楚了——本任务只把公共面（q/k/v 入、o 出）换成 BF16，中间态（state/门控前缀/cube 累加）仍是 FP32，cube 没吃到 BF16 吞吐，反而因 A5 无 tile 级 cast、逐 token 走 @vf 多 4 次调用，多出来的正是这 2.3%。明确本任务达成的是 D-PM-35/37（转换进 kernel、host 零转换），不是提速；真要提速需 matmul 本身吃 BF16 操作数，不在本任务范围、不夹带。通则未设速度门槛，如实报数。下一步：两项证据补进包（41 回执单独标环境）→ 开 draft PR。"
+        },
+        {
+          "at": "2026-09-23T11:36",
+          "summary": "DONE（10:51Z，自述，#104，PR #131 draft，头 7599c02，7 个提交）：GDN-2 chunk 前向 BF16 原生 kernel 全部验收项完成，含门控跨度七点（上限如实标未确立）与性能三明治负结果（慢 2.3%，原因讲清楚）如实披露；过程中自查自修算子名冲突缺陷。PM 深度审查（NPU-free，本机排除 torch_npu）：写集干净（33 文件精确匹配声明范围）、reserved_paths 0 命中、隐私扫描仅 1 处误报（已脱敏路径片段）；host 算子审计/校准/契约/bd 逐位/FP32 逐位五份原始证据逐项核对数字精确吻合；性能与门控跨度日志读原始文件（含未过滤 CANN 噪声）核对；独立跑既有 test_gdn2_chunk_fwd.py 确认声明但未建的 test_gdn2_chunk_fwd_bf16.py 无功能缺口（仅 DONE 未交代，不算 rework 理由）；全量测试合入前后 1207/13/0，0 回归。**REVIEW accept，按 D-PM-33 自行合入**（squash，先 mark ready for review → 1bb9e1e；P0 BF16 任务，无预算/闸/域改动，无写集越界，无争议）。合入后 main 全量复跑同为 1207 passed/13 skipped，合入内容与已审分支逐字节相同（对合入提交的直接父提交做 diff 核实）。"
         }
       ],
-      "result": null,
+      "result": {
+        "commits": [
+          "7599c02",
+          "1bb9e1e"
+        ],
+        "evidence": [
+          "PR #131",
+          "kernels/projects/a5/gdn2_chunk_fwd_bf16/",
+          "ascend_fla/ops/gdn2_chunk_fwd.py",
+          "docs/research/gdn2_chunk_fwd_bf16.md"
+        ],
+        "numbers": "A5 真机（两台机器，Ascend950PR/CANN 9.2.0，编译器 build 不同：2026-05-09 与 2026-08-04，如实分开不互相沿用）：契约 12/12（board stage）；host 算子审计两条 dtype 路径均 PASS（各只有 empty×18/zeros×1，0 算术/转换）；bd∈{1,2,4,8} 逐位相同（PM 读驱动脚本确认真比对四个值）；FP32 路径改前后逐位相同；校准 F=1.7451e-3、预算=3F=5.2354e-3（首提交先冻结、未放宽）；o/final_state 相对 L2 全在预算内，最差 8.564e-05；门控跨度重测 BF16：七点（119.1~2541.7）全部有限且在预算内，无退化趋势，如实标\"上限未确立\"（未测到失效边界，不虚报闸值）；性能三明治（同卡三轮）：baseline FP32 43.007ms、candidate BF16 43.996ms，ratio 1.023——**负结果，如实披露不粉饰**：只转换公共面、cube 内部仍 FP32，未获得 BF16 吞吐，A5 无 tile 级 cast 致逐 token 多 4 次 @vf 调用是主因；本任务达成 D-PM-35/37（转换进 kernel、host 零转换），非提速。**过程中自查自修一个真实缺陷**：BF16 派生 kernel 最初沿用 FP32 单元的算子名，同进程两路径共存时 BF16 会静默拿到 FP32 二进制（CANN 按名解析、同进程首个 vendor 树胜出）；host 算子审计场景下暴露，五个 kernel 改名 `*_bf16` 后修复。PM 独立复核：写集/reserved_paths 干净；26 个新增 blob 隐私扫描仅 1 处已脱敏相对路径误报；逐份证据 JSON/日志读原始文件核对数字，含未过滤的 CANN \"path string is NULL\" 噪声原文；独立跑 tests/test_gdn2_chunk_fwd.py（43 passed/1 skipped，含 bfloat16 参数化用例经 sim launcher 真跑新单元）确认声明但未创建的 tests/test_gdn2_chunk_fwd_bf16.py 不构成功能缺口（既有共享文件已覆盖，只是 DONE 未交代）；全量测试合入前后均 1207 passed/13 skipped、0 failed（本 PR 未加新 pytest 文件，计数持平不违反\"只增不减\"）；合入的树与已审内容逐字节相同（对合入提交的直接父提交做 diff 核实，写集 33 个文件精确匹配）。"
+      },
       "origin": {
         "kind": "user",
         "note": "用户 2026-09-19 直接指令（D-PM-35）：BF16 必须 kernel 侧，追加任务改正，后续 BF16 优先"

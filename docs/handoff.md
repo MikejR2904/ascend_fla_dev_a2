@@ -11,6 +11,11 @@
 
 ### 正在飞的任务（现在没有；A5K-02、PK-02、PK-03 都已于 2026-09-19 合入）
 
+> **2026-09-23T11:28Z 更新：BF-05（GDN-2 chunk 前向 BF16 原生 kernel，PR #131）审查 accept 并由 PM 按 D-PM-33 自行合入（squash）→ 1bb9e1e；main 全量 1207 passed / 13 skipped / 0 failed（计数持平，本 PR 未加新 pytest 文件）。BF-05 done。**
+> - 两项如实披露的负结果，都不影响合入：① 性能三明治 BF16 比 FP32 慢 2.3%——只转换了公共面，cube 累加仍 FP32，没拿到吞吐，原因讲得很清楚；② 门控跨度测到 2541.7（远超 GD2-01 的 FP32 观测 1520.9）仍有限且在预算内，但没推到失效边界，如实标"上限未确立"，没有拿最深测试点当闸值。
+> - 过程中自查自修一个真实缺陷：BF16 派生 kernel 最初沿用了 FP32 单元的算子名，同进程两条 dtype 路径共存时 BF16 会静默拿到 FP32 二进制（CANN 按算子名解析、同进程首个 vendor 树胜出，二次 build 被静默忽略）——host 算子审计场景下暴露，五个 kernel 改名 `*_bf16` 后修复。这是本会话第二次遇到这一类缺陷（A2-10 的 `_claim_op_name` 也是同一机制），值得记住。
+> - PM 审查踩了一次自己的坑：核对合入内容时第一次用错了 diff 基准（拿旧的 merge-base 而不是合入提交自己的直接父提交），一度以为 AGENTS.md/README 被合入"回退"了，虚惊一场——正确做法是对合入提交的**直接父提交**做 diff，不是对分支当初 fetch 时的旧 merge-base。
+>
 > **2026-09-23T07:14Z 更新：A2-11（A2 算子结论总闸，PR #130）审查完成后用户直接裁定"accept and merge"，已合入（squash → 652dfc0）；main 全量 1207 passed / 13 skipped / 0 failed（净增 6）。这是本仓 A2 波次迄今最重要的一次合入。**
 > - 真机定量结果：FP32 split-K（pin 已修）2000/2000 逐位稳定；BF16 split-K@M16 500/500 全错、500 个输出哈希两两不同（硬件时序竞争的铁证）；BF16/FP16 split-K@M32 200/200 触发 AI Core 异常；BF16 split-K@M64 199/200 正确；FP32 手写累加链无 barrier 2000/2000 未复现（如实标"未复现≠安全"，保守保留绕行）。
 > - **AGENTS.md 已更新**：§2 记录 A2-11 完成与用户裁定——满足研究文档四项前提的 A2 结论从此算数（不再仅是观测）；§7 新增永久禁止条款——A2 系 BF16/FP16 `splitk` 在 `M<64` 必须显式报错，不接受任何绕过，静态守卫是 `tests/test_a2_accumulate_barriers.py`。`gaps.json` 的 `a2-splitk-fp32-cube` / `a2-splitk-bf16-fp16-unsettled` 已补 A2-11 的真机确认证据。

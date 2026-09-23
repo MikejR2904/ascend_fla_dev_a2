@@ -1,0 +1,197 @@
+[
+  {
+    "t": 4096,
+    "seed": 0,
+    "block_dim": 2,
+    "last_good": 174,
+    "first_bad": 176,
+    "history": [
+      {
+        "target": 160,
+        "good": true,
+        "record": "refine-bd2/t4096_seed0_span160.0/t4096_seed0_span160.0.json"
+      },
+      {
+        "target": 192,
+        "good": false,
+        "record": "refine-bd2/t4096_seed0_span192.0/t4096_seed0_span192.0.json"
+      },
+      {
+        "target": 176,
+        "good": false,
+        "record": "refine-bd2/t4096_seed0_span176.0/t4096_seed0_span176.0.json"
+      },
+      {
+        "target": 168,
+        "good": true,
+        "record": "refine-bd2/t4096_seed0_span168.0/t4096_seed0_span168.0.json"
+      },
+      {
+        "target": 172,
+        "good": true,
+        "record": "refine-bd2/t4096_seed0_span172.0/t4096_seed0_span172.0.json"
+      },
+      {
+        "target": 174,
+        "good": true,
+        "record": "refine-bd2/t4096_seed0_span174.0/t4096_seed0_span174.0.json"
+      }
+    ]
+  },
+  {
+    "t": 4096,
+    "seed": 1,
+    "block_dim": 2,
+    "last_good": 174,
+    "first_bad": 176,
+    "history": [
+      {
+        "target": 160,
+        "good": true,
+        "record": "refine-bd2/t4096_seed1_span160.0/t4096_seed1_span160.0.json"
+      },
+      {
+        "target": 192,
+        "good": false,
+        "record": "refine-bd2/t4096_seed1_span192.0/t4096_seed1_span192.0.json"
+      },
+      {
+        "target": 176,
+        "good": false,
+        "record": "refine-bd2/t4096_seed1_span176.0/t4096_seed1_span176.0.json"
+      },
+      {
+        "target": 168,
+        "good": true,
+        "record": "refine-bd2/t4096_seed1_span168.0/t4096_seed1_span168.0.json"
+      },
+      {
+        "target": 172,
+        "good": true,
+        "record": "refine-bd2/t4096_seed1_span172.0/t4096_seed1_span172.0.json"
+      },
+      {
+        "target": 174,
+        "good": true,
+        "record": "refine-bd2/t4096_seed1_span174.0/t4096_seed1_span174.0.json"
+      }
+    ]
+  },
+  {
+    "t": 4096,
+    "seed": 2,
+    "block_dim": 2,
+    "last_good": 174,
+    "first_bad": 176,
+    "history": [
+      {
+        "target": 160,
+        "good": true,
+        "record": "refine-bd2/t4096_seed2_span160.0/t4096_seed2_span160.0.json"
+      },
+      {
+        "target": 192,
+        "good": false,
+        "record": "refine-bd2/t4096_seed2_span192.0/t4096_seed2_span192.0.json"
+      },
+      {
+        "target": 176,
+        "good": false,
+        "record": "refine-bd2/t4096_seed2_span176.0/t4096_seed2_span176.0.json"
+      },
+      {
+        "target": 168,
+        "good": true,
+        "record": "refine-bd2/t4096_seed2_span168.0/t4096_seed2_span168.0.json"
+      },
+      {
+        "target": 172,
+        "good": true,
+        "record": "refine-bd2/t4096_seed2_span172.0/t4096_seed2_span172.0.json"
+      },
+      {
+        "target": 174,
+        "good": true,
+        "record": "refine-bd2/t4096_seed2_span174.0/t4096_seed2_span174.0.json"
+      }
+    ]
+  },
+  {
+    "t": 128,
+    "seed": 0,
+    "block_dim": 2,
+    "last_good": 174,
+    "first_bad": 176,
+    "history": [
+      {
+        "target": 160,
+        "good": true,
+        "record": "refine-bd2/t128_seed0_span160.0/t128_seed0_span160.0.json"
+      },
+      {
+        "target": 192,
+        "good": false,
+        "record": "refine-bd2/t128_seed0_span192.0/t128_seed0_span192.0.json"
+      },
+      {
+        "target": 176,
+        "good": false,
+        "record": "refine-bd2/t128_seed0_span176.0/t128_seed0_span176.0.json"
+      },
+      {
+        "target": 168,
+        "good": true,
+        "record": "refine-bd2/t128_seed0_span168.0/t128_seed0_span168.0.json"
+      },
+      {
+        "target": 172,
+        "good": true,
+        "record": "refine-bd2/t128_seed0_span172.0/t128_seed0_span172.0.json"
+      },
+      {
+        "target": 174,
+        "good": true,
+        "record": "refine-bd2/t128_seed0_span174.0/t128_seed0_span174.0.json"
+      }
+    ]
+  },
+  {
+    "t": 64,
+    "seed": 0,
+    "block_dim": 2,
+    "last_good": 174,
+    "first_bad": 176,
+    "history": [
+      {
+        "target": 160,
+        "good": true,
+        "record": "refine-bd2/t64_seed0_span160.0/t64_seed0_span160.0.json"
+      },
+      {
+        "target": 192,
+        "good": false,
+        "record": "refine-bd2/t64_seed0_span192.0/t64_seed0_span192.0.json"
+      },
+      {
+        "target": 176,
+        "good": false,
+        "record": "refine-bd2/t64_seed0_span176.0/t64_seed0_span176.0.json"
+      },
+      {
+        "target": 168,
+        "good": true,
+        "record": "refine-bd2/t64_seed0_span168.0/t64_seed0_span168.0.json"
+      },
+      {
+        "target": 172,
+        "good": true,
+        "record": "refine-bd2/t64_seed0_span172.0/t64_seed0_span172.0.json"
+      },
+      {
+        "target": 174,
+        "good": true,
+        "record": "refine-bd2/t64_seed0_span174.0/t64_seed0_span174.0.json"
+      }
+    ]
+  }
+]

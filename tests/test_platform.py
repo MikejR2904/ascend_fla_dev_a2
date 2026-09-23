@@ -52,7 +52,12 @@ def test_a5_accessors_match_ops_kda_constants():
 def test_unqualified_socs_raise_on_use(soc):
     cap = platform.capability(soc)
     assert cap["qualified"] is False
-    assert cap["max_gate_span"] == {}
+    if soc == "a2":
+        assert cap["supported_block_dim"] == {"chunk": (1, 2)}
+        assert cap["max_gate_span"] == {"stable": {"forward": 158.0}}
+    else:
+        assert cap["supported_block_dim"] == {}
+        assert cap["max_gate_span"] == {}
     with pytest.raises(RuntimeError, match="未验收"):
         platform.require_qualified(soc)
     with pytest.raises(RuntimeError, match="未验收"):

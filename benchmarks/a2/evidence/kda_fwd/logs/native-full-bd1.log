@@ -1,0 +1,7 @@
+SHARED_LOCK_HELD_AND_HEALTH_IDLE_CONFIRMED
+FULL_START B1 T4096 H32 HV32 K128 V128 bd1 qkv=bf16 state=fp32 span=8
+FULL_DEVICE_RETURNED build_and_harness_wall_s= 280.28632219694555
+FULL_METRIC o {"relative_l2": 0.00354393501766026, "max_abs_diff": 1.5920610167086124e-05, "finite": true, "passed": true}
+FULL_METRIC final_state {"relative_l2": 0.0027484274469316006, "max_abs_diff": 6.678560748696327e-05, "finite": true, "passed": true}
+FULL_PASS
+CHILD_COMPLETED 0

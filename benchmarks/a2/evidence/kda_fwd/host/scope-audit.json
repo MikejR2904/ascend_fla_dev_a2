@@ -1,0 +1,19 @@
+{
+  "base": "9b8c7e8e8433d3cb00d6890a48b3d4bc2207c01a",
+  "a2_dictionary_only": true,
+  "approved_platform_test_body_only": true,
+  "existing_benchmark_functions_unchanged": [
+    "_dump_for_bitwise",
+    "_ref_grads_checkpointed",
+    "check_bitwise",
+    "check_bwd",
+    "check_drift",
+    "check_gqa",
+    "make_inputs",
+    "ref_fwd",
+    "rel_l2",
+    "to_npu"
+  ],
+  "kernels_public_ops_A5_NPU_tests_unchanged": true,
+  "all_changed_paths_in_write_set": true
+}

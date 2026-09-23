@@ -1,0 +1,7 @@
+# cwd $TASK/native/full-bd1/kda_sub1_gate_a2_kernel/aclnn_test
+# set -e
+if [ -f "$CANN/bin/setenv.bash" ]; then source "$CANN/bin/setenv.bash"; fi
+if [ -f "$TASK/native/full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/bin/set_env.bash" ]; then source "$TASK/native/full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/bin/set_env.bash"; fi
+export LD_LIBRARY_PATH="$TASK/native/full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_api/lib:${LD_LIBRARY_PATH:-}"
+./test_aclnnop .
+ASCRIP_HARNESS_OK

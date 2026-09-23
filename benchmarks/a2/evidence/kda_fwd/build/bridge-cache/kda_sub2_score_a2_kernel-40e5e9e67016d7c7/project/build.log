@@ -1,0 +1,164 @@
+# cwd $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project
+# set -e
+if [ -f "$CANN/bin/setenv.bash" ]; then source "$CANN/bin/setenv.bash"; fi
+export ASCEND_HOME_PATH=$CANN
+bash build.sh
+cd build_out
+for f in custom_*.run; do bash ./$f --install-path=$TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op; done
+using ASCEND_HOME_PATH: $CANN
+Preset CMake variables:
+
+  ASCEND_CANN_PACKAGE_PATH:PATH="$CANN"
+  ASCEND_COMPUTE_UNIT:STRING="ascend910b"
+  ASCEND_PACK_SHARED_LIBRARY:BOOL="False"
+  ASCEND_PYTHON_EXECUTABLE:STRING="python3"
+  CMAKE_BUILD_TYPE:STRING="Release"
+  CMAKE_CROSS_PLATFORM_COMPILER:PATH="$EXTERNAL_PATH"
+  CMAKE_INSTALL_PREFIX:PATH="$TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out"
+  ENABLE_BINARY_PACKAGE:BOOL="True"
+  ENABLE_CROSS_COMPILE:BOOL="False"
+  ENABLE_SOURCE_PACKAGE:BOOL="True"
+  ENABLE_TEST:BOOL="True"
+  vendor_name:STRING="customize"
+
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: $EXTERNAL_PATH - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: $EXTERNAL_PATH - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Opbuild generating sources
+-- Opbuild generating sources - done
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_CROSS_PLATFORM_COMPILER
+
+
+-- Build files have been written to: $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out
+[ 33%] Generating tbe/op_info_cfg/ai_core/ascend910b/aic-ascend910b-ops-info.json
+
+
+==============check valid for ops info start==============
+==============check valid for ops info end================
+
+
+Compile op info cfg successfully.
+[ 33%] Built target ops_info_gen_ascend910b
+[ 66%] Building CXX object op_host/CMakeFiles/cust_optiling.dir/kda_sub2_score_a2_kernel.cpp.o
+[100%] Linking CXX shared library libcust_opmaster_rt2.0.so
+[100%] Built target cust_optiling
+[ascend910b] Generating KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6 ...
+[INFO] ATRACE(825199,python3):2026-09-23-13:48:17.085.046 [trace_recorder.c:132](tid:825199) get path by env ASCEND_WORK_PATH: $TASK/native/work
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:17.099.594 [task_fail_callback_data_manager.cc:93] 825199 TaskFailCallBackManager: Constructor.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:17.099.608 [xpu_task_fail_callback_data_manager.cc:59] 825199 XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Constructor.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:17.102.672 [runtime_keeper.cc:184] 825199 CreateRuntimeImpl: Open libruntime_v100.so successfully
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:17.102.831 [runtime.cc:5389] 825199 GetVisibleDevices: real deviceCnt:8 userDeviceCnt:1 isSetVisibleDev:1 ASCEND_RT_VISIBLE_DEVICES:[REDACTED] available visible devices:[REDACTED]
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.538 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[4] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.553 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[6] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.560 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[5] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.577 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[0] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.582 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[1] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.586 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[8] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.592 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[2] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.596 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[3] package worker was created successfully
+[INFO] TDT(825199,python3):2026-09-23-13:48:17.105.605 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:825199] Register[9] package worker was created successfully
+Opc tool start working now, please wait for a moment.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:20.190.385 [stream_mem_pool.cc:360] 825199 ~PoolRegistry: SOMA PoolRegistry destructor.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:20.190.413 [runtime_adapt.cc:56] 825199 ~Runtime: runtime destructor.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:20.190.420 [runtime.cc:1389] 825199 WaitMonitorExit: wait monitor success, used count=0.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:20.302.588 [xpu_task_fail_callback_data_manager.cc:64] 825199 ~XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Destructor.
+[INFO] RUNTIME(825199,python3):2026-09-23-13:48:20.302.610 [task_fail_callback_data_manager.cc:98] 825199 ~TaskFailCallBackManager: Destructor.
+[INFO] ATRACE(825199,python3):2026-09-23-13:48:20.654.672 [stacktrace_signal.c:194](tid:825199) unregister all signal handlers, can not capture signal.
+[ascend910b] Generating KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6 Done
+[100%] Built target KdaSub2ScoreA2Kernel_ascend910b
+[100%] Built target ascendc_bin_ascend910b_gen_ops_config
+[100%] Built target binary
+[ 10%] Generating scripts/install.sh, scripts/upgrade.sh
+[ 10%] Built target modify_vendor
+[ 10%] Built target gen_version_info
+[ 20%] Building CXX object op_host/CMakeFiles/cust_op_proto.dir/kda_sub2_score_a2_kernel.cpp.o
+[ 30%] Building CXX object op_host/CMakeFiles/cust_op_proto.dir/__/autogen/op_proto.cc.o
+[ 40%] Linking CXX shared library libcust_opsproto_rt2.0.so
+[ 40%] Built target cust_op_proto
+Consolidate compiler generated dependencies of target cust_optiling
+[ 50%] Building CXX object op_host/CMakeFiles/cust_optiling.dir/kda_sub2_score_a2_kernel.cpp.o
+[ 60%] Linking CXX shared library libcust_opmaster_rt2.0.so
+[ 60%] Built target cust_optiling
+[ 70%] Building CXX object op_host/CMakeFiles/cust_opapi.dir/__/autogen/aclnn_kda_sub2_score_a2_kernel.cpp.o
+[ 80%] Linking CXX shared library libcust_opapi.so
+[ 80%] Built target cust_opapi
+[ 80%] Built target optiling_compat
+[ 90%] Built target ops_info_gen_ascend910b
+[100%] Generating tbe/op_info_cfg/ai_core/npu_supported_ops.json
+$TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/autogen $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/op_kernel/tbe/op_info_cfg/ai_core
+[INFO] Succed generated $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/op_kernel/tbe/op_info_cfg/ai_core/npu_supported_ops.json
+[100%] Built target npu_supported_ops
+Run CPack packaging tool...
+CPack: Create package using External
+CPack: Install projects
+CPack: - Run preinstall target for: opp
+CPack: - Install project: opp []
+CPack: Create package
+
+About to compress 1888 KB of data...
+Adding files to archive named "custom_opp_ubuntu_aarch64.run"...
+./help.info
+./install.sh
+./packages/vendors/customize/framework/tensorflow/npu_supported_ops.json
+./packages/vendors/customize/op_api/include/aclnn_kda_sub2_score_a2_kernel.h
+./packages/vendors/customize/op_api/lib/libcust_opapi.so
+./packages/vendors/customize/op_impl/ai_core/tbe/config/ascend910b/aic-ascend910b-ops-info.json
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub2_score_a2_kernel.cpp
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub2_score_a2_kernel.py
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub2_score_a2_kernel_cube.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub2_score_a2_kernel_vec.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/scalar_math.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/tensorutils_cce.h
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub2_score_a2_kernel/KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6.json
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub2_score_a2_kernel/KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6.o
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/config/ascend910b/binary_info_config.json
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/config/ascend910b/kda_sub2_score_a2_kernel.json
+./packages/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so
+./packages/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so
+./packages/vendors/customize/op_proto/inc/op_proto.h
+./packages/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so
+./packages/vendors/customize/version.info
+./upgrade.sh
+CRC: 3016221296
+SHA256: fca97671773d43c84bc99d942f29acb85b554f345871b5af2e9c3975a5aac7d9
+Skipping md5sum at user request
+
+Self-extractable archive "custom_opp_ubuntu_aarch64.run" successfully created.
+Copy $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/_CPack_Packages/Linux/External/custom_opp_ubuntu_aarch64.run/custom_opp_ubuntu_aarch64.run to $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/
+CPack: - package: $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/custom_opp_ubuntu_aarch64.run.json generated.
+CPack: - package: $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build_out/custom_opp_ubuntu_aarch64.run generated.
+Verifying archive integrity...     0% \x08\x08\x08\x08\x08\x08\x08   60% \x08\x08\x08\x08\x08\x08\x08 100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0     0% \x08\x08\x08\x08\x08\x08\x08   60% \x08\x08\x08\x08\x08\x08\x08 100%\x20\x20
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy uninstall sh success
+[ops_custom] [2026-09-23 13:48:42] [INFO] create $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors.
+[ops_custom] [2026-09-23 13:48:42] [INFO] upgrade framework
+[ops_custom] [2026-09-23 13:48:42] [INFO] create $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/framework.
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy new ops framework files ......
+[ops_custom] [2026-09-23 13:48:42] [INFO] upgrade op proto
+[ops_custom] [2026-09-23 13:48:42] [INFO] create $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_proto.
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-09-23 13:48:42] [INFO] upgrade op impl
+[ops_custom] [2026-09-23 13:48:42] [INFO] create $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_impl.
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-09-23 13:48:42] [INFO] upgrade op api
+[ops_custom] [2026-09-23 13:48:42] [INFO] create $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_api.
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-09-23 13:48:42] [INFO] upgrade version.info
+[ops_custom] [2026-09-23 13:48:42] [INFO] copy new version.info files ......
+[ops_custom] [2026-09-23 13:48:42] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-09-23 13:48:42] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source $TASK/native/bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/bin/set_env.bash ] to set the environment path
+SUCCESS

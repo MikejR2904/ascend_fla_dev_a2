@@ -1,0 +1,68 @@
+{
+  "range-coarse-bd1": {
+    "suite": "range",
+    "same_card_group": "range-primary",
+    "case_count": 24,
+    "source": "runs/range-coarse-bd1/results.json"
+  },
+  "refine-bd1": {
+    "suite": "range",
+    "same_card_group": "range-primary",
+    "case_count": 24,
+    "source": "runs/refine-bd1/results.json"
+  },
+  "refine-bd2": {
+    "suite": "range",
+    "same_card_group": "range-alternate",
+    "case_count": 30,
+    "source": "runs/refine-bd2/results.json"
+  },
+  "defaults-bd2": {
+    "suite": "defaults",
+    "same_card_group": "range-alternate",
+    "case_count": 8,
+    "source": "runs/defaults-bd2/results.json"
+  },
+  "real-bd1": {
+    "suite": "real",
+    "same_card_group": "control",
+    "case_count": 5,
+    "source": "runs/real-bd1/results.json"
+  },
+  "real-bd2": {
+    "suite": "real",
+    "same_card_group": "control",
+    "case_count": 5,
+    "source": "runs/real-bd2/results.json"
+  },
+  "performance-bd1": {
+    "suite": "performance",
+    "same_card_group": "control",
+    "case_count": 2,
+    "source": "runs/performance-bd1/results.json"
+  },
+  "performance-bd2": {
+    "suite": "performance",
+    "same_card_group": "control",
+    "case_count": 2,
+    "source": "runs/performance-bd2/results.json"
+  },
+  "defaults-bd1": {
+    "suite": "defaults",
+    "same_card_group": "control",
+    "case_count": 8,
+    "source": "runs/defaults-bd1/results.json"
+  },
+  "guard-bd1": {
+    "suite": "guard",
+    "same_card_group": "range-primary",
+    "case_count": 40,
+    "source": "runs/guard-bd1/results.json"
+  },
+  "guard-bd2": {
+    "suite": "guard",
+    "same_card_group": "range-alternate",
+    "case_count": 40,
+    "source": "runs/guard-bd2/results.json"
+  }
+}

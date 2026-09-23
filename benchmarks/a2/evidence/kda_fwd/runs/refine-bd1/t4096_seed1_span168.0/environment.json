@@ -1,0 +1,62 @@
+{
+  "soc": "a2",
+  "chip": "Ascend910B3",
+  "python": "3.11.15",
+  "torch": "2.10.0+cpu",
+  "torch_npu": "2.10.0",
+  "repo_head": "7a7cc5382abee144d69296a0dd6e64cb65fbc339",
+  "source_pins": {
+    "library": "90cfcdc720bbcd66e8bd4361c4dd4fbc1a2a57b5",
+    "kernels": "b3b3f9c16df7c4626ed3c081032a1be5a753d0b1",
+    "fla": "e52dbc0ea19d3a40d7ab7f9eed855d2b473994d2"
+  },
+  "cann": {
+    "compiler/version.info": {
+      "sha256": "c44017e925906ff08120ada7be44167be9f25d859c734ba202ae7be75ff5bede",
+      "fields": {
+        "Version": "9.0.0",
+        "version_dir": "cann",
+        "required_package_runtime_version": "\"9.0\"",
+        "required_package_ge-executor_version": "\"9.0\"",
+        "required_package_metadef_version": "\"9.0\"",
+        "required_package_opbase_version": "\"9.0\"",
+        "required_package_bisheng-compiler_version": "\"9.0\"",
+        "required_package_tbe-tik_version": "\"9.0\"",
+        "timestamp": "20260428_134817545"
+      }
+    },
+    "opp/version.info": {
+      "sha256": "3f6997bfb998c24cf107258e4cd4e76f6ffc520e0382770e75520083c20b162a",
+      "fields": {
+        "Version": "9.0.0",
+        "version_dir": "cann",
+        "required_package_runtime_version": "\">=8.5\"",
+        "required_package_ge-executor_version": "\">=8.5\"",
+        "required_package_metadef_version": "\">=8.5\"",
+        "required_package_asc-devkit_version": "\">=8.5\"",
+        "required_package_bisheng-compiler_version": "\">=8.5\"",
+        "timestamp": "20260428_134817545"
+      }
+    }
+  },
+  "fla_oracle_sha256": "60a32285d4b67068ff633b48bbe8ab31028066d24f00d27e12199a88fc73f016",
+  "opp_packages": [
+    "ascend910_93",
+    "ascend910b"
+  ],
+  "source_sha256": {
+    "kernels/projects/a2/kda_fwd_stable/unit.py": "78a82e6f7641d785554b58561b0eded88690c6f41685f07ef86aa9876dc51d28",
+    "benchmarks/verify_real_shapes.py": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80",
+    "kernels/projects/a2/kda_fwd_stable/kernels/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "kernels/projects/a2/kda_fwd_stable/kernels/gate.py": "8347ccc24ba4192072cd7ee953ff4667ba1ada21420638bebda9157b5b1860b9",
+    "kernels/projects/a2/kda_fwd_stable/kernels/intra.py": "e535a6625dabdc5b57d10688e3bdad44f332514b7377dd95d380b6ff033dbd4e",
+    "kernels/projects/a2/kda_fwd_stable/kernels/recurrent.py": "5ab626110ab0880e29b2d33aa6733fcdb231abc1b6a51696a506289ff864214e",
+    "kernels/projects/a2/kda_fwd_stable/kernels/triangular_inverse.py": "2476c04793091524a9c9b8bb1ec3e7b1075b566087fc215d876d36e655d68407",
+    "kernels/projects/a2/kda_fwd_stable/kernels/wy.py": "1e7d2c43a254467db7fc3f7bc6858d8c49e90d35362efd68501c25f3bab72043",
+    "kernels/projects/a2/kda_fwd_stable/reference.py": "ac3204306b77f0ddffb980752194c795de4ee768ff6b32832fcf44e17b83458d",
+    "ascend_fla/reference/kda.py": "9f245ae5c6c6c92b9f2de955213ae11f1d4ce0a07e73c3ff3a548b2d5cb9397e",
+    "ascend_fla/runtime/compile.py": "08e859d1b3c6ebc18756c4b05cecb0f95291a6439f177f3f6aee4d31f31125a9",
+    "ascend_fla/runtime/binding.py": "9c5161dbad26227031146279a07be7fc7909d04a0d2352776b23620e513e1a2c",
+    "benchmarks/a2/bringup.py": "7d0841800a10307cb777050c7f7ef1624415b8924e16f6dbe41715108fb00805"
+  }
+}

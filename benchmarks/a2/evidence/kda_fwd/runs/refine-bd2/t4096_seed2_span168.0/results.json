@@ -1,0 +1,122 @@
+[
+  {
+    "id": "t4096_seed2_span168.0",
+    "shape": [
+      1,
+      4096,
+      32,
+      32,
+      128,
+      128
+    ],
+    "block_dim": 2,
+    "input_dtype": "qkv=bf16;g,beta,h0=fp32",
+    "calibration": {
+      "initialization_span": 97.68864440917969,
+      "measured_span": 167.99998474121094,
+      "target_span": 168.0,
+      "hidden_size": 2304
+    },
+    "comparison": {
+      "o": {
+        "finite": true,
+        "relative_l2": 0.003917126469341351,
+        "max_abs_diff": 1.3137469068169594e-05,
+        "ok": true
+      },
+      "final_state": {
+        "finite": true,
+        "relative_l2": 0.0033194810666994975,
+        "max_abs_diff": 0.0001465650275349617,
+        "ok": true
+      }
+    },
+    "cpu_vs_fla": {
+      "o": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "max_abs_diff": 0.0,
+        "ok": true
+      },
+      "final_state": {
+        "finite": true,
+        "relative_l2": 0.0,
+        "max_abs_diff": 0.0,
+        "ok": true
+      }
+    },
+    "independent_vs_fla": {
+      "o": {
+        "finite": true,
+        "relative_l2": 2.5054123492421067e-07,
+        "max_abs_diff": 1.7462298274040222e-09,
+        "ok": true
+      },
+      "final_state": {
+        "finite": true,
+        "relative_l2": 1.1730111367651967e-07,
+        "max_abs_diff": 7.450580596923828e-09,
+        "ok": true
+      }
+    },
+    "unchanged": true,
+    "input_sha256": {
+      "q": "0c35ffd68879e1e55d1fa55c659b4fdc5c9bb410e9f02c52a433c879c7e62d51",
+      "k": "d983106f7ca6df3ceb6b047df0e57e03ac183a33d0e2f13e1bda84d162789c31",
+      "v": "05b3612926a55e9b3f9cbf304c748a59c15af74ed571467387c2feaaaea083b9",
+      "g_raw": "684ff2cad0c14556b709f8707b741d2138997e813d18611e8a434fdde9f7527f",
+      "beta": "4d0e0e08c4e4893828dc384a5c2a497fb8897f3560a13f896daf5bdff6fbde9a",
+      "initial_state": "75ef795234a1d897a87a2b06e21c4b18db7a0a40286f811a729c3c38595e6bf1"
+    },
+    "output_sha256": {
+      "o": "566ed4f5a73527f475af2cd4f17b95351003c627e0f5e314f67d9e06c8fbacfa",
+      "final_state": "3fb6b7abff98c3f9606f55ac37066330e52df4c7c74e081196c459cc93b740ce",
+      "g_cumsum": "b6fb6927bbe034aae7b73850a7b821e890cfd57b9de8b0ea23161e3696f6797d",
+      "eg": "be4d989d650fd4671a34abb87bc94921e84b29eebe35da80a406227fc7343b37",
+      "Aqk": "e3671762135d5b2df68cfe8e1312d2f7044f33cfa20f01eac5e85c59abe410cc",
+      "strict": "cde9e4364bc62137ed309b03857b7e0d68db998879c6cd3656d0d82502ed1d34",
+      "Akk": "241445ef454fc66aa7eceb1e7eba518ed34dbe92f6ecba22c868acdeb0b20c0b",
+      "w": "19c196e7ba1ed93c163e26e4d85f1a8b2e5a7466d9bba718ce10b32578d1fca4",
+      "u": "5d9f493eea9252028348bb9a4d5e0bb3644025690c90118d2eb86985f09d404d",
+      "qg": "25c5bda78f89bb8697d77fc214371719412a510aa8add8ef1adb89ea4fdb8219",
+      "kg": "44a747c75841f9ddc4c7a1f5c4ddb57d7c978d4ae46312e7150122a83eb6a7a4"
+    },
+    "finite_stages": {
+      "o": true,
+      "final_state": true,
+      "g_cumsum": true,
+      "eg": true,
+      "Aqk": true,
+      "strict": true,
+      "Akk": true,
+      "w": true,
+      "u": true,
+      "qg": true,
+      "kg": true
+    },
+    "launcher": "bridge",
+    "wall_including_allocation_copy_build_s": 3.5358702978119254,
+    "execution": [
+      {
+        "kernel": "KdaSub1GateA2Kernel",
+        "signature": "863ac7afe523cb19"
+      },
+      {
+        "kernel": "KdaSub2ScoreA2Kernel",
+        "signature": "40e5e9e67016d7c7"
+      },
+      {
+        "kernel": "TrilInverse64A2Kernel",
+        "signature": "2bb971b6d5eefb5a"
+      },
+      {
+        "kernel": "KdaSub3WyA2Kernel",
+        "signature": "b9309649d2a115bf"
+      },
+      {
+        "kernel": "KdaSub45A2Kernel",
+        "signature": "c5f3eaadccbae8e1"
+      }
+    ]
+  }
+]

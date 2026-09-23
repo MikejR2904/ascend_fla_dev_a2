@@ -1,0 +1,452 @@
+[
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/artifacts/kda_sub1_gate_a2_kernel.cpp",
+    "sha256": "739ea78e6df07fca4d285b8fe53fddfaae567ba15944c63ef684269d954fc8e3",
+    "bytes": 674
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "b95bac06d79625094bc61b31076ee913af821e4dba47dc89bcc7e9fd34471746",
+    "bytes": 14376
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub1_gate_a2_kernel/KdaSub1GateA2Kernel_2fe9bbc1e741aae514ac9fb6918249ce.o",
+    "sha256": "94ce6d0ccba620398d673f01f617c71fa1f032d25b3836f8b575cb5cd777c7ed",
+    "bytes": 5960
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "e4962f8e8228162b143d974abb78d77e88e1d110221fb173422a0c84263f3ac3",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "e4962f8e8228162b143d974abb78d77e88e1d110221fb173422a0c84263f3ac3",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "eec4136e3d017e2d2a7ede6bd224ab7853fa3f435698213093c2cb3106b275a7",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/artifacts/kda_sub1_gate_a2_kernel.cpp",
+    "sha256": "739ea78e6df07fca4d285b8fe53fddfaae567ba15944c63ef684269d954fc8e3",
+    "bytes": 674
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "b95bac06d79625094bc61b31076ee913af821e4dba47dc89bcc7e9fd34471746",
+    "bytes": 14376
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub1_gate_a2_kernel/KdaSub1GateA2Kernel_2fe9bbc1e741aae514ac9fb6918249ce.o",
+    "sha256": "94ce6d0ccba620398d673f01f617c71fa1f032d25b3836f8b575cb5cd777c7ed",
+    "bytes": 5960
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "747d575544c886252177ce31ebaea078a313b36977fb6289f217d706d086eb14",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "747d575544c886252177ce31ebaea078a313b36977fb6289f217d706d086eb14",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "4d6d36a7a1846218a11bcc5ac3038df7b02f66d2a33f247e234ac8d061025580",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/artifacts/kda_sub2_score_a2_kernel.cpp",
+    "sha256": "da099fc71e839ba0ab8882182ca30ffb57c5adca4f43080b088893661a8c8df9",
+    "bytes": 1055
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "bb8ec38657ec9f3e9bb9fd9e6d65af2e1510b458951172c4e7fe55704b041a1e",
+    "bytes": 14400
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub2_score_a2_kernel/KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6.o",
+    "sha256": "4afd57ad302d2420cc6b23d588af66c8b4ca0853e9938b5de5399cd947a80610",
+    "bytes": 14824
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "9fd020318572fee7e77ef4e22c129951272b9111dc1f22eca3fce207b7553596",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "9fd020318572fee7e77ef4e22c129951272b9111dc1f22eca3fce207b7553596",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "81f92f5aab2b985bc4819bc175ef6fa2695e8158903f34b880c7d7b9990ea0b2",
+    "bytes": 681936
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/artifacts/kda_sub2_score_a2_kernel.cpp",
+    "sha256": "da099fc71e839ba0ab8882182ca30ffb57c5adca4f43080b088893661a8c8df9",
+    "bytes": 1055
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "bb8ec38657ec9f3e9bb9fd9e6d65af2e1510b458951172c4e7fe55704b041a1e",
+    "bytes": 14400
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub2_score_a2_kernel/KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6.o",
+    "sha256": "4afd57ad302d2420cc6b23d588af66c8b4ca0853e9938b5de5399cd947a80610",
+    "bytes": 14824
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "df60d1f9ac84ace5711e882441295d4b61b03fb755f24ed2d0ad1a7bb849f955",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "df60d1f9ac84ace5711e882441295d4b61b03fb755f24ed2d0ad1a7bb849f955",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "10efe8883062afeca5e6fcf9054553a3187dcfec3fb97ef374934dda4c303721",
+    "bytes": 681936
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/artifacts/kda_sub3_wy_a2_kernel.cpp",
+    "sha256": "755a52317916d41567611113dd18f819f99ee10b468839e8b8097cadddf430dd",
+    "bytes": 1093
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "a8470dc7976fc11a64422d4a37dc52c079aeaf900263082ae86f2c9976c52930",
+    "bytes": 14432
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub3_wy_a2_kernel/KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783.o",
+    "sha256": "d38257f2816bfb64f8eb3ff033b290fab7730c778c590d16980a38f7b2098675",
+    "bytes": 6776
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "7d5282183b3d684297e54aac02a0dc427f47db77ce1f52f5e44e0930b7fd0548",
+    "bytes": 677840
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "7d5282183b3d684297e54aac02a0dc427f47db77ce1f52f5e44e0930b7fd0548",
+    "bytes": 677840
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "0ba05711ef7056432c3b5d802e892132a92f72f973fcda410ba334d1164644b3",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/artifacts/kda_sub3_wy_a2_kernel.cpp",
+    "sha256": "755a52317916d41567611113dd18f819f99ee10b468839e8b8097cadddf430dd",
+    "bytes": 1093
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "a8470dc7976fc11a64422d4a37dc52c079aeaf900263082ae86f2c9976c52930",
+    "bytes": 14432
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub3_wy_a2_kernel/KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783.o",
+    "sha256": "d38257f2816bfb64f8eb3ff033b290fab7730c778c590d16980a38f7b2098675",
+    "bytes": 6776
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "9b297fee7d90af30bd0c9a4b3a1260662940198b19f8a746ac2c7f42ea3a8d94",
+    "bytes": 677840
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "9b297fee7d90af30bd0c9a4b3a1260662940198b19f8a746ac2c7f42ea3a8d94",
+    "bytes": 677840
+  },
+  {
+    "path": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "556284c8f0b8b59aec94625d612836aefdd51b49388f5aaa121670b89f6ddc99",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/artifacts/kda_sub45_a2_kernel.cpp",
+    "sha256": "01efbfa6f6f6b90c0edd310627e8703948d29d927c48564e14c74cf100030660",
+    "bytes": 1108
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "e9aa29e59956d71444b0293a2fe5f05c2d97fe2a663bc437599a8e61e230d5f4",
+    "bytes": 14424
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub45_a2_kernel/KdaSub45A2Kernel_23efe797d56e718df036031d1b267146.o",
+    "sha256": "4c09c84e721e82a0d693e94d050760828fbed8b130dfbcb0a1724cc04d864d8e",
+    "bytes": 14920
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "2a23e229bc631143cf41e4fbf0998bd14c7004875e4dd6cee5321d2cd5990bf1",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "2a23e229bc631143cf41e4fbf0998bd14c7004875e4dd6cee5321d2cd5990bf1",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "cabad4d24843abf64f2a0b2d19c90e9e76cc18972231d427474e628ff19478dc",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/artifacts/kda_sub45_a2_kernel.cpp",
+    "sha256": "01efbfa6f6f6b90c0edd310627e8703948d29d927c48564e14c74cf100030660",
+    "bytes": 1108
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "e9aa29e59956d71444b0293a2fe5f05c2d97fe2a663bc437599a8e61e230d5f4",
+    "bytes": 14424
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub45_a2_kernel/KdaSub45A2Kernel_23efe797d56e718df036031d1b267146.o",
+    "sha256": "4c09c84e721e82a0d693e94d050760828fbed8b130dfbcb0a1724cc04d864d8e",
+    "bytes": 14920
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "155775b0d6ad3227db0ead37a396858f817d5f54e6ee52bc7cc30d3121de1136",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "155775b0d6ad3227db0ead37a396858f817d5f54e6ee52bc7cc30d3121de1136",
+    "bytes": 669648
+  },
+  {
+    "path": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "3bfa42d9b5b2e854a3e10bcc69462ba0e2670b16dbbd8326ddc88bf1516e5ff8",
+    "bytes": 686032
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/artifacts/tril_inverse64_a2_kernel.cpp",
+    "sha256": "e1634d7d1adc7e7a95daa80f638b28b5ab25338cd8666280559d7a03922cad76",
+    "bytes": 697
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "f5885c859b708d0524fcd5c6a09ce578e161f11a08c2b2d15b7924b727a6aaa7",
+    "bytes": 14368
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/tril_inverse64_a2_kernel/TrilInverse64A2Kernel_272d6b1eb7843c7759381989301c7dc0.o",
+    "sha256": "fc82b68cad0a208e5f2c2d91d20a3ad3005d1c37dc0950c554cdd3b93e3c5cc8",
+    "bytes": 14672
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "11ed3dfa50a1ca82e896949a4dd6a99cd6804f2aeaaaa86cf7a17bf2983a4037",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "11ed3dfa50a1ca82e896949a4dd6a99cd6804f2aeaaaa86cf7a17bf2983a4037",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "667758c8a423942c8cd855ea7e9f769a1251b721aa308251c8c9d919000b8d60",
+    "bytes": 677840
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/artifacts/tril_inverse64_a2_kernel.cpp",
+    "sha256": "e1634d7d1adc7e7a95daa80f638b28b5ab25338cd8666280559d7a03922cad76",
+    "bytes": 697
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "f5885c859b708d0524fcd5c6a09ce578e161f11a08c2b2d15b7924b727a6aaa7",
+    "bytes": 14368
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/tril_inverse64_a2_kernel/TrilInverse64A2Kernel_272d6b1eb7843c7759381989301c7dc0.o",
+    "sha256": "fc82b68cad0a208e5f2c2d91d20a3ad3005d1c37dc0950c554cdd3b93e3c5cc8",
+    "bytes": 14672
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "55c7b84fbc027606234c0bae354a3912ea6371a81e1eb1a4cbd08d41743e92b3",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "55c7b84fbc027606234c0bae354a3912ea6371a81e1eb1a4cbd08d41743e92b3",
+    "bytes": 673744
+  },
+  {
+    "path": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "e5ab3c96264d62b675c2b31e965d2b3e9a89e9d51a1904e7f58663d88426f3e4",
+    "bytes": 677840
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/artifacts/kda_sub1_gate_a2_kernel.cpp",
+    "sha256": "739ea78e6df07fca4d285b8fe53fddfaae567ba15944c63ef684269d954fc8e3",
+    "bytes": 674
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "b95bac06d79625094bc61b31076ee913af821e4dba47dc89bcc7e9fd34471746",
+    "bytes": 14376
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub1_gate_a2_kernel/KdaSub1GateA2Kernel_2fe9bbc1e741aae514ac9fb6918249ce.o",
+    "sha256": "94ce6d0ccba620398d673f01f617c71fa1f032d25b3836f8b575cb5cd777c7ed",
+    "bytes": 5960
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "747d575544c886252177ce31ebaea078a313b36977fb6289f217d706d086eb14",
+    "bytes": 673744
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "747d575544c886252177ce31ebaea078a313b36977fb6289f217d706d086eb14",
+    "bytes": 673744
+  },
+  {
+    "path": "full-bd1/kda_sub1_gate_a2_kernel/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "4d6d36a7a1846218a11bcc5ac3038df7b02f66d2a33f247e234ac8d061025580",
+    "bytes": 686032
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/artifacts/kda_sub2_score_a2_kernel.cpp",
+    "sha256": "da099fc71e839ba0ab8882182ca30ffb57c5adca4f43080b088893661a8c8df9",
+    "bytes": 1055
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "bb8ec38657ec9f3e9bb9fd9e6d65af2e1510b458951172c4e7fe55704b041a1e",
+    "bytes": 14400
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub2_score_a2_kernel/KdaSub2ScoreA2Kernel_c2f58450c871872293061e94d9f999f6.o",
+    "sha256": "4afd57ad302d2420cc6b23d588af66c8b4ca0853e9938b5de5399cd947a80610",
+    "bytes": 14824
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "9fd020318572fee7e77ef4e22c129951272b9111dc1f22eca3fce207b7553596",
+    "bytes": 669648
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "9fd020318572fee7e77ef4e22c129951272b9111dc1f22eca3fce207b7553596",
+    "bytes": 669648
+  },
+  {
+    "path": "full-bd1/kda_sub2_score_a2_kernel/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "81f92f5aab2b985bc4819bc175ef6fa2695e8158903f34b880c7d7b9990ea0b2",
+    "bytes": 681936
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/artifacts/kda_sub3_wy_a2_kernel.cpp",
+    "sha256": "755a52317916d41567611113dd18f819f99ee10b468839e8b8097cadddf430dd",
+    "bytes": 1093
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "a8470dc7976fc11a64422d4a37dc52c079aeaf900263082ae86f2c9976c52930",
+    "bytes": 14432
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub3_wy_a2_kernel/KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783.o",
+    "sha256": "d38257f2816bfb64f8eb3ff033b290fab7730c778c590d16980a38f7b2098675",
+    "bytes": 6776
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "7d5282183b3d684297e54aac02a0dc427f47db77ce1f52f5e44e0930b7fd0548",
+    "bytes": 677840
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "7d5282183b3d684297e54aac02a0dc427f47db77ce1f52f5e44e0930b7fd0548",
+    "bytes": 677840
+  },
+  {
+    "path": "full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "0ba05711ef7056432c3b5d802e892132a92f72f973fcda410ba334d1164644b3",
+    "bytes": 686032
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/artifacts/kda_sub45_a2_kernel.cpp",
+    "sha256": "01efbfa6f6f6b90c0edd310627e8703948d29d927c48564e14c74cf100030660",
+    "bytes": 1108
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "e9aa29e59956d71444b0293a2fe5f05c2d97fe2a663bc437599a8e61e230d5f4",
+    "bytes": 14424
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub45_a2_kernel/KdaSub45A2Kernel_23efe797d56e718df036031d1b267146.o",
+    "sha256": "4c09c84e721e82a0d693e94d050760828fbed8b130dfbcb0a1724cc04d864d8e",
+    "bytes": 14920
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "2a23e229bc631143cf41e4fbf0998bd14c7004875e4dd6cee5321d2cd5990bf1",
+    "bytes": 669648
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "2a23e229bc631143cf41e4fbf0998bd14c7004875e4dd6cee5321d2cd5990bf1",
+    "bytes": 669648
+  },
+  {
+    "path": "full-bd1/kda_sub45_a2_kernel/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "cabad4d24843abf64f2a0b2d19c90e9e76cc18972231d427474e628ff19478dc",
+    "bytes": 686032
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/artifacts/tril_inverse64_a2_kernel.cpp",
+    "sha256": "e1634d7d1adc7e7a95daa80f638b28b5ab25338cd8666280559d7a03922cad76",
+    "bytes": 697
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/custom_op/vendors/customize/op_api/lib/libcust_opapi.so",
+    "sha256": "f5885c859b708d0524fcd5c6a09ce578e161f11a08c2b2d15b7924b727a6aaa7",
+    "bytes": 14368
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/tril_inverse64_a2_kernel/TrilInverse64A2Kernel_272d6b1eb7843c7759381989301c7dc0.o",
+    "sha256": "fc82b68cad0a208e5f2c2d91d20a3ad3005d1c37dc0950c554cdd3b93e3c5cc8",
+    "bytes": 14672
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so",
+    "sha256": "55c7b84fbc027606234c0bae354a3912ea6371a81e1eb1a4cbd08d41743e92b3",
+    "bytes": 673744
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/custom_op/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so",
+    "sha256": "55c7b84fbc027606234c0bae354a3912ea6371a81e1eb1a4cbd08d41743e92b3",
+    "bytes": 673744
+  },
+  {
+    "path": "full-bd1/tril_inverse64_a2_kernel/custom_op/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so",
+    "sha256": "e5ab3c96264d62b675c2b31e965d2b3e9a89e9d51a1904e7f58663d88426f3e4",
+    "bytes": 677840
+  }
+]

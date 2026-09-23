@@ -1,0 +1,66 @@
+.................s......sss............................................. [  5%]
+........................................................................ [ 11%]
+........................................................................ [ 17%]
+........................................................................ [ 23%]
+........................................................................ [ 29%]
+........................................................................ [ 35%]
+........................................................................ [ 40%]
+........................................................................ [ 46%]
+........................................................................ [ 52%]
+........................................................................ [ 58%]
+........................................................................ [ 64%]
+........................................................................ [ 70%]
+.....................s.................................................. [ 75%]
+........................................................................ [ 81%]
+........................................................................ [ 87%]
+........................................................................ [ 93%]
+........................................................................ [ 99%]
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_kda_bwd_deep_npu.py:31
+  $TASK/repo/tests/test_kda_bwd_deep_npu.py:31: PytestDeprecationWarning:\x20
+  Module 'torch_npu' was found, but when imported by pytest it raised:
+      ImportError('CPU-only BF-02 host suite: device validation runs separately under shared lock')
+  In pytest 9.1 this warning will become an error by default.
+  You can fix the underlying problem, or alternatively overwrite this behavior and silence this warning by passing exc_type=ImportError explicitly.
+  See https://docs.pytest.org/en/stable/deprecations.html#pytest-importorskip-default-behavior-regarding-importerror
+    torch_npu = pytest.importorskip("torch_npu", reason="需要 torch_npu")
+
+tests/test_kda_bwd_npu.py:39
+  $TASK/repo/tests/test_kda_bwd_npu.py:39: PytestDeprecationWarning:\x20
+  Module 'torch_npu' was found, but when imported by pytest it raised:
+      ImportError('CPU-only BF-02 host suite: device validation runs separately under shared lock')
+  In pytest 9.1 this warning will become an error by default.
+  You can fix the underlying problem, or alternatively overwrite this behavior and silence this warning by passing exc_type=ImportError explicitly.
+  See https://docs.pytest.org/en/stable/deprecations.html#pytest-importorskip-default-behavior-regarding-importerror
+    torch_npu = pytest.importorskip("torch_npu", reason="需要 torch_npu")
+
+tests/test_kda_caches_npu.py:30
+  $TASK/repo/tests/test_kda_caches_npu.py:30: PytestDeprecationWarning:\x20
+  Module 'torch_npu' was found, but when imported by pytest it raised:
+      ImportError('CPU-only BF-02 host suite: device validation runs separately under shared lock')
+  In pytest 9.1 this warning will become an error by default.
+  You can fix the underlying problem, or alternatively overwrite this behavior and silence this warning by passing exc_type=ImportError explicitly.
+  See https://docs.pytest.org/en/stable/deprecations.html#pytest-importorskip-default-behavior-regarding-importerror
+    torch_npu = pytest.importorskip("torch_npu", reason="需要 torch_npu")
+
+tests/test_kda_fwd_npu.py:18
+  $TASK/repo/tests/test_kda_fwd_npu.py:18: PytestDeprecationWarning:\x20
+  Module 'torch_npu' was found, but when imported by pytest it raised:
+      ImportError('CPU-only BF-02 host suite: device validation runs separately under shared lock')
+  In pytest 9.1 this warning will become an error by default.
+  You can fix the underlying problem, or alternatively overwrite this behavior and silence this warning by passing exc_type=ImportError explicitly.
+  See https://docs.pytest.org/en/stable/deprecations.html#pytest-importorskip-default-behavior-regarding-importerror
+    torch_npu = pytest.importorskip("torch_npu", reason="需要 torch_npu")
+
+tests/test_kda_layer_npu.py:40
+  $TASK/repo/tests/test_kda_layer_npu.py:40: PytestDeprecationWarning:\x20
+  Module 'torch_npu' was found, but when imported by pytest it raised:
+      ImportError('CPU-only BF-02 host suite: device validation runs separately under shared lock')
+  In pytest 9.1 this warning will become an error by default.
+  You can fix the underlying problem, or alternatively overwrite this behavior and silence this warning by passing exc_type=ImportError explicitly.
+  See https://docs.pytest.org/en/stable/deprecations.html#pytest-importorskip-default-behavior-regarding-importerror
+    torch_npu = pytest.importorskip("torch_npu", reason="需要 torch_npu")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1228 passed, 10 skipped, 5 warnings in 159.97s (0:02:39)

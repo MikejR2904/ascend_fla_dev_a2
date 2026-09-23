@@ -1,0 +1,92 @@
+[
+  {
+    "log": "bridge-cache/kda_sub1_gate_a2_kernel-863ac7afe523cb19/project/build.log",
+    "sha256": "b4f9cbbfb3c1ac9eb84c8843e8b554ef913505364d98fd910ddfd25a0941fdad",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub1_gate_a2_kernel-b1c1bf8c37748fc4/project/build.log",
+    "sha256": "4f5d940b254fd6743ff6309ef875ce6c03a80d60da467e0708971ff3ae09f048",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub2_score_a2_kernel-090500378d21e7d1/project/build.log",
+    "sha256": "065164612f464e99ac71a175178e80a99f760d803b3f75d3fbab5bd1fc777d58",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub2_score_a2_kernel-40e5e9e67016d7c7/project/build.log",
+    "sha256": "93d1fc3129ceb5abc13fbbff926cefc5fe7d99b600510b388dab866d5784113c",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub3_wy_a2_kernel-475361a50a078a3a/project/build.log",
+    "sha256": "589418d5f4bfb2e42f5c791d5d5fb439162fa17dbf06ba75bd7971f99508ec23",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub3_wy_a2_kernel-b9309649d2a115bf/project/build.log",
+    "sha256": "8d5cc2be00b808b3eb72f2cab9706b42cac8255cabd8ef861e3e56e2ba3ff32e",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub45_a2_kernel-79813fc6dad8635d/project/build.log",
+    "sha256": "39321f7101f5e424836983c1804f45da293c434a28bd12035ad0622c3d7114ca",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/kda_sub45_a2_kernel-c5f3eaadccbae8e1/project/build.log",
+    "sha256": "2f5f22c2040ecd95840488fa2c91eaa0f920a9544a6572f1d795fa0630ce0f2f",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/tril_inverse64_a2_kernel-2bb971b6d5eefb5a/project/build.log",
+    "sha256": "0757fcc37af5e21a9f7dc2b4063b0040a16968f601da1517d7dd56ea306709d6",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "bridge-cache/tril_inverse64_a2_kernel-4fb07d660728a112/project/build.log",
+    "sha256": "cd4c120246b1bc4c47655fcab0d4f0dfce921e1acaf46b6d767e1087160a17c1",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "full-bd1/kda_sub1_gate_a2_kernel/project/build.log",
+    "sha256": "c0eefb4a509a85c5517105bc756c504f37d8d73d20ee3e6ef02f6d99a2c74bbc",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "full-bd1/kda_sub2_score_a2_kernel/project/build.log",
+    "sha256": "490400c7b68825599540183ace7604a50a8303bc82ddc064a0b43f21d6c9b6fb",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "full-bd1/kda_sub3_wy_a2_kernel/project/build.log",
+    "sha256": "07efed87857b0a6e278e03a0e957d4c20903734108d3445cf2bbc3ae16accd24",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "full-bd1/kda_sub45_a2_kernel/project/build.log",
+    "sha256": "eb41f0ff73935e54b5e170b33563ef2c2afba210849b303ab33cf1a859e60eb7",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  },
+  {
+    "log": "full-bd1/tril_inverse64_a2_kernel/project/build.log",
+    "sha256": "dd7854cd331708197eef6e68dbf8180b66c562d294c3de7df6f33c50740d5481",
+    "warning": "unused CMAKE_CROSS_PLATFORM_COMPILER with ENABLE_CROSS_COMPILE=False",
+    "warnings_count": 1
+  }
+]

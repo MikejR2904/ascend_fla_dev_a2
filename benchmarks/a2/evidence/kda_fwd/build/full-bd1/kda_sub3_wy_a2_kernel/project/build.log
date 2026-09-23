@@ -1,0 +1,164 @@
+# cwd $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project
+# set -e
+if [ -f "$CANN/bin/setenv.bash" ]; then source "$CANN/bin/setenv.bash"; fi
+export ASCEND_HOME_PATH=$CANN
+bash build.sh
+cd build_out
+for f in custom_*.run; do bash ./$f --install-path=$TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op; done
+using ASCEND_HOME_PATH: $CANN
+Preset CMake variables:
+
+  ASCEND_CANN_PACKAGE_PATH:PATH="$CANN"
+  ASCEND_COMPUTE_UNIT:STRING="ascend910b"
+  ASCEND_PACK_SHARED_LIBRARY:BOOL="False"
+  ASCEND_PYTHON_EXECUTABLE:STRING="python3"
+  CMAKE_BUILD_TYPE:STRING="Release"
+  CMAKE_CROSS_PLATFORM_COMPILER:PATH="$EXTERNAL_PATH"
+  CMAKE_INSTALL_PREFIX:PATH="$TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out"
+  ENABLE_BINARY_PACKAGE:BOOL="True"
+  ENABLE_CROSS_COMPILE:BOOL="False"
+  ENABLE_SOURCE_PACKAGE:BOOL="True"
+  ENABLE_TEST:BOOL="True"
+  vendor_name:STRING="customize"
+
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: $EXTERNAL_PATH - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: $EXTERNAL_PATH - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Opbuild generating sources
+-- Opbuild generating sources - done
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_CROSS_PLATFORM_COMPILER
+
+
+-- Build files have been written to: $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out
+[ 33%] Generating tbe/op_info_cfg/ai_core/ascend910b/aic-ascend910b-ops-info.json
+
+
+==============check valid for ops info start==============
+==============check valid for ops info end================
+
+
+Compile op info cfg successfully.
+[ 33%] Built target ops_info_gen_ascend910b
+[ 66%] Building CXX object op_host/CMakeFiles/cust_optiling.dir/kda_sub3_wy_a2_kernel.cpp.o
+[100%] Linking CXX shared library libcust_opmaster_rt2.0.so
+[100%] Built target cust_optiling
+[ascend910b] Generating KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783 ...
+[INFO] ATRACE(796898,python3):2026-09-23-13:31:10.836.156 [trace_recorder.c:132](tid:796898) get path by env ASCEND_WORK_PATH: $TASK/native/work
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:10.849.017 [task_fail_callback_data_manager.cc:93] 796898 TaskFailCallBackManager: Constructor.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:10.849.033 [xpu_task_fail_callback_data_manager.cc:59] 796898 XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Constructor.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:10.851.796 [runtime_keeper.cc:184] 796898 CreateRuntimeImpl: Open libruntime_v100.so successfully
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:10.852.028 [runtime.cc:5389] 796898 GetVisibleDevices: real deviceCnt:8 userDeviceCnt:1 isSetVisibleDev:1 ASCEND_RT_VISIBLE_DEVICES:[REDACTED] available visible devices:[REDACTED]
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.797 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[4] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.816 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[6] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.823 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[5] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.838 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[0] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.844 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[1] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.850 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[8] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.857 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[2] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.862 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[3] package worker was created successfully
+[INFO] TDT(796898,python3):2026-09-23-13:31:10.854.870 [package_worker_factory.cpp:39][RegisterPackageWorkerCreator][tid:796898] Register[9] package worker was created successfully
+Opc tool start working now, please wait for a moment.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:13.496.220 [stream_mem_pool.cc:360] 796898 ~PoolRegistry: SOMA PoolRegistry destructor.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:13.496.253 [runtime_adapt.cc:56] 796898 ~Runtime: runtime destructor.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:13.496.259 [runtime.cc:1389] 796898 WaitMonitorExit: wait monitor success, used count=0.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:13.615.825 [xpu_task_fail_callback_data_manager.cc:64] 796898 ~XpuTaskFailCallBackManager: XpuTaskFailCallBackManager Destructor.
+[INFO] RUNTIME(796898,python3):2026-09-23-13:31:13.615.865 [task_fail_callback_data_manager.cc:98] 796898 ~TaskFailCallBackManager: Destructor.
+[INFO] ATRACE(796898,python3):2026-09-23-13:31:14.014.407 [stacktrace_signal.c:194](tid:796898) unregister all signal handlers, can not capture signal.
+[ascend910b] Generating KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783 Done
+[100%] Built target KdaSub3WyA2Kernel_ascend910b
+[100%] Built target ascendc_bin_ascend910b_gen_ops_config
+[100%] Built target binary
+[ 10%] Generating scripts/install.sh, scripts/upgrade.sh
+[ 10%] Built target modify_vendor
+[ 10%] Built target gen_version_info
+[ 20%] Building CXX object op_host/CMakeFiles/cust_op_proto.dir/kda_sub3_wy_a2_kernel.cpp.o
+[ 30%] Building CXX object op_host/CMakeFiles/cust_op_proto.dir/__/autogen/op_proto.cc.o
+[ 40%] Linking CXX shared library libcust_opsproto_rt2.0.so
+[ 40%] Built target cust_op_proto
+Consolidate compiler generated dependencies of target cust_optiling
+[ 50%] Building CXX object op_host/CMakeFiles/cust_optiling.dir/kda_sub3_wy_a2_kernel.cpp.o
+[ 60%] Linking CXX shared library libcust_opmaster_rt2.0.so
+[ 60%] Built target cust_optiling
+[ 70%] Building CXX object op_host/CMakeFiles/cust_opapi.dir/__/autogen/aclnn_kda_sub3_wy_a2_kernel.cpp.o
+[ 80%] Linking CXX shared library libcust_opapi.so
+[ 80%] Built target cust_opapi
+[ 80%] Built target optiling_compat
+[ 90%] Built target ops_info_gen_ascend910b
+[100%] Generating tbe/op_info_cfg/ai_core/npu_supported_ops.json
+$TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/autogen $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/op_kernel/tbe/op_info_cfg/ai_core
+[INFO] Succed generated $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/op_kernel/tbe/op_info_cfg/ai_core/npu_supported_ops.json
+[100%] Built target npu_supported_ops
+Run CPack packaging tool...
+CPack: Create package using External
+CPack: Install projects
+CPack: - Run preinstall target for: opp
+CPack: - Install project: opp []
+CPack: Create package
+
+About to compress 1904 KB of data...
+Adding files to archive named "custom_opp_ubuntu_aarch64.run"...
+./help.info
+./install.sh
+./packages/vendors/customize/framework/tensorflow/npu_supported_ops.json
+./packages/vendors/customize/op_api/include/aclnn_kda_sub3_wy_a2_kernel.h
+./packages/vendors/customize/op_api/lib/libcust_opapi.so
+./packages/vendors/customize/op_impl/ai_core/tbe/config/ascend910b/aic-ascend910b-ops-info.json
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub3_wy_a2_kernel.cpp
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub3_wy_a2_kernel.py
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub3_wy_a2_kernel_cube.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/kda_sub3_wy_a2_kernel_vec.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/scalar_math.h
+./packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/tensorutils_cce.h
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub3_wy_a2_kernel/KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783.json
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/ascend910b/kda_sub3_wy_a2_kernel/KdaSub3WyA2Kernel_797aeec01db0301785f7fd8c2e307783.o
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/config/ascend910b/binary_info_config.json
+./packages/vendors/customize/op_impl/ai_core/tbe/kernel/config/ascend910b/kda_sub3_wy_a2_kernel.json
+./packages/vendors/customize/op_impl/ai_core/tbe/op_tiling/lib/linux/aarch64/libcust_opmaster_rt2.0.so
+./packages/vendors/customize/op_impl/ai_core/tbe/op_tiling/liboptiling.so
+./packages/vendors/customize/op_proto/inc/op_proto.h
+./packages/vendors/customize/op_proto/lib/linux/aarch64/libcust_opsproto_rt2.0.so
+./packages/vendors/customize/version.info
+./upgrade.sh
+CRC: 2782592864
+SHA256: ca04ae3b87f885166f2b720fbb1a7dc1aea8ab54a0570667ab24dd2a80ade6f4
+Skipping md5sum at user request
+
+Self-extractable archive "custom_opp_ubuntu_aarch64.run" successfully created.
+Copy $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/_CPack_Packages/Linux/External/custom_opp_ubuntu_aarch64.run/custom_opp_ubuntu_aarch64.run to $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/
+CPack: - package: $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/custom_opp_ubuntu_aarch64.run.json generated.
+CPack: - package: $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/project/build_out/custom_opp_ubuntu_aarch64.run generated.
+Verifying archive integrity...     0% \x08\x08\x08\x08\x08\x08\x08   61% \x08\x08\x08\x08\x08\x08\x08 100%   SHA256 checksums are OK. All good.
+Uncompressing version:1.0     0% \x08\x08\x08\x08\x08\x08\x08   61% \x08\x08\x08\x08\x08\x08\x08 100%\x20\x20
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy uninstall sh success
+[ops_custom] [2026-09-23 13:31:35] [INFO] create $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors.
+[ops_custom] [2026-09-23 13:31:35] [INFO] upgrade framework
+[ops_custom] [2026-09-23 13:31:35] [INFO] create $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/framework.
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy new ops framework files ......
+[ops_custom] [2026-09-23 13:31:35] [INFO] upgrade op proto
+[ops_custom] [2026-09-23 13:31:35] [INFO] create $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_proto.
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy new ops op_proto files ......
+[ops_custom] [2026-09-23 13:31:35] [INFO] upgrade op impl
+[ops_custom] [2026-09-23 13:31:35] [INFO] create $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_impl.
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy new ops op_impl files ......
+[ops_custom] [2026-09-23 13:31:35] [INFO] upgrade op api
+[ops_custom] [2026-09-23 13:31:35] [INFO] create $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/op_api.
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy new ops op_api files ......
+[ops_custom] [2026-09-23 13:31:35] [INFO] upgrade version.info
+[ops_custom] [2026-09-23 13:31:35] [INFO] copy new version.info files ......
+[ops_custom] [2026-09-23 13:31:36] [INFO] no need to upgrade custom.proto files
+[ops_custom] [2026-09-23 13:31:36] [INFO] using requirements: when custom module install finished or before you run the custom module, execute the command [ source $TASK/native/full-bd1/kda_sub3_wy_a2_kernel/custom_op/vendors/customize/bin/set_env.bash ] to set the environment path
+SUCCESS

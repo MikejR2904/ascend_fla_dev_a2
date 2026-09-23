@@ -55,10 +55,17 @@ def _unqualified(soc: str, why: str) -> dict[str, Any]:
 #: 按 SoC 查的能力表。a2/a3 未验收 —— a2 的验收门是 A2-11，a3 的是 A3 波次。
 CAPABILITIES: dict[str, dict[str, Any]] = {
     "a5": _A5_CAPABILITY,
-    "a2": _unqualified(
-        "a2",
-        "A2 的真机能力尚未测定/验收：A2-01 的 910B3 读数只是观察（D-PM-30），能力测定在 A2-10、验收在 A2-11",
-    ),
+    "a2": {
+        "qualified": False,
+        "supported_block_dim": {"chunk": (1, 2)},
+        "max_gate_span": {"stable": {"forward": 158.0}},
+        "unit_root": "kernels/projects/a2",
+        "evidence": (
+            "A2-12：910B3/CANN 9.0.0 的 stable 前向单元实测，qkv BF16、状态 FP32；"
+            "公共 dispatch 尚未接线，保留未验收总开关；"
+            "benchmarks/a2/evidence/kda_fwd/README.md 与 RESULTS.md"
+        ),
+    },
     "a3": _unqualified("a3", "A3 尚未开工；能力待 A3 波次"),
 }
 

@@ -1,0 +1,195 @@
+[
+  {
+    "id": "20260923T134140828421Z",
+    "batches": [
+      "range-coarse-bd1"
+    ],
+    "same_card_group": "range-primary",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "6202a70167343e1ca2d426f23ee624d09e3f798188b1f31b44925bdf337cde24"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "41a1119d207ea0ba233891e583ec380f94540fbce53536ebf1e4937310f86a28"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T13:56:17.100012+00:00"
+    },
+    "benchmark_sha256": "dfae1b80e0cd4a69ffa3073e08a894c727e941e58546b88bc9e0c69190a565de"
+  },
+  {
+    "id": "20260923T134713058779Z",
+    "batches": [
+      "defaults-bd2"
+    ],
+    "same_card_group": "range-alternate",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "d2d05f6bcc6db9914cb40fd81cbc7f2e0c4c2948fb49042bed77c51c77305155"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "92bdb312c2242cc921fd7b67bb81b03dd72b94bf8d5205340f804f5a0ff09d2c"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T13:59:01.172538+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  },
+  {
+    "id": "20260923T135635920585Z",
+    "batches": [
+      "refine-bd1"
+    ],
+    "same_card_group": "range-primary",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "3e61213d23e069a1e00bdb47fdb423859ea3e68c43c0178e4f3d9d8da84f5313"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "ea8b72ae94b1bd920e2e65010db99068bf9630fbf4057c22436d8035c9750cda"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T14:24:54.694390+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  },
+  {
+    "id": "20260923T135932836879Z",
+    "batches": [
+      "refine-bd2"
+    ],
+    "same_card_group": "range-alternate",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "87d7fbf9148471aee7192ed026cce94924a4e118864f8a4fb853a8d1a27b137f"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "54085278cbef7fd0d968d571d330a9963c44f578c5d5b061b87db9eb3b1f7203"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T14:38:02.048924+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  },
+  {
+    "id": "20260923T140111200027Z",
+    "batches": [
+      "real-bd1",
+      "real-bd2",
+      "performance-bd1",
+      "performance-bd2",
+      "defaults-bd1"
+    ],
+    "same_card_group": "control",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "3f6360f42fdaa7483612a49724e95aca0e34cc1da7739d7becdd1ab72f41840a"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "9a648eddf5c2c5a3dfd7140c67cf65abda31d6015612a69363307837f561154c"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T14:19:44.342485+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  },
+  {
+    "id": "20260923T143802836316Z",
+    "batches": [
+      "guard-bd1"
+    ],
+    "same_card_group": "range-primary",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "5801b93a7c80fde99e22a168c6dedd07c5ade917f0f39bc8dbfde7231f390053"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "5f6d52b42bf226ee354c81d7c06c0ef621df0f5719e677519aa3cf4d1f34cbb3"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T14:48:15.432794+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  },
+  {
+    "id": "20260923T143802836335Z",
+    "batches": [
+      "guard-bd2"
+    ],
+    "same_card_group": "range-alternate",
+    "shared_lock_held_through_children": true,
+    "statuses": [
+      {
+        "phase": "before",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "d71cdc9aed27fc8ced708ff951f4a43aec9b924df14f7ceac18c43cfcef6b320"
+      },
+      {
+        "phase": "after",
+        "healthy": true,
+        "idle": true,
+        "private_report_sha256": "6858a828dcea03d408f849ba0cd034b096ce7be983d892503bd6e39b49caa9ce"
+      }
+    ],
+    "result": {
+      "exit_code": 0,
+      "finished_utc": "2026-09-23T14:48:11.494476+00:00"
+    },
+    "benchmark_sha256": "46f6913b8644f96bfcc6f58a23b1aa57bb1ead3dc62d93b2f84f4f377e3ccd80"
+  }
+]

@@ -1,0 +1,83 @@
+[
+  {
+    "seed": 0,
+    "target": 160.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 81.24436950683594,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 0,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 0,
+    "target": 176.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 89.36881256103516,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 3,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 0,
+    "target": 192.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 97.49324035644531,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 341,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 1,
+    "target": 160.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 81.20703887939453,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 0,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 1,
+    "target": 176.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 89.32775115966797,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 4,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 1,
+    "target": 192.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 97.44844818115234,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 870,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 2,
+    "target": 160.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 81.2224349975586,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 0,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 2,
+    "target": 176.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 89.34468841552734,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 4,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  },
+  {
+    "seed": 2,
+    "target": 192.0,
+    "source": "kernels/projects/a2/kda_fwd_stable/kernels/intra.py:122",
+    "max_exponent": 97.4669189453125,
+    "fp32_log_max": 88.72283935546875,
+    "cpu_nonfinite_exp": 329,
+    "kind": "CPU source-form diagnostic; not device intermediate or simulator"
+  }
+]

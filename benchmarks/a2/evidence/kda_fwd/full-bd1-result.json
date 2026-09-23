@@ -1,0 +1,88 @@
+{
+  "case": "full_t4096_h32",
+  "inputs": {
+    "q": "84ec6c7830eb0fafe693a0f176e324fb3363104042693d99a5ecebbb7e2290cf",
+    "k": "ebe6b76b6d089de2becad0e5838b28fc921310babd16eaf6357560d07e53e656",
+    "v": "7ae08a8fa55639c6ee44f8bf331696baee284cdc2852c6eedfb51da2962aaf45",
+    "g_raw": "1295ab7d6d94622ebdf6a1d9809e9f5c15034d6356ec3a932ad222070aaa0dbb",
+    "beta": "a0f00647cac042a3c3cac5933eb1ad95fec0819707e8a416a5cb2ffe64f00cdd",
+    "initial_state": "016e85ca8256afa2e3c37347f682ff95f28fec452bafa5c7096a6efdd53cf21b"
+  },
+  "unchanged": true,
+  "outputs": {
+    "o": "0d650872d9e30a338675f6ed057dbdfed53b1aa759bbda54e8da0b6ba796e085",
+    "final_state": "e1856ce834b86d0d9db667f63529ae6cb87478b2cd1fb45b760ee7982a91809a",
+    "g_cumsum": "b1e3445bb9d4b3e663dff39ad0563930caa2074a0e6b885aba969558d17e1927",
+    "eg": "7fedc1ed1b5a7544cccd50497fc0f92d5f2a44cd716e8a480c6a357298852c90",
+    "Aqk": "f5af08eecc34d929443607e180f6304fdfe7f2c57e587bdf5a7af156693af527",
+    "strict": "6fbf67b303d2e97c4e3b3b2c76277b28b1b8414e396ad6f2d3817af796d6856a",
+    "Akk": "1224dbc313bc2a92f78fc2bfc3ac64933532c853790cd831bb04ce569c95402c",
+    "w": "d11c6e199c69698820f12375fcd08a5ea4ad8c7c85fadf55bfe70d69285beca9",
+    "u": "31aeeb24685b658c6fd8a716d021f93da21ca80f3ef92498896f8ae9e9085538",
+    "qg": "8d22b809ed0b34d40e58a2c754c49d8d586bddee4f6d6b53baa60c40f69abcb4",
+    "kg": "14deac2d6fa5f0b0903398506f45154ddf9d5a19dffcc30f63b5bc983bf7b8f2"
+  },
+  "metrics": {
+    "o": {
+      "relative_l2": 0.00354393501766026,
+      "max_abs_diff": 1.5920610167086124e-05,
+      "finite": true,
+      "passed": true
+    },
+    "final_state": {
+      "relative_l2": 0.0027484274469316006,
+      "max_abs_diff": 6.678560748696327e-05,
+      "finite": true,
+      "passed": true
+    }
+  },
+  "execution": [
+    {
+      "kernel": "kda_sub1_gate_a2_kernel",
+      "device": "a2",
+      "requested_backend": "cce",
+      "stage": "board",
+      "launcher": "aclnn",
+      "block_dim": 1,
+      "backend_executed": true
+    },
+    {
+      "kernel": "kda_sub2_score_a2_kernel",
+      "device": "a2",
+      "requested_backend": "cce",
+      "stage": "board",
+      "launcher": "aclnn",
+      "block_dim": 1,
+      "backend_executed": true
+    },
+    {
+      "kernel": "tril_inverse64_a2_kernel",
+      "device": "a2",
+      "requested_backend": "cce",
+      "stage": "board",
+      "launcher": "aclnn",
+      "block_dim": 1,
+      "backend_executed": true
+    },
+    {
+      "kernel": "kda_sub3_wy_a2_kernel",
+      "device": "a2",
+      "requested_backend": "cce",
+      "stage": "board",
+      "launcher": "aclnn",
+      "block_dim": 1,
+      "backend_executed": true
+    },
+    {
+      "kernel": "kda_sub45_a2_kernel",
+      "device": "a2",
+      "requested_backend": "cce",
+      "stage": "board",
+      "launcher": "aclnn",
+      "block_dim": 1,
+      "backend_executed": true
+    }
+  ],
+  "build_and_harness_wall_s": 280.28632219694555,
+  "reference_s": 12.68059632088989
+}

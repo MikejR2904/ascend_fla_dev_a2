@@ -3717,7 +3717,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "P1",
-      "status": "open",
+      "status": "assigned",
       "model": [
         "gdn2-1.3b-fineweb-edu-100b"
       ],
@@ -3742,9 +3742,20 @@
       "spec": "docs/pm/tasks/GD2-02.md",
       "issue": 63,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "limjiunnbin",
+      "assignee_caps": {
+        "agent": "自述为与 A2-09 同一 agent（APPLY 里写「我手上的 A2-09」，session 值不同）",
+        "socs": [
+          "a5"
+        ],
+        "soc_details": "自述（ACK 15:44Z）：A5 真机，在任务容器内执行；CANN 9.2.0（只读共享安装）、opp 含 ascend950（与 ascend910b、ascend910_93 并存，torch_npu 计算算子可用）、compiler timestamp 2026-05-09T12:45:09+08:00（clang 15.0.5，bisheng 与 ccec 同一份）、Python 3.12.14、torch 2.12.0+cu130、torch_npu 2.12.0、设备 Ascend950PR；与 BF-03 / BF-07 的机器环境不同。机器与卡归 assignee 管理（D-PM-28），结论只对其实际验证的这一套成立",
+        "ascriptor": "library 90cfcdc720bb…、kernels b3b3f9c16df7…（自述，取自 compatibility.json）",
+        "fla": "864a87f6ce5b…（v0.5.2-123-g864a87f6，自述）——与 GD2-01 / PK-02 / PK-03 的 pin e52dbc0e 不同，已要求对齐（见 reports）",
+        "fork": "limjiunnbin/ascend_fla_dev",
+        "session": "gd202-a5-realdevice-1",
+        "note": "APPLY（12:54Z）用 BF-05 的已合入证据证明 agent-a5-access 门真实满足（两台 A5，Ascend950PR/CANN 9.2.0，两台编译器 build 不同已按 machine_specs.md 分开记）；GD2-01 已 done，依赖满足，直接派。"
+      },
+      "branch": "task/GD2-02",
       "timebox_h": 16,
       "origin": {
         "kind": "request",
@@ -3756,6 +3767,10 @@
         {
           "at": "2026-09-17T10:21",
           "summary": "agent-a5-access 门解除：limjiunnbin(Codex) APPLY 报 SSH/容器访问已配好，driver health rc=0，CANN 9.2.0 opp 覆盖 ascend950/910b/910_93。转 open，但 deps=[GD2-01] 未完成，--next 仍不会派——GD2-01 还是 draft PR。申请人自己指出 torch_npu 性能三明治在其当前 CPU-only torch 环境下做不了，待协调"
+        },
+        {
+          "at": "2026-09-23T13:07",
+          "summary": "ASSIGN（PM，GD2-01 已 done，依赖满足；申领人用 BF-05 的已合入证据证明 A5 真机访问已配好，不是自述）：规格 docs/pm/tasks/GD2-02.md，写集 benchmarks/bench_gdn2_chunk_fwd_a5.py。提醒：BF-05 的两条负结果与本任务相关但不冲突——BF16 比 FP32 慢 2.3%（本任务测 FP32 路径为主）、门控跨度上限未确立（本任务若涉及需沿用同一诚实标注方式，不得虚报）。"
         }
       ],
       "result": null

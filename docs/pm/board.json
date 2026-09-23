@@ -2808,6 +2808,14 @@
         {
           "at": "2026-09-23T13:35",
           "summary": "STATUS（13:34Z，自述，#39）：第一次完整工作负载先于任何 sim/pipesim 执行——真实 B1/T4096/H=HV32/K=V128，bd1，q/k/v BF16，g/beta/h0 FP32，非零初态，低跨度 8：o relative_l2=0.00354393501766026、max_abs_diff=1.5920610167086124e-05；final_state relative_l2=0.0027484274469316006、max_abs_diff=6.678560748696327e-05；均有限，均在 0.05 预算内。独立 CPU FP32 递推参考对上，输入未改。静态 A2 累加/barrier/splitk 守卫 6 passed。环境：910B3/CANN 9.0.0，compiler/opp timestamp 20260428_134817545，opp 含 ascend910b/ascend910_93，library 90cfcdc/kernels b3b3f9c（与 A2-01 一致）。PM 两条 ACK 均已收到，C1 会按独立数值正例验证；仍待批的只剩测试文件的具体改动（已原则批准，写集已更新）。"
+        },
+        {
+          "at": "2026-09-23T13:52",
+          "summary": "RISK contradicts-handoff（13:40Z，自述，#39）：本地基线 main 5a08575（A2-K1 派单提交）上 test_committed_board_is_valid 失败，README 与 board.json 不同步——**PM 核实：这是我自己两个连续提交之间的瞬时窗口**（5a08575 改了 board.json，紧接着 e494f8d 才重生成 README，同一轮里分两次提交是我的一贯做法），main 现在（b9bd286 起）完全同步，pm_board.py --check 通过。已回复其重新 fetch 最新 main。申领人未修改 README/board，处理方式正确（不推给仓库、如实报告）。"
+        },
+        {
+          "at": "2026-09-23T13:52",
+          "summary": "STATUS（13:41Z，自述，#39）：bd1 真实 T∈{64,128,256,512,4096} 五例全部完成（g 由真实 hidden=2304/HV=32 默认初始化层生成，平移 A_log 标定跨度 8）；T64/C1/HV32 按更正后的规格单独作正例验证通过（印证了 PM 的C1 更正是对的）。五例 o/state relative_l2 全部在 0.0026~0.0044 区间，均在 0.05 预算内且有限；每例 CPU FP32 递推与 literal pin FLA 逐位相同；启动 trace 每例恰好五项（算子名/dispatch 正确）。新主机测试 + PKDA 回归共 42 passed（缺 oracle 变量的历史失败已用完整 pin 变量补齐关闭，不是放宽）。下一步：粗跨度扫描已从 8 开始，随后收敛失效边界、多 seed 默认跨度、bd2/跨 bd 哈希、性能三明治。"
         }
       ],
       "result": null

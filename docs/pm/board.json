@@ -2729,7 +2729,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "assigned",
+      "status": "done",
       "gate": null,
       "model": [
         "kimi-linear-48b-a3b"
@@ -2760,7 +2760,7 @@
       },
       "spec": "docs/pm/tasks/A2-12.md",
       "issue": 39,
-      "pr": null,
+      "pr": 132,
       "assignee": "limjiunnbin",
       "assignee_caps": {
         "agent": "Codex / GPT-6, operated by limjiunnbin",
@@ -2841,9 +2841,25 @@
         {
           "at": "2026-09-23T14:52",
           "summary": "STATUS（14:38Z，自述，#39）：bd1/bd2 细边界扫描完成——10 组（T4096 seeds0/1/2 与 T128/T64 seed0 × bd1/bd2）均收敛到 last-good174/first-bad176，区间宽度 2；粗扫 24 点 + bd1 新增 24 点 + bd2 新增 30 点全部留证，失败点未删除。八种子默认初始化 bd1/bd2 均 8/8 通过，两组全部 88 张量哈希逐位一致。按扫描前已固定的规则 floor(0.9 × min(first_bad) / 2) × 2（不超过任一 last-good）算出 guard=158；默认初始化实测上界 106.38 低于这个 guard（下边界满足）。下一步：精确验证 span=158 的 80 个 case（5 长度 × 8 seed × bd1/2），通过后才填 CAPABILITIES[\"a2\"]，qualified 仍 False。"
+        },
+        {
+          "at": "2026-09-23T15:40",
+          "summary": "DONE（15:00Z，自述，#39，PR #132，头 c1b7a72，3 个提交）：真实形状/门控跨度/（C,HV）网格/CAPABILITIES 填数四项全部完成，含精确到 span=158 的 80 case 网格验证与 C1/HV32 正例（对应 PM 此前的规格更正）。PM 深度审查（NPU-free，本机排除 torch_npu）：写集干净（374 文件精确匹配已批准范围，含两次 write-set-expansion）；隐私扫描 313 blob 0 命中；platform.py 与 test_platform.py 全文读过，改动范围与声明精确一致；**独立扫描全部 80 份原始 guard case JSON（不读汇总）**确认两个最坏值数字与位置逐字节吻合、且真是全局最大值；C1/HV32 正例数字核对吻合，bd1/bd2 逐位相同；独立跑新测试文件 30 passed/2 skipped，全量合入前后均 1223 passed/15 skipped（与申领人真机的 1228/10 差 5，核实为 torch_npu 相关既有测试文件的环境差异，总数吻合）。**REVIEW accept，按 D-PM-33 自行合入**（squash → 6841be2；P1 任务，无预算/闸/域改动，qualified 如约保持 False，无写集越界，无争议）。合入后 main 全量复跑同为 1223 passed/15 skipped，合入树与已审内容逐字节相同。"
         }
       ],
-      "result": null
+      "result": {
+        "commits": [
+          "c1b7a72",
+          "6841be2"
+        ],
+        "evidence": [
+          "PR #132",
+          "benchmarks/a2/evidence/kda_fwd/",
+          "tests/test_kda_fwd_a2.py",
+          "ascend_fla/platform.py#CAPABILITIES-a2"
+        ],
+        "numbers": "A2 910B3/CANN 9.0.0 真机，qkv BF16/gate/beta/h0/state FP32：真实 Kimi-Linear 维度 B1/H=HV32/K=V128，T∈{64,128,256,512,4096} × bd1/2 全部通过（CPU FP32 递推 + literal pin FLA + 独立转置状态/bmm 三方交叉）。门控跨度：粗扫 3 seed×8 点 → 细化收敛 10 组 last-good174/first-bad176 → guard=floor(0.9×176/2)×2=158，精确验证 span=158 的 80 个 case（5 长度×8 seed×2 bd）全部有限且在 0.05 预算内；全局最坏 o 相对 L2 0.004025（T4096/seed7）、state 0.003372（T512/seed7）——PM 独立扫了全部 80 份原始 JSON 确认这两个确实是全局最大值，非挑选。默认初始化 8 seed 跨度实测 97.69~106.38，在 158 之下（下边界满足）。(C,HV) 补 HV=32；C1 按 PM 更正的规格作正例验证（不是拒绝），T64/span8 的 o=0.003229、state=0.002588，bd1/bd2 逐位相同。CAPABILITIES[\"a2\"] 填 supported_block_dim={\"chunk\":(1,2)}、max_gate_span={\"stable\":{\"forward\":158.0}}，qualified 保持 False（公共 KDA 入口仍硬编码 A5，本任务只到单元级资格化，不是公共接线，经 PM 在评审中确认这个边界划分）。PM 独立复核：写集干净（含两次 PM 批准的 write-set-expansion）；313 个新增 blob 隐私扫描 0 命中；platform.py/test_platform.py 全文读过，只改了声明范围内的字面量与一个函数体；独立扫描全部 80 份 guard case JSON 与 real-bd1/2 的 C1 case 逐位核对数字；全量测试合入前后均 1223 passed/15 skipped（NPU-free，较申领人真机的 1228/10 差 5，核实是本机无 torch_npu 导致 5 个既有 A5 文件跳过，总数吻合）；合入树与已审内容逐字节相同（对合入提交的直接父提交做 diff 核实）。"
+      }
     },
     {
       "id": "A2-13",

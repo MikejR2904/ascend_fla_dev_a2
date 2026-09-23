@@ -2750,7 +2750,8 @@
         "benchmarks/verify_real_shapes.py",
         "ascend_fla/platform.py",
         "benchmarks/a2/evidence/kda_fwd/**",
-        "tests/test_kda_fwd_a2.py"
+        "tests/test_kda_fwd_a2.py",
+        "tests/test_platform.py"
       ],
       "needs": {
         "npu": true,
@@ -2828,6 +2829,14 @@
         {
           "at": "2026-09-23T14:21",
           "summary": "STATUS（14:15Z，自述，#39）：冻结 runner 的最终五长度（T∈{4096,128,256,512,64}，H=HV32，K=V128，span8，seed2026）在同一物理卡分进程跑完 bd1/bd2，10/10 通过 CPU FP32/literal FLA/独立转置状态三方校验；跨 bd 输入哈希相同，全部 11 张量哈希逐位相同。同卡计时 T4096/T128 各做了 bd1/bd2，三轮 baseline-before/candidate/baseline-after，warmup3/repeat20，显式 synchronize：T4096/bd1 candidate 939.526ms vs baseline 69.571/69.802ms；T4096/bd2 872.292ms vs 62.175/62.517ms；T128/bd1 32.874ms vs 16.520/16.775ms；T128/bd2 29.579ms vs 16.128/16.129ms——**如实标注这是含 H2D/分配的单元适配器 wall-time，不是 kernel-only 或公共 op 延迟，不宣称加速、不扩展到优化**（A2-12 本身不设速度门槛，只是按规格记录同卡三明治数字）。bd1 seeds0/1 与 bd2 seed0 目前均是 last-good174/first-bad176，正式闸值等全部条件完成后再定。"
+        },
+        {
+          "at": "2026-09-23T14:37",
+          "summary": "RISK contradicts-handoff（14:25Z，自述，#39）：顶层 write_set 仍漏列已在 13:34Z 批准的 tests/test_platform.py（只改 test_unqualified_socs_raise_on_use 一个函数体）——PM 核实属实，已补上。"
+        },
+        {
+          "at": "2026-09-23T14:37",
+          "summary": "RISK contradicts-handoff（14:31Z，自述，#39，交接提醒非争议）：提醒即便单元级实测数字填完，也不能仅靠翻转 qualified=True 就宣称公共 KDA 入口（ascend_fla/ops/kda/chunk.py）已经把 A2 接上——现在 chunk.py 里 stable 单元目录、prep/layout 仍硬编码指向 a5（:115/:252-254/:403），本任务实际跑的是未改动的 kernels/projects/a2/kda_fwd_stable 单元 + 已验收的 A2-10 bridge adapter，不经过公共入口，也没有绕过require_qualified(a2) 的拒绝。承诺本 PR 保持 qualified=False，只填 block_dim 与 stable.forward span，DONE/PR 会明确区分\"单元级资格\"与\"公共 API 接线\"两件事。PM 认可这个边界划分是对的、不需要动作——公共入口接线本来就不在 A2-12 范围内，是后续任务（可能是 A2-K1 之后的另一件事）。"
         }
       ],
       "result": null
@@ -5425,6 +5434,10 @@
         {
           "at": "2026-09-23T14:06",
           "summary": "STATUS（13:57Z，自述，#120）：完整 Kimi T4096 all-flags 训练在两张健康对照卡上通过（每进程首次自定义执行前编完全部 50 vendor，含 9 个 backward）；anchor+50 次固定种子重放，四输出跨次/跨卡逐位一致；每卡 0/50 偏差，单侧 95% Clopper-Pearson 上界 0.0582（条件 iid 假设，不声称已修复）。**找到可定位的真实机制线索**：seed CvMutex 深度 2 但 seed_ub 槽号按每个 BHV 重置——B1/HV2/C3/bd1 产生 2 个 WAR、B2/HV4/C3/bd4 产生 8 个 WAR，均是上一 BHV 最后一次 VF 读取与下一 BHV 首次 FIX 覆盖 seed0 之间无跨侧先后关系；事件计数本身是平衡的（说明只看总信用数不够，这正是本任务要查的）；C2 双 BHV、C3 单 BHV 模型都没有这个 hazard。已记录可证伪的 H1 预测，下一步做单变量干预实验（只连续化 seed_ub 槽号）+ 无关注释负对照。历史复现卡仍健康异常，尚未在健康卡上复现不确定性；CANN 9.2 独立对照已开始、未完成，不沿用 9.1 结果。生产路径/上游只读，未交 DONE。"
+        },
+        {
+          "at": "2026-09-23T14:37",
+          "summary": "STATUS（14:33Z，自述，#120）：**机制证据链完整**——seed CvMutex 信用连续但 seed_ub 每个 BHV 重置槽0，奇数 C 后产生上一 BHV 最终 VF 读取（358 行）与下一 BHV 首次 FIX 写（277 行）的 WAR；bd1/2/3/4 分别14/12/10/8 处；连续槽号副本全部 0 处（负对照通过）；事件计数本身平衡（只看信用数不够，与之前的判断一致）。**反事实替换验证**（不拟合系数，直接替换为下一 BHV 最后 chunk 的 seed）解释了 51990/52001 个异常 BF16 元素（≈99.98%）；另两种候选 seed 来源每次试验只解释 1-7 个——强判别性证据，机制假说基本坐实。大规模稳定性扫描：健康两卡+第三卡共 9900 次实验副本重放全部稳定有限、与 anchor 逐位一致；**自然复现仍未出现**（如实区分\"受控实验因果证据\"与\"自然复现\"，不混为一谈）。受控时序干预（共同恒等 VF 自旋，不改算术/cast/缓冲数/信用，只改 seed 槽相位）：SPINS64 时出现 anchor 与后续调用差异——baseline 与负对照各 50/50 次 dh0 错误，而连续槽号的\"ring 副本\"50/50 次与未扰动输出逐位一致（初步支持修法方向，但严格不算\"通过\"）。CANN9.2 独立对照已完成 50 生产 vendor + 完整 Kimi + 50 次稳定重放。历史复现卡仍健康异常，报告会明确新证据来自受控实验、不冒充未改动源码的自然复现。无生产改动，未交 DONE。"
         }
       ],
       "result": null,

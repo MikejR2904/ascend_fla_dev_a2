@@ -2980,12 +2980,12 @@
     },
     {
       "id": "A2-K1",
-      "title": "kernel 批次 A2-K1（split-K 绕行、c1 修复、fwd 检查点、GDN ABI）",
+      "title": "kernel 批次：GDN chunk 前向+反向搬到 A2（ABI 补齐 + L0C settle）",
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "gated",
-      "gate": "用户已放行（D-PM-43），待前置任务与规格",
+      "status": "assigned",
+      "gate": null,
       "model": [
         "kimi-linear-48b-a3b",
         "qwen3-next-80b-a3b"
@@ -3007,19 +3007,33 @@
         "A2-11"
       ],
       "write_set": [
-        "kernels/projects/a2/**"
+        "kernels/projects/a2/gdn_chunk_fwd/**",
+        "kernels/projects/a2/gdn_chunk_bwd/**",
+        "tests/test_a2_gdn_chunk.py",
+        "docs/research/a2_gdn_abi.md"
       ],
       "needs": {
         "npu": true,
         "ascriptor": true,
         "fla": true
       },
-      "spec": null,
+      "spec": "docs/pm/tasks/A2-K1.md",
       "issue": 44,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "MikejR2904",
+      "assignee_caps": {
+        "agent": "Claude Opus 4.8 (Claude Code)，operated by MikejR2904（自述）",
+        "socs": [
+          "a2"
+        ],
+        "soc_details": "自述（APPLY 03:13Z / 03:22Z）：a2，Ascend 910B3（20 AI cores / 40 vector cores、UB 192KB、AIV 1.8GHz）、CANN 9.2.0-beta.1、内置算子包含 910B3 平台、torch 2.10.0 / torch_npu 2.10.0.post2、Python 3.11（机器与卡归 assignee 管理，D-PM-28）；A2 真机数字在 A2-11 之前只是观测记录",
+        "ascriptor": "A2-07 期间已按自述固定到 library 90cfcdc / kernels b3b3f9c；A2-10 每份回执带这两个修订，对不上先发 RISK",
+        "fla": "有（自述）",
+        "fork": "MikejR2904/ascend_fla_dev_a2（真 fork，parent ddddwee1；APPLY 里原写的同名非 fork 仓跨仓 PR 不认）",
+        "availability": "异步",
+        "note": "规格已补全，直接派（APPLY 09:18Z 的既定候选）。范围收紧为 A2-07 §5 Batch A，不含门控跨度标定与 decode。"
+      },
+      "branch": "task/A2-K1",
       "timebox_h": 40,
       "reports": [
         {
@@ -3029,6 +3043,14 @@
         {
           "at": "2026-09-23T09:24",
           "summary": "APPLY（09:18Z，自述，#44，MikejR2904，同账号第三次合入者，D-PM-58 首次合入授权已用过、无需再问）：更正此前 A2-20 APPLY 里的修订号（是 90cfcdc/b3b3f9c，不是 5287adc）；前置 A2-04/A2-07/A2-11 均已 CLOSE（PM 核实一致）。PM 核实规格仍未写（spec: null），gate 是「用户已放行（D-PM-43），待前置任务与规格」——按 D-PM-43 原文「PM 在前置完成、规格写好时改 open，不再问用户」，写规格是 PM 自己的下一步，不需再问用户批准这个批次本身。PM 抽查确认：kda_fwd_stable/kernels/triangular_inverse.py 的 split-K barrier 已经是现状（A2-03/A2-09 范围内已做），gdn_fwd/gdn_bwd 的 A2 派生单元目前还不存在（kernels/projects/a2/ 下只有三个 kda_* 单元）——「split-K 绕行」这项对已有 KDA 单元基本已完成，「GDN ABI」这项需要新建两个单元，规格工作量不小，回复申领人：先确认前置满足，规格由 PM 起草，暂不能立即 ASSIGN，会另行通知。"
+        },
+        {
+          "at": "2026-09-23T13:20",
+          "summary": "PM 补全规格：范围严格限定在 A2-07 研究文档（docs/research/a2_gdn_abi.md）§5 的 Batch A——六个 ABI 缺口（GQA/GVA、token-major、非零 initial_state、dh0、final_state FP32、scale+no-tail-path）+ L0C settle（GDN inverse/finalize/wu 三处 barrier(Pipe.M)，不分 dtype，A2-11 已验证这条绕行）。明确排除 Batch B（门控跨度标定，另立任务）与 Batch C（decode，即已存在的 GDA-04）。写集改为新建两个 A2 派生单元的具体路径（原本笼统写 kernels/projects/a2/**，现在收紧到本任务实际要建的两个目录）。前置 A2-04/A2-07/A2-11 均已完成，按 D-PM-43 不再问用户，gate → open。"
+        },
+        {
+          "at": "2026-09-23T13:20",
+          "summary": "ASSIGN（PM，规格已补全，对应此前的 APPLY 09:18Z）：规格 docs/pm/tasks/A2-K1.md。范围 = A2-07 §5 Batch A：GDN chunk 前向+反向搬到 A2，六个 ABI 缺口 + L0C settle，明确排除门控跨度标定与 decode。写集：kernels/projects/a2/gdn_chunk_fwd/**、kernels/projects/a2/gdn_chunk_bwd/**（均新建）、tests/test_a2_gdn_chunk.py（新建）、docs/research/a2_gdn_abi.md（只许追加实现结果一节）。"
         }
       ],
       "result": null

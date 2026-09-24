@@ -3123,6 +3123,10 @@
         {
           "at": "2026-09-23T13:20",
           "summary": "ASSIGN（PM，规格已补全，对应此前的 APPLY 09:18Z）：规格 docs/pm/tasks/A2-K1.md。范围 = A2-07 §5 Batch A：GDN chunk 前向+反向搬到 A2，六个 ABI 缺口 + L0C settle，明确排除门控跨度标定与 decode。写集：kernels/projects/a2/gdn_chunk_fwd/**、kernels/projects/a2/gdn_chunk_bwd/**（均新建）、tests/test_a2_gdn_chunk.py（新建）、docs/research/a2_gdn_abi.md（只许追加实现结果一节）。"
+        },
+        {
+          "at": "2026-09-24T11:12",
+          "summary": "ACK（11:12:32Z，MikejR2904，issue #44）：读了 AGENTS.md / docs/handoff.md / docs/pm/PROTOCOL.md / docs/pm/START.md / docs/pm/tasks/A2-K1.md / docs/research/a2_gdn_abi.md。计划分五步：①按 AGENTS.md 铁律二新建 kernels/projects/a2/gdn_chunk_{fwd,bwd}（算子名加后缀区分、避开 C++ 关键字形参名），接 ascend_fla ops；②按 a2_gdn_abi.md §1.1-1.5,1.7 逐项补 ABI（GQA/GVA 用 GDA-02 的 i_h=i_hv//(HV//H) 模板、token-major 走真实 materialize 而非跨步 view、FP32 非零 initial_state、反向 dh0+接受 dht、FP32 final_state 并报 bf16 对照差值、scale 在 q 侧吸收、T%64!=0 显式拒绝）；③fwd inverse / bwd finalize / bwd wu 三处每个 L0C 累加 MMAD 前加 barrier(Pipe.M)（不分 dtype），保留 pin 的 FP32 split-K 规则，M<64 的 bf16/fp16 splitk 按 §7 拒绝；④910B3 真机双 oracle（fla naive + 仓内 CPU 参考）覆盖 o/final_state/7 个梯度，含 HV≠H（H=2,HV=4）非对称与分段 chaining，新增 tests/test_a2_gdn_chunk.py，tests/test_a2_accumulate_barriers.py 保持全绿并带删 barrier 负对照；⑤a2_gdn_abi.md 追加实现结果一节，BF16 路径跑 host 算子审计（无 host 侧核心计算）。明确排除 Batch B（门控跨度标定）与 Batch C（decode/GDA-04）。ETA 36h。PM 核：ACK 计划与规格范围一致，未提前扩大写集，继续等 DONE。"
         }
       ],
       "result": null

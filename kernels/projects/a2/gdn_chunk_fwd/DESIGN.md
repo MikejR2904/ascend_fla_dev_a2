@@ -64,10 +64,14 @@ Keep the pin's FP32 split-K rule; **reject M<64 bf16/fp16 splitk** per AGENTS §
   failure (A2-11 method); accumulate-barrier count == accumulate-MMAD count.
 - Small, safe gate span only (≤10, far from the 88.7 line) — span calibration is Batch B.
 
-## Open decisions to confirm (PM / user)
+## Resolved decisions (PM NOTE, 2026-09-25, issue #44)
 
-- §1.5 shipped default (fp32-state only vs both).
-- Whether the a2 `MAX_GATE_SPAN` field is left "未测 (Batch B)" here (spec says yes).
+- **§1.5 shipped default = fp32-state.** The bf16-state build exists **only** to
+  report the divergence evidence vs the fp32 recurrent oracle (into evidence, not a
+  threshold, not a switchable shipping option).
+- **a2 `MAX_GATE_SPAN` GDN field = blank / "untested (Batch B)".** Span calibration
+  is Batch B (separate task). This batch's kernel tests use only small, safe gate
+  span (≤10, far from the 88.7 line); no boundary testing, no specific number.
 
 ## Status
 

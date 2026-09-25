@@ -5,6 +5,24 @@ Batch A of `docs/research/a2_gdn_abi.md` §5. Move the a5 derived units
 L0C-settle barriers. Batch B (gate-span calibration) and Batch C (decode /
 GDA-04) are explicitly out of scope.
 
+## Key finding: the port is a tensor-vector rewrite, not a file-move
+
+The a5 `gdn_chunk_{fwd,bwd}` stages are written in the **`@vf` register
+value-function model** (`gdn_chunk_fwd/kernels/stages.py`: 6 `@vf()` stages, 16
+`@vf`/`VfPipe`/`vf_barrier` lines; `gdn_chunk_bwd/kernels/stages.py`: 13). **a2
+(c220) has no `@vf`** — verified: the shipped a2 units `kda_fwd_stable/kernels/*`
+use **zero** `@vf` (they are tensor-vector rewrites), and the a2 `gdn2_recurrent`
+port's own docstring records "@vf … c310-only; A2 has no @vf, so this rewrite uses
+the tensor-vector free functions."
+
+So Batch A carries the a5 **algorithm** unchanged but **reimplements each stage in
+the a2 tensor-vector model**, following `kda_fwd_stable` / `kda_bwd_stable` as the
+pattern (the same rewrite KDA and gdn2-recurrent already did). `a2_gdn_abi.md` §5
+frames this as "move … not a rebuild" with risk "M (plumbing + mechanical settle)";
+the numerics/ABI framing holds, but the vector-stage rewrite is more than plumbing,
+so the **ETA revises up from 34h** (to be re-estimated after the first stage).
+Raise to PM in the next STATUS.
+
 ## Port sources (verified present on main)
 
 - `kernels/projects/a5/gdn_chunk_fwd/` — `kernels/{pipeline.py,stages.py}`, `contract.json`,

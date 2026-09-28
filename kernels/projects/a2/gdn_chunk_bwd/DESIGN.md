@@ -162,10 +162,18 @@ vs the dual oracle (o/final_state ~3e-7).
        sim's credit model stalls. This may be sim-only (the forward's simpler
        per-token bodies pass; the board is stricter about hardware faults but may
        schedule this fine) or a real auto_sync imbalance.
-     Resolution options (need a free 910B3 to disambiguate, or a per-op sync audit):
-     board-run `reverse_a` to see if it's sim-only; else reduce per-token shared-tile
-     pressure (dedicated scratch per reduction, or split `reverse_a` further so each
-     kernel's per-token body is as simple as the validated `checkpoints`/`replay`).
+     **Board cross-check (done):** `reverse_a` was built for the board (cce) via a
+     per-process npy hand-off from `replay` (avoiding the one-op-per-process build
+     collision). `replay` built and ran on the board; `reverse_a`'s build **timed
+     out** (>560 s, no output) — its unrolled per-token adjoint body is simply too
+     large to compile. So both signals agree and point to the same fix: **reverse_a
+     is too complex** — split it into several smaller kernels, each with a per-token
+     body as simple as the validated `checkpoints`/`replay`/`group_reduce` (which
+     build in ~seconds and pass the sim). A workable decomposition: (a) dq +
+     back-update + `back_tape` (+dh0); (b) dz/dr/dv/dbeta from `back_tape`; (c)
+     dg + back-decay; (d) dk (already `reverse_b`). Each taped intermediate becomes a
+     GM producer/consumer edge (no in-kernel round-trip). This is the scoped next
+     step; the adjoint math and every idiom are already validated in isolation.
 - **`reverse_a.py` / `reverse_b.py`** — the split; committed. `reverse_a` deadlocks
   on sim as above; `reverse_b` (per-token dk, no recurrence) is simpler and awaits
   `reverse_a`'s `back_tape`.

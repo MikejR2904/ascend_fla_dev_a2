@@ -133,8 +133,31 @@ files (zero accumulate-MMADs ⇒ zero required barriers).
 
 ## Status
 
-Plan only. Math understood from the analytical adjoint; a2 idioms proven on the
-forward. Next (device-independent): implement `checkpoints` then `reverse` then
-`group_reduce`, validating each on 910B3 vs `analytical` when a card frees up
-(the box is currently saturated by other users; see ../gdn_chunk_fwd/DESIGN.md).
-ETA re-estimate deferred until `reverse` (the largest kernel) is validated.
+Validation runs on the **functional simulator** (`ascriptor.backends.sim.launch.
+run_kernel`, CPU) — device-independent, since the 910B3 cards are saturated by other
+users (see ../gdn_chunk_fwd/DESIGN.md). The forward validated end-to-end on the sim
+vs the dual oracle (o/final_state ~3e-7).
+
+- **`checkpoints.py`** (boundary states) — VALIDATED on sim, relL2 ~5e-8.
+- **`replay.py`** (per-token `d_t` -> `tape_d[B,HV,T,128,128]`) — implemented, runs on
+  sim. Split out from `reverse` because an in-kernel GM round-trip (write then read
+  the same tensor) deadlocks the sim; `reverse` now only *reads* `tape_d`.
+- **`reverse.py`** — algorithmically complete; two sim-sync bugs found, one open:
+  1. **Fixed:** the dg reduction `dup`ed `red2[0:1,0:2]` but the `cadd` consumed only
+     `red2[0,0]`; the written-but-unread `red2[0,1]` is exactly the sim's "a ready
+     published more often than it is waited for" — every buffer element written must
+     be consumed or the sim deadlocks. Now dups only what it reads.
+  2. **Open:** the sim deadlocks with **>=3 `cadd(dst_rep_stride=1)` row-build
+     reductions** in one kernel (2 `_rowdot` run clean, 3 deadlock, regardless of the
+     destination tile — bisected). The reverse needs **three** over-V matvecs: `d.do`
+     (dq), `back.z` and `d.dr` (dk). Fusing dk into one reduction (`back*z - d*dr`
+     before a single `cadd`) needs a second `[128,64]` scratch, but `back` + `d` + two
+     `[128,64]` scratches + `sp8` + rows exceeds 192 KiB UB. Remaining work: sub-chunk
+     V so the fused-dk scratch fits, recompute `d` in pieces to free a tile, or
+     confirm on a real board whether the >=3-row-build limit is sim-only.
+- **`group_reduce`** — not yet written (GVA ratio-sum of dq/dk parts; trivial).
+
+Individually sim-validated reverse building blocks: `_kreduce` (over-K),
+`muladddst` rank-1s (back += q^do, dD = back - k^dr), one and two `_rowdot` (over-V),
+`_dotscalar`, and the dg full-reduce. The blocker is purely the count of row-build
+reductions vs UB. ETA re-estimate deferred until `reverse` clears this.

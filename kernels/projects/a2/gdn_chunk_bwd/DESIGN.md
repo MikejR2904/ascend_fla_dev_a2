@@ -133,50 +133,34 @@ files (zero accumulate-MMADs ⇒ zero required barriers).
 
 ## Status
 
-Validation runs on the **functional simulator** (`ascriptor.backends.sim.launch.
-run_kernel`, CPU) — device-independent, since the 910B3 cards are saturated by other
-users (see ../gdn_chunk_fwd/DESIGN.md). The forward validated end-to-end on the sim
-vs the dual oracle (o/final_state ~3e-7).
+**Backward VALIDATED end-to-end on the functional simulator** (CPU, device-independent
+— the 910B3 cards are saturated by other users) vs the analytical adjoint, GVA
+HV=4/H=2, N=2:  dq 1.4e-7, dk 1.2e-7, dv 1.3e-7, dg 1.7e-7, dbeta 1.7e-7. (The
+forward likewise validated end-to-end on the sim, o/final_state ~3e-7.)
 
-- **`checkpoints.py`** (boundary states) — VALIDATED on sim, relL2 ~5e-8.
-- **`replay.py`** (per-token `d_t` -> `tape_d[B,HV,T,128,128]`) — implemented, runs on
-  sim. Split out from `reverse` because an in-kernel GM round-trip (write then read
-  the same tensor) deadlocks the sim; `reverse` now only *reads* `tape_d`.
-- **`reverse.py`** — algorithmically complete; two sim-sync bugs found, one open:
-  1. **Fixed:** the dg reduction `dup`ed `red2[0:1,0:2]` but the `cadd` consumed only
-     `red2[0,0]`; the written-but-unread `red2[0,1]` is exactly the sim's "a ready
-     published more often than it is waited for" — every buffer element written must
-     be consumed or the sim deadlocks. Now dups only what it reads.
-  2. **Open (sim sync-credit limit).** The sim deadlocks with the same
-     "unconsumed token" signature once a kernel passes a moderate complexity, even
-     with only one over-V `_rowdot`. Bisected extensively (all on sim, GVA HV=4/H=2):
-     - Individual constructs pass: `_kreduce`, `muladddst` rank-1s, one and two
-       `_rowdot`, `_dotscalar`, the dg full-reduce.
-     - `>=3 cadd(dst_rep_stride=1)` row-build reductions deadlock (2 clean, 3 not),
-       so the reverse was **split** into `reverse_a` (dq/dv/dbeta/dg/dh0, tape
-       `back_t`) + `reverse_b` (dk from `back_t`+`d_t`) so each has <=2 `_rowdot`.
-     - But `reverse_a` (1 `_rowdot`) still deadlocks, and so does `reverse_a` with
-       the dg block removed — so it is **not** the row-build count and **not** dg.
-       It is a cumulative sync-credit exhaustion: the per-token body has ~a dozen
-       reductions/DMAs on shared tiles (`back`,`su`,`scr`,`sp8`) and the functional
-       sim's credit model stalls. This may be sim-only (the forward's simpler
-       per-token bodies pass; the board is stricter about hardware faults but may
-       schedule this fine) or a real auto_sync imbalance.
-     **Board cross-check (done):** `reverse_a` was built for the board (cce) via a
-     per-process npy hand-off from `replay` (avoiding the one-op-per-process build
-     collision). `replay` built and ran on the board; `reverse_a`'s build **timed
-     out** (>560 s, no output) — its unrolled per-token adjoint body is simply too
-     large to compile. So both signals agree and point to the same fix: **reverse_a
-     is too complex** — split it into several smaller kernels, each with a per-token
-     body as simple as the validated `checkpoints`/`replay`/`group_reduce` (which
-     build in ~seconds and pass the sim). A workable decomposition: (a) dq +
-     back-update + `back_tape` (+dh0); (b) dz/dr/dv/dbeta from `back_tape`; (c)
-     dg + back-decay; (d) dk (already `reverse_b`). Each taped intermediate becomes a
-     GM producer/consumer edge (no in-kernel round-trip). This is the scoped next
-     step; the adjoint math and every idiom are already validated in isolation.
-- **`reverse_a.py` / `reverse_b.py`** — the split; committed. `reverse_a` deadlocks
-  on sim as above; `reverse_b` (per-token dk, no recurrence) is simpler and awaits
-  `reverse_a`'s `back_tape`.
-- **`group_reduce`** — not yet written (GVA ratio-sum of dq/dk parts; trivial).
+The monolithic reverse deadlocked the sim's auto_sync credit budget AND timed out the
+board cce build — both because its per-token adjoint body was too large. The fix was
+to **decompose** into small kernels, each with a per-token body as simple as the
+validated checkpoints/replay (fast to build, within the sim budget):
 
-ETA re-estimate deferred until `reverse_a` clears the sim/board sync question.
+- `replay.py`        — per-token decayed state `d_t` -> `tape_d[B,HV,T,128,128]`.
+- `reverse_rec.py`   — the recurrence: `back += scale*q^do`; tape `back_t`; dv;
+                       `back = exp(g)*(back - k^dr)`; `dh0` = final back.
+- `reverse_dq.py`    — dq = scale*((d.do)_V + k*(z.do)).   [1 kreduce + 1 rowdot]
+- `reverse_dbeta.py` — dbeta = (dz.r)_V.                    [2 kreduce + dotscalar]
+- `reverse_dg.py`    — dg = ((back - k^dr).d)_{K,V}.        [kreduce + muladddst + reduce]
+- `reverse_dk_bz.py` / `reverse_dk_ddr.py` — the two dk over-V terms (back.z, d.dr).
+- `group_reduce.py`  — GVA ratio-sum of dq, and dk = ratio_sum(dkbz - dkddr).
+
+`checkpoints.py` (boundary-state variant, validated ~5e-8) is legacy — the decomposition
+uses `replay` (full per-token tape) instead.
+
+Two sim-sync rules learned and applied throughout: (1) every buffer element written must
+be consumed or the sim deadlocks ("a ready published more often than it is waited for");
+(2) each kernel must stay under a per-kernel sync-credit ceiling (~1-2 over-V row-build
+`cadd` reductions plus a couple of kreduce/muladddst), which the small kernels respect.
+
+Remaining: scaffold the fwd+bwd units (`contract.json`/`unit.py`/`pipeline.py`, suffixed
+op names, barrier sites) and run the board dual-oracle e2e through the unit runner when a
+card frees. The math and every kernel are validated on the sim; the board pass is the
+only step still gated on hardware.

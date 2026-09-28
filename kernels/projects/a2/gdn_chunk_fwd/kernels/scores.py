@@ -42,9 +42,11 @@ def _coldot(dst_col, aa, bb_row, tmp):
         dst_blk_stride=1, dst_rep_stride=ROWBLK,
         src1_blk_stride=1, src1_rep_stride=ROWBLK,
         src2_blk_stride=1, src2_rep_stride=ROWBLK)
+    # cadd's dst_rep_stride counts elements (not 8-elem blocks): scol row stride
+    # is 8, so result i lands at scol[i, 0].
     cadd(dst_col[0:C, 0:1], tmp[0:C, 0:GROUP],
          repeat=C, count_per_rep=GROUP,
-         src_blk_stride=1, src_rep_stride=ROWBLK, dst_rep_stride=1)
+         src_blk_stride=1, src_rep_stride=ROWBLK, dst_rep_stride=8)
 
 
 @kernel(mode="vec", block_dim=40)

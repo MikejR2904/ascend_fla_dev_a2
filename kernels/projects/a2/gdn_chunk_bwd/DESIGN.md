@@ -50,13 +50,41 @@ no cube — b3 has no L0C DMAs, A2-01):
    rowscale+tree-reduce matvec ((k⊙d).sum_K), per-token scalar `beta`/`g` via the
    Var idiom.
 2. **`gdn_chunk_bwd_reverse_a2`** — per (b,hv), for each chunk in reverse: reload
-   the boundary state, replay the chunk forward to rebuild per-token (d,r,z,S)
-   into a tape, then reverse-scan the tape producing `dq_parts[B,T,HV,128]`,
-   `dk_parts[B,T,HV,128]`, `dv`, `dg`, `dbeta`, and threading `back` (init `dht`,
-   final → `dh0[B,HV,128,128]`). The two contractions over K (dz, dq) are
-   rowscale+tree-reduce matvecs; the two rank-1s (back += q⊗do, dD = back − k⊗dr)
-   are `muladddst`/outer forms; the sums over V (dk terms, dbeta) are tree
-   reductions; dg is a full [K,V] reduce.
+   the boundary state (checkpoints), replay the chunk forward writing the decayed
+   state `d_t` to a GM tape `tape_d[B,HV,C,128,128]` and keeping `r_t`,`z_t` in UB
+   `[C,V]` tiles, then reverse-scan producing `dq_parts[B,T,HV,128]`,
+   `dk_parts[B,T,HV,128]`, `dv`, `dg`, `dbeta`, threading `back` (init `dht`, final
+   -> `dh0[B,HV,128,128]`).
+
+   UB-fitting derivations (so only two [128,128] tiles -- `back` and `d_t` -- plus
+   a half scratch are live, ~160 KiB):
+   - Do NOT materialize `S_after_t`. Since `S_after = d + k(x)z`,
+     `dq[t] = (d_t . do_t) over V + k_t * (z_t . do_t)` -- taped `d_t` contracted
+     over V, plus the key scaled by the scalar `z_t . do_t`.
+   - `dk[t] = (back . z_t) over V - (d_t . dr_t) over V` -- two [K,V]-over-V sums.
+   - Reductions come in BOTH orientations: over V (rows keep K) for dq/dk/dbeta --
+     the scores `mul`+`cadd` row-reduce; over K (rows keep V) for
+     `dz = (back . k_t) over K` -- the scan/output `_spread8`+rowscale+tree-add.
+     `dg` is a full [K,V] reduce (row-reduce then reduce the [K,1] column).
+   - The two rank-1s are `muladddst`: `back += (scale*q_t)(x)do_t`, and
+     `dD = back - k_t(x)dr_t` (negate+accumulate), then `back = exp(g_t)*dD`.
+   Reverse loops count down with `cc = N-1-ccx`, `i = C-1-ix` (runtime N; C unrolled).
+
+   **Transpose decision (no cube on b3, no in-kernel transpose op).** dq/dk are
+   indexed by K and fall out of the over-V reductions as **columns** `[K,1]` (one
+   value per K-row), but the token-major public layout wants them as **rows**
+   `[1,K]`. b3 has no cube to transpose freely, and a per-token scalar scatter
+   (K GetValueFrom/SetValueTo per column × 2 × C × N) is millions of scalar ops.
+   Chosen approach: the reverse kernel writes dq/dk **K-major** —
+   `dq_parts[B,HV,128,T]` / `dk_parts[B,HV,128,T]` (each token's column stored with
+   `cadd`'s natural `[K,1]` layout, `dst_rep_stride` in elements) — and the unit
+   launcher does the K↔T permute + the GVA ratio-sum to the public `dq/dk`
+   `[B,T,H,128]` as a boundary **materialization** (permitted by §1.2; it is a pure
+   reshape/permute + a sum over the ratio, no per-element host arithmetic beyond the
+   declared group-reduce). `group_reduce` therefore folds into that boundary step,
+   or stays a kernel that reads/writes the K-major layout. This keeps every
+   in-kernel store contiguous and avoids both the strided sub-column store (which
+   faults, see scores) and the scalar-scatter cost.
 3. **`gdn_chunk_bwd_group_reduce_a2`** — sum `dq_parts`/`dk_parts` over the GVA
    ratio into `dq[B,T,H,128]`/`dk[B,T,H,128]`. Trivial strided add reduction;
    a no-op copy when HV==H.

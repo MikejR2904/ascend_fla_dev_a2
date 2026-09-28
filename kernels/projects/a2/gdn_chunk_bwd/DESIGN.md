@@ -147,17 +147,28 @@ vs the dual oracle (o/final_state ~3e-7).
      `red2[0,0]`; the written-but-unread `red2[0,1]` is exactly the sim's "a ready
      published more often than it is waited for" — every buffer element written must
      be consumed or the sim deadlocks. Now dups only what it reads.
-  2. **Open:** the sim deadlocks with **>=3 `cadd(dst_rep_stride=1)` row-build
-     reductions** in one kernel (2 `_rowdot` run clean, 3 deadlock, regardless of the
-     destination tile — bisected). The reverse needs **three** over-V matvecs: `d.do`
-     (dq), `back.z` and `d.dr` (dk). Fusing dk into one reduction (`back*z - d*dr`
-     before a single `cadd`) needs a second `[128,64]` scratch, but `back` + `d` + two
-     `[128,64]` scratches + `sp8` + rows exceeds 192 KiB UB. Remaining work: sub-chunk
-     V so the fused-dk scratch fits, recompute `d` in pieces to free a tile, or
-     confirm on a real board whether the >=3-row-build limit is sim-only.
+  2. **Open (sim sync-credit limit).** The sim deadlocks with the same
+     "unconsumed token" signature once a kernel passes a moderate complexity, even
+     with only one over-V `_rowdot`. Bisected extensively (all on sim, GVA HV=4/H=2):
+     - Individual constructs pass: `_kreduce`, `muladddst` rank-1s, one and two
+       `_rowdot`, `_dotscalar`, the dg full-reduce.
+     - `>=3 cadd(dst_rep_stride=1)` row-build reductions deadlock (2 clean, 3 not),
+       so the reverse was **split** into `reverse_a` (dq/dv/dbeta/dg/dh0, tape
+       `back_t`) + `reverse_b` (dk from `back_t`+`d_t`) so each has <=2 `_rowdot`.
+     - But `reverse_a` (1 `_rowdot`) still deadlocks, and so does `reverse_a` with
+       the dg block removed — so it is **not** the row-build count and **not** dg.
+       It is a cumulative sync-credit exhaustion: the per-token body has ~a dozen
+       reductions/DMAs on shared tiles (`back`,`su`,`scr`,`sp8`) and the functional
+       sim's credit model stalls. This may be sim-only (the forward's simpler
+       per-token bodies pass; the board is stricter about hardware faults but may
+       schedule this fine) or a real auto_sync imbalance.
+     Resolution options (need a free 910B3 to disambiguate, or a per-op sync audit):
+     board-run `reverse_a` to see if it's sim-only; else reduce per-token shared-tile
+     pressure (dedicated scratch per reduction, or split `reverse_a` further so each
+     kernel's per-token body is as simple as the validated `checkpoints`/`replay`).
+- **`reverse_a.py` / `reverse_b.py`** — the split; committed. `reverse_a` deadlocks
+  on sim as above; `reverse_b` (per-token dk, no recurrence) is simpler and awaits
+  `reverse_a`'s `back_tape`.
 - **`group_reduce`** — not yet written (GVA ratio-sum of dq/dk parts; trivial).
 
-Individually sim-validated reverse building blocks: `_kreduce` (over-K),
-`muladddst` rank-1s (back += q^do, dD = back - k^dr), one and two `_rowdot` (over-V),
-`_dotscalar`, and the dg full-reduce. The blocker is purely the count of row-build
-reductions vs UB. ETA re-estimate deferred until `reverse` clears this.
+ETA re-estimate deferred until `reverse_a` clears the sim/board sync question.

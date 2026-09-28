@@ -93,6 +93,51 @@ Keep the pin's FP32 split-K rule; **reject M<64 bf16/fp16 splitk** per AGENTS §
 
 ## Status
 
-Onboarding + branch + this plan done. Next: read the a5 `gdn_chunk_fwd` stage
-structure (`stages.py`/`pipeline.py`) and contract, then scaffold the a2 unit
-(suffixed op name, HV axis, barrier sites) and stand up the dual-oracle test.
+**All five forward stages implemented (a2 tensor-vector, no `@vf`) and validated
+per-stage on 910B3 in fp32** vs a torch reference (GVA HV=4/H=2, N=2, small gate
+span), under `kernels/`:
+
+- `prepare.py` — qn/kn/gc/bk/wv, exact / ≤1e-7 (per-token beta/g via Var idiom).
+- `scores.py` — score 1.45e-7, lower 1.43e-7 (decay-factored, no transpose).
+- `wy.py` — u bit-exact, wy 6.1e-8 (row-sequential lower-triangular solve).
+- `scan.py` — states 1.9e-7, delta 2.9e-7, final_state 3.0e-7 (chunk recurrence,
+  nonzero initial_state; pure-vector, no cube — b3 L0C DMAs unavailable, A2-01).
+- `output.py` — o 1.4e-7 (q·exp(gc)@S + causal score@delta).
+
+`scan` was additionally re-validated with the **real prepare→scores→wy pipeline
+outputs** (not just random inputs).
+
+### a2 tensor-vector gotchas found during bring-up (all fixed in the kernels)
+
+- `cadd` `dst_rep_stride` counts **elements**, not 8-elem blocks (unlike
+  `mul`/`add`/`muladddst`). The scores reduction landed contiguously until this
+  was set to the tile row stride in elements.
+- `dup` on a **slice** needs an explicit `count=` (KDA convention); without it
+  only one 64-lane repeat is zeroed, leaving the rest of the tile uninitialized.
+- Folding a mul+tree-reduce+accumulate into a **called helper mistraces on a2**
+  (wrong values, or OOB faults in tight layouts). Inline the sequence.
+- The intrinsic `repeatTimes` (count/64) is capped at 255 — a full [128,128]
+  `muls` is 256 repeats; split into two row halves.
+- `while` is rejected in kernel code even at trace time; use `for range(...)`.
+
+### End-to-end status (open)
+
+Per-stage correctness is established. A true end-to-end run of all five stages
+is **blocked on harness/environment, not kernel correctness**:
+
+1. **One op per process/build (§6 rule 2, broader than naming).** Compiling all
+   five kernels in one Python process with `compile_kernel` and then running even
+   a single one faults (silent wrong-binary class, cf. BF-05) — even though the
+   op names are distinct. The chained pipeline must run each stage through the
+   proper unit runner / separate builds (as the a5 `run.py`/`_unit_runner` do),
+   not an ad-hoc multi-`compile_kernel` script.
+2. **Shared-box contention.** All 8 910B3 cards run at 90–160% AICore with 34–64
+   GB HBM held by other users' jobs; the longest kernel (`scan`) intermittently
+   hits `rtDeviceSynchronizeWithTimeout` (surfaced as a vector-core exception).
+   Per-stage validations passed in free scheduling windows.
+
+Next: scaffold the a2 unit (`contract.json`, `unit.py`, `pipeline.py`, `ref/`
+mirroring a5, suffixed op name, HV axis, barrier sites) and run the dual-oracle
+(`grouped_recurrent` + `block_solve`) end-to-end through the unit runner; then the
+backward unit (dh0 §1.4). Re-estimate the ETA after the backward — the port is a
+full vector-stage rewrite, not the file-move the 34h in a2_gdn_abi.md §5 assumed.

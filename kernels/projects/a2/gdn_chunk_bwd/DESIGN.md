@@ -1,0 +1,112 @@
+# A2-K1 — GDN chunk backward move-to-a2 (design / plan)
+
+Batch A of `docs/research/a2_gdn_abi.md` §5, backward half. Ports the a5
+`kernels/projects/a5/gdn_chunk_bwd` unit to the A2 (c220) tensor-vector model,
+closing the same six ABI gaps as the forward and adding `dh0` (§1.4). The forward
+half (`../gdn_chunk_fwd`) is implemented and validated per-stage; this document
+plans the backward, to be built the same way (per-stage validation on 910B3 vs the
+analytical adjoint, then wired through the unit runner).
+
+## The adjoint math (device-independent oracle)
+
+`a5/gdn_chunk_bwd/ref/reference.py::analytical` is the ground truth (no FLA, no
+autograd; finite-difference-qualified). The primal recurrence per token t, per
+(b, value-head hv), with K=V=128, scale = 128**-0.5, GVA ratio = HV//H:
+
+  d     = exp(g[t]) * S                       # decayed prior state [K,V]
+  r     = v[t] - (k[t] ⊙ d).sum_K            # residual [V]
+  z     = beta[t] * r                         # [V]
+  S     = d + k[t] ⊗ z                        # rank-1 update [K,V]
+  o[t]  = scale * (q[t] ⊙ S).sum_K           # (forward output)
+
+The reverse scan carries the state cotangent `back` [K,V] (initialized to `dht`,
+or 0), and per token in reverse:
+
+  dq[t]  = scale * (S ⊙ do[t]).sum_V          # [K]  (per value-head; GVA-reduced later)
+  back  += scale * q[t] ⊗ do[t]               # [K,V]
+  dz     = (back ⊙ k[t]).sum_K                # [V]
+  dr     = beta[t] * dz                        # [V]
+  dk[t]  = (back ⊙ z).sum_V - (d ⊙ dr).sum_V # [K]  (per value-head; GVA-reduced later)
+  dv[t]  = dr                                  # [V]
+  dbeta[t] = (dz ⊙ r).sum_V                    # scalar
+  dD     = back - k[t] ⊗ dr                    # [K,V]
+  dg[t]  = (dD ⊙ d).sum_{K,V}                  # scalar
+  back   = exp(g[t]) * dD                       # [K,V]  (propagate to t-1)
+
+`dh0` = `back` after the whole reverse scan (the cotangent w.r.t. the initial
+state; kda_bwd precedent, §1.4). GVA: dq/dk are formed per value-head (HV) and
+summed over the ratio into the qk-head (H) — `dq.reshape(B,T,H,ratio,K).sum(3)`.
+
+## Three-kernel structure (mirrors a5)
+
+The a5 unit is three kernels; the a2 port keeps the split (all **pure vector**,
+no cube — b3 has no L0C DMAs, A2-01):
+
+1. **`gdn_chunk_bwd_checkpoints_a2`** — replay the primal forward per (b,hv),
+   saving the state at each chunk boundary (every 64 tokens) plus the final
+   state. This is the forward scan (identical recurrence to `../gdn_chunk_fwd`
+   scan step, minus the delta/output) writing `checkpoints[B,HV,N+1,128,128]`.
+   Reuses the forward `_spread8` + `muladddst` rank-1 (S += k⊗z) and the
+   rowscale+tree-reduce matvec ((k⊙d).sum_K), per-token scalar `beta`/`g` via the
+   Var idiom.
+2. **`gdn_chunk_bwd_reverse_a2`** — per (b,hv), for each chunk in reverse: reload
+   the boundary state, replay the chunk forward to rebuild per-token (d,r,z,S)
+   into a tape, then reverse-scan the tape producing `dq_parts[B,T,HV,128]`,
+   `dk_parts[B,T,HV,128]`, `dv`, `dg`, `dbeta`, and threading `back` (init `dht`,
+   final → `dh0[B,HV,128,128]`). The two contractions over K (dz, dq) are
+   rowscale+tree-reduce matvecs; the two rank-1s (back += q⊗do, dD = back − k⊗dr)
+   are `muladddst`/outer forms; the sums over V (dk terms, dbeta) are tree
+   reductions; dg is a full [K,V] reduce.
+3. **`gdn_chunk_bwd_group_reduce_a2`** — sum `dq_parts`/`dk_parts` over the GVA
+   ratio into `dq[B,T,H,128]`/`dk[B,T,H,128]`. Trivial strided add reduction;
+   a no-op copy when HV==H.
+
+## ABI (gaps §1.1–1.7, as forward)
+
+- Inputs `q,k,v,g,beta,do,dht`; outputs `dq,dk,dv,dg,dbeta,dh0`. Public token-major
+  `[B,T,H,128]` (q/k), `[B,T,HV,128]` (v/do), `[B,T,HV]` (g/beta); read via 2-D
+  `[B*T,·]` views (D-PM-35/37). `dht` fp32 `[B,HV,128,128]`; `dh0` emitted same.
+- **§1.1 GVA**: v/g/beta/do/state on HV; q/k on H; in-kernel `i_h = i_hv//(HV//H)`;
+  dq/dk formed on HV then group-reduced. `HV % H == 0`.
+- **§1.5 fp32 state/cotangent** throughout (no bf16-state variant needed for
+  correctness; report divergence only if a bf16 build is later requested).
+- **§1.6 scale** absorbed at q's read; **§1.7** `T % 64 == 0`, no tail path.
+- **C-keyword-safe kernel params**: no `do`/`in` — the `do` GM edge is named
+  `dout` in the kernel signature (GDA-03/PK-05/A2-K1 flag).
+
+## a2 tensor-vector constraints carried from the forward (see ../gdn_chunk_fwd/DESIGN.md)
+
+- Keep the mul + tree-reduce + accumulate **inline**; folding into a called helper
+  mistraces on a2.
+- `dup` on a slice needs an explicit `count=`; `cadd` `dst_rep_stride` counts
+  elements; intrinsic `repeatTimes` (count/64) ≤ 255 (split full-tile ops); no
+  `while` in kernel code.
+- Reductions over the K rows use the 7-step (128→1) explicit tree; over C rows the
+  6-step (64→1) tree; value dim split into two 64-lane halves for the [128,64]
+  scratch when a second [128,128] tile will not fit.
+
+## L0C settle (a2_gdn_abi.md §2)
+
+Not applicable to this pure-vector port — the a5 backward's `barrier(Pipe.M)`
+sites (finalize/wu) are cube-MMAD accumulate points, and this port uses no cube.
+The static guard `tests/test_a2_accumulate_barriers.py` still auto-covers the new
+files (zero accumulate-MMADs ⇒ zero required barriers).
+
+## Test plan (`tests/test_a2_gdn_chunk_bwd.py`, new)
+
+- fp32 dual-oracle on dq/dk/dv/dg/dbeta/dh0 vs `analytical` (rel-L2 ≤ 1e-4, the
+  a5 bwd bar) and finite-difference qualification at tiny sizes.
+- Asymmetric `HV≠H` (H=2, HV=4) with per-group-distinct values so a wrong `i_h`
+  or a missing group-reduce cannot pass.
+- Two-segment chaining: nonzero `dht` in, `dh0` out chained across a split vs a
+  single call (§1.4).
+- Nonzero `dht` control (dht=0 vs dht≠0 changes dq/dk/dg as predicted).
+- Small, safe gate span only (≤10, far from 88.7) — span calibration is Batch B.
+
+## Status
+
+Plan only. Math understood from the analytical adjoint; a2 idioms proven on the
+forward. Next (device-independent): implement `checkpoints` then `reverse` then
+`group_reduce`, validating each on 910B3 vs `analytical` when a card frees up
+(the box is currently saturated by other users; see ../gdn_chunk_fwd/DESIGN.md).
+ETA re-estimate deferred until `reverse` (the largest kernel) is validated.

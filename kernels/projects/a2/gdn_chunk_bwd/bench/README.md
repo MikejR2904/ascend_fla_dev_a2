@@ -61,7 +61,10 @@ SHAPE=s2048 ./pipe_bwd.sh                      # per-pipe utilization of the a2 
   across five stages, so it is expected to be MTE2-bound and well under the >90% bar. The
   optimization target is to collapse it toward the DESIGN.md lean structure (checkpoints →
   single reverse scan, two live `[128,128]` tiles) and eliminate the tape round-trips.
-- On-device verification checkpoints (untested locally — no NPU on the dev box): the
-  `compile_kernel(device="a2")` build of each stage; the `scale` float scalar in the
-  `reverse_rec` / `reverse_dq` scalar dict; and that fla's `dg`/`dbeta` grad
+- Verified card-free: the `compile_kernel(device="a2")` CCE build of **all 8 stages**
+  succeeds (replay 1.5s, reverse_rec 164s, others ~33s each) — the decomposition builds
+  where the earlier monolithic reverse timed out. Compile is a one-time process-cache cost
+  paid at bench startup, then every timed iteration reuses it.
+- Remaining on-device checkpoints (need a card): the `scale` float scalar binding in the
+  `reverse_rec` / `reverse_dq` scalar dict at execution; and that fla's `dg`/`dbeta` grad
   parametrization matches the a2 adjoint (resolve any convention gap when first run).

@@ -46,21 +46,26 @@ def _kernel(module_stem, fn_name):
     return getattr(module, fn_name)
 
 
-_STAGES = (
-    ("replay", "gdn_chunk_bwd_replay_a2_kernel"),
-    ("reverse_rec", "gdn_chunk_bwd_reverse_rec_a2_kernel"),
-    ("reverse_dq", "gdn_chunk_bwd_reverse_dq_a2_kernel"),
-    ("reverse_dbeta", "gdn_chunk_bwd_reverse_dbeta_a2_kernel"),
-    ("reverse_dg", "gdn_chunk_bwd_reverse_dg_a2_kernel"),
-    ("reverse_dk_bz", "gdn_chunk_bwd_reverse_dk_bz_a2_kernel"),
-    ("reverse_dk_ddr", "gdn_chunk_bwd_reverse_dk_ddr_a2_kernel"),
-    ("group_reduce", "gdn_chunk_bwd_group_reduce_a2_kernel"),
-)
+_KERNELS = {
+    "replay": "gdn_chunk_bwd_replay_a2_kernel",
+    "reverse_rec": "gdn_chunk_bwd_reverse_rec_a2_kernel",
+    "reverse_dq": "gdn_chunk_bwd_reverse_dq_a2_kernel",
+    "reverse_dbeta": "gdn_chunk_bwd_reverse_dbeta_a2_kernel",
+    "reverse_dg": "gdn_chunk_bwd_reverse_dg_a2_kernel",
+    "reverse_dk_bz": "gdn_chunk_bwd_reverse_dk_bz_a2_kernel",
+    "reverse_dk_ddr": "gdn_chunk_bwd_reverse_dk_ddr_a2_kernel",
+    "group_reduce": "gdn_chunk_bwd_group_reduce_a2_kernel",
+    "reduce": "gdn_chunk_bwd_reduce_a2_kernel",
+}
+# v1: shipped 8-kernel chain. v2: fused reduction (replay, reverse_rec, reduce, group_reduce).
+V1 = ("replay", "reverse_rec", "reverse_dq", "reverse_dbeta", "reverse_dg",
+      "reverse_dk_bz", "reverse_dk_ddr", "group_reduce")
+V2 = ("replay", "reverse_rec", "reduce", "group_reduce")
 
 
-def compile_stages():
-    return {stem: compile_kernel(_kernel(stem, fn), device="a2", block_dim=BLOCK_DIM, backend="cce")
-            for stem, fn in _STAGES}
+def compile_stages(stems=V1):
+    return {stem: compile_kernel(_kernel(stem, _KERNELS[stem]), device="a2", block_dim=BLOCK_DIM, backend="cce")
+            for stem in stems}
 
 
 def make_inputs(B, T, H, HV, seed=17):
@@ -118,6 +123,40 @@ def build_call(stg, x, B, T, H, HV):
     return call
 
 
+def build_call_v2(stg, x, B, T, H, HV):
+    """Fused-reduction chain: replay -> reverse_rec -> reduce -> group_reduce."""
+    N = T // 64
+    z2 = lambda cols: torch.zeros(B * T, cols, device=DEV)
+    zhv = lambda: torch.zeros(B * T, HV, device=DEV)
+    tape5 = lambda: torch.zeros(B, HV, T, D, D, device=DEV)
+    dims = dict(B=B, T=T, H=H, HV=HV, N=N, BT=B * T, HD=H * D, HVD=HV * D)
+
+    tape_d = tape5()
+    back_tape = tape5()
+    dv = z2(HV * D)
+    dh0 = torch.zeros(B, HV, D, D, device=DEV)
+    dq_parts = z2(HV * D)
+    dk_parts = z2(HV * D)
+    dkddr_zero = z2(HV * D)   # group_reduce computes dkbz - dkddr; feed dk_parts, 0
+    dbeta = zhv()
+    dg = zhv()
+    dq = z2(H * D)
+    dk = z2(H * D)
+
+    def call():
+        stg["replay"](dict(k=x["k"], v=x["v"], g=x["g"], beta=x["beta"], initial_state=x["h0"]),
+                      dims, dict(tape_d=tape_d))
+        stg["reverse_rec"](dict(q=x["q"], k=x["k"], g=x["g"], beta=x["beta"], dout=x["dout"], dht=x["dht"]),
+                           dict(scale=SCALE, **dims), dict(dv=dv, dh0=dh0, back_tape=back_tape))
+        stg["reduce"](dict(k=x["k"], v=x["v"], beta=x["beta"], dout=x["dout"], tape_d=tape_d, back_tape=back_tape),
+                      dict(scale=SCALE, **dims), dict(dq_parts=dq_parts, dk_parts=dk_parts, dbeta=dbeta, dg=dg))
+        stg["group_reduce"](dict(dq_parts=dq_parts, dkbz_parts=dk_parts, dkddr_parts=dkddr_zero),
+                            dims, dict(dq=dq, dk=dk))
+        return dict(dq=dq, dk=dk, dv=dv, dg=dg, dbeta=dbeta, dh0=dh0)
+
+    return call
+
+
 def timed(call, iters, warmup):
     for _ in range(warmup):
         call()
@@ -135,15 +174,18 @@ def main():
     ap.add_argument("--hv", type=int, default=0, help="value heads; 0 => equal to H")
     ap.add_argument("--iters", type=int, default=50)
     ap.add_argument("--warmup", type=int, default=10)
+    ap.add_argument("--variant", choices=("v1", "v2"), default="v1")
     a = ap.parse_args()
     B, T, H = SHAPES[a.shape]
     HV = a.hv or H
 
-    stg = compile_stages()
+    stems = V1 if a.variant == "v1" else V2
+    builder = build_call if a.variant == "v1" else build_call_v2
+    stg = compile_stages(stems)
     x = make_inputs(B, T, H, HV)
-    call = build_call(stg, x, B, T, H, HV)
+    call = builder(stg, x, B, T, H, HV)
     us = timed(call, a.iters, a.warmup)
-    print(f"[a2-bwd {a.shape} B{B}T{T}H{H}HV{HV}] host wall {us:.2f} us/call over {a.iters} iters "
+    print(f"[a2-bwd {a.variant} {a.shape} B{B}T{T}H{H}HV{HV}] host wall {us:.2f} us/call over {a.iters} iters "
           f"(warmup {a.warmup}, block_dim {BLOCK_DIM})")
 
 

@@ -74,7 +74,33 @@ aiv_mte3 0.178 / 0.308. Now partly **memory-bound on the tape loads** (128 KB/to
 bounding pipe still under the 80% bar — the remaining cost is the two 134 MB GM tapes
 (`tape_d`, `back_tape`) being produced then consumed.
 
-## Optimization target (remaining, after v2)
+## v3 — tapeless fused reverse scan (2026-10-05)
+
+Folded the reduction work into the reverse recurrence so `back_t` is consumed in-UB;
+`back_tape` eliminated. Single runtime loop over t (no C-unroll) keeps compile
+bounded. Chain 4 kernels -> 3 (replay, reverse_rec_fused, group_reduce).
+
+| metric | v1 | v2 | v3 |
+|---|---|---|---|
+| device time / call | 9440 µs | 6643 µs | **5391 µs** |
+| vs v1 | — | -30% | **-43%** |
+| correctness vs fla Triton | ~1e-7 | ~1e-7 | identical (~1e-7) |
+
+v3 per-kernel device (per-call): reverse_rec_fused 4457, replay 917, group_reduce 18.
+`reverse_rec_fused` pipe ratios (mean/max): **aiv_vec 0.956 / 0.959**, aiv_mte2 0.052,
+aiv_mte3 0.050, aiv_scalar 0.054. The dominant kernel (83% of device time) is
+**vector-bound at 95.6% — above the 80% bar** (mte2 collapsed from v2's 0.354 as the
+back_tape round-trip is gone and the remaining tape_d load hides under the vec work).
+
+Host wall: a2 backward 5403 µs/call vs fla Triton fwd+bwd 9440 µs.
+
+## Optimization target (remaining, after v3)
+
+The only non-vec-saturated contributor is `replay` (917 µs, 17%), which produces
+`tape_d`. Eliminating it would need per-chunk checkpoint + in-UB recompute of d_t
+during the reverse scan. Expected upside is low now: the reverse kernel is already
+95.6% vector-bound, so moving the forward recompute into it adds vec work rather than
+hiding under stalls. v3 meets the utilization bar; deeper work has diminishing return.
 
 Collapse the 8-kernel decomposition toward the DESIGN.md lean structure (replay/
 checkpoints → a single reverse scan holding `back` and `d_t` in UB, two live

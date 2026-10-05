@@ -54,7 +54,27 @@ ratio is the cost of re-reading the two `[B,HV,T,128,128]` GM tapes (`tape_d`,
 `back_tape`, ~134 MB each at s512) across five of the eight stages. The five costliest
 stages are exactly those that reload both tapes.
 
-## Optimization target
+## v2 — fused reduction kernel (2026-10-05)
+
+Collapsed the five per-token reduction kernels into one `reduce` kernel that loads
+each `tape_d[t]`/`back_tape[t]` slice once and derives the shared `sp8`/`(k.d)_K`/
+`(back.k)_K` once; dk emitted already combined. Chain 8 kernels -> 4.
+
+| metric | v1 baseline | v2 |
+|---|---|---|
+| device time / call | 9440 µs | **6643 µs (-30%)** |
+| host wall / call | 9507 µs | 6643 µs |
+| correctness vs fla Triton | ~1e-7 | identical (bit-for-bit same rel-L2) |
+
+v2 per-kernel device (per-call): reduce 4310, reverse_rec 1381, replay 925,
+group_reduce 27. The five reductions (7102 µs total in v1) became one at 4310 µs.
+
+`reduce` kernel pipe ratios (mean/max): aiv_vec 0.450 / 0.870, aiv_mte2 0.354 / 0.600,
+aiv_mte3 0.178 / 0.308. Now partly **memory-bound on the tape loads** (128 KB/token),
+bounding pipe still under the 80% bar — the remaining cost is the two 134 MB GM tapes
+(`tape_d`, `back_tape`) being produced then consumed.
+
+## Optimization target (remaining, after v2)
 
 Collapse the 8-kernel decomposition toward the DESIGN.md lean structure (replay/
 checkpoints → a single reverse scan holding `back` and `d_t` in UB, two live

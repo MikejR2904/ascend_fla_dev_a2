@@ -82,7 +82,7 @@ def build_call(stg, x, B, T, H, HV):
     z2 = lambda cols: torch.zeros(B * T, cols, device=DEV)
     zhv = lambda: torch.zeros(B * T, HV, device=DEV)
     tape5 = lambda: torch.zeros(B, HV, T, D, D, device=DEV)
-    dims = dict(B=B, T=T, H=H, HV=HV, N=N)
+    dims = dict(B=B, T=T, H=H, HV=HV, N=N, BT=B * T, HD=H * D, HVD=HV * D)
 
     tape_d = tape5()
     back_tape = tape5()

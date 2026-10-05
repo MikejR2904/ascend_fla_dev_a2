@@ -94,13 +94,31 @@ back_tape round-trip is gone and the remaining tape_d load hides under the vec w
 
 Host wall: a2 backward 5403 µs/call vs fla Triton fwd+bwd 9440 µs.
 
-## Optimization target (remaining, after v3)
+## Cross-shape correctness (v3)
 
-The only non-vec-saturated contributor is `replay` (917 µs, 17%), which produces
-`tape_d`. Eliminating it would need per-chunk checkpoint + in-UB recompute of d_t
-during the reverse scan. Expected upside is low now: the reverse kernel is already
-95.6% vector-bound, so moving the forward recompute into it adds vec work rather than
-hiding under stalls. v3 meets the utilization bar; deeper work has diminishing return.
+| shape | dq | dk | dv | dg | dbeta |
+|---|---|---|---|---|---|
+| s512  | 2.66e-7 | 2.83e-7 | 2.84e-7 | 4.28e-7 | 3.07e-7 |
+| s2048 | 2.64e-7 | 2.82e-7 | 2.81e-7 | 4.80e-7 | 3.12e-7 |
+
+## Verdict vs the fla Triton benchmark (the honest comparison)
+
+fla Triton device (s512): fwd 2354 µs, fwd+bwd 3270 µs -> **backward 915 µs**.
+a2 v3 backward device: **5391 µs -> 5.89x slower than fla's Triton backward.**
+At s2048 the wall gap widens (a2 21821 µs vs fla's whole fwd+bwd 11122 µs): the a2
+cost scales **linearly in T** while fla scales sub-linearly.
+
+**The optimization bar (>=80% utilization) is met — the dominant kernel is 95.6%
+vector-bound — and v3 is 43% faster than the a2 baseline. But the "beat the
+benchmark" bar is NOT met, and implementation tuning cannot close the gap, because it
+is algorithmic:** this a2 `gdn_chunk_bwd` is a **sequential per-token recurrence**
+(O(T) full-[128,128] vector reductions per token), whereas fla's Triton
+`chunk_gated_delta_rule` backward is **chunk-parallel** (O(T/C) matmul-style work).
+v3 is a near-optimal implementation of the wrong-for-this-benchmark algorithm.
+
+To actually beat fla would require re-deriving the backward as a chunk-parallel
+(matmul/cube) algorithm — a separate, much larger effort, and constrained on b3 by
+A2-01 (no cube L0C DMAs). That is a design-level change, not a kernel-tuning one.
 
 Collapse the 8-kernel decomposition toward the DESIGN.md lean structure (replay/
 checkpoints → a single reverse scan holding `back` and `d_t` in UB, two live

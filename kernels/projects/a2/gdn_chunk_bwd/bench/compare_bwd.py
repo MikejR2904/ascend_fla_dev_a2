@@ -27,9 +27,16 @@ def rel_l2(x, ref):
     return (x - ref).norm().item() / max(ref.norm().item(), 1e-30)
 
 
+_STEMS = {"v1": "V1", "v2": "V2", "v3": "V3"}
+_BUILDERS = {"v1": "build_call", "v2": "build_call_v2", "v3": "build_call_v3"}
+
+
+def _stems_builder(variant):
+    return getattr(A, _STEMS[variant]), getattr(A, _BUILDERS[variant])
+
+
 def run_a2(x, B, T, H, variant="v1"):
-    stems = A.V1 if variant == "v1" else A.V2
-    builder = A.build_call if variant == "v1" else A.build_call_v2
+    stems, builder = _stems_builder(variant)
     stg = A.compile_stages(stems)
     call = builder(stg, x, B, T, H, H)
     return call()
@@ -51,7 +58,7 @@ def main():
     ap.add_argument("--shape", choices=tuple(A.SHAPES), default="s512")
     ap.add_argument("--iters", type=int, default=50)
     ap.add_argument("--warmup", type=int, default=10)
-    ap.add_argument("--variant", choices=("v1", "v2"), default="v1")
+    ap.add_argument("--variant", choices=("v1", "v2", "v3"), default="v1")
     a = ap.parse_args()
     B, T, H = A.SHAPES[a.shape]
     x = A.make_inputs(B, T, H, H)
@@ -64,8 +71,7 @@ def main():
         m = mine[name].reshape(B, T, H, -1) if name in ("dq", "dk", "dv") else mine[name].reshape(B, T, H)
         print(f"    {name:6s} {rel_l2(m, ref[name]):.3e}")
 
-    stems = A.V1 if a.variant == "v1" else A.V2
-    builder = A.build_call if a.variant == "v1" else A.build_call_v2
+    stems, builder = _stems_builder(a.variant)
     stg = A.compile_stages(stems)
     a2_call = builder(stg, x, B, T, H, H)
     q, k, v, g, beta = Tg.make_inputs(B, T, H, req=True)

@@ -56,11 +56,14 @@ _KERNELS = {
     "reverse_dk_ddr": "gdn_chunk_bwd_reverse_dk_ddr_a2_kernel",
     "group_reduce": "gdn_chunk_bwd_group_reduce_a2_kernel",
     "reduce": "gdn_chunk_bwd_reduce_a2_kernel",
+    "reverse_rec_fused": "gdn_chunk_bwd_reverse_rec_fused_a2_kernel",
 }
 # v1: shipped 8-kernel chain. v2: fused reduction (replay, reverse_rec, reduce, group_reduce).
+# v3: reductions folded into the reverse scan, no back_tape (replay, reverse_rec_fused, group_reduce).
 V1 = ("replay", "reverse_rec", "reverse_dq", "reverse_dbeta", "reverse_dg",
       "reverse_dk_bz", "reverse_dk_ddr", "group_reduce")
 V2 = ("replay", "reverse_rec", "reduce", "group_reduce")
+V3 = ("replay", "reverse_rec_fused", "group_reduce")
 
 
 def compile_stages(stems=V1):
@@ -157,6 +160,39 @@ def build_call_v2(stg, x, B, T, H, HV):
     return call
 
 
+def build_call_v3(stg, x, B, T, H, HV):
+    """Tapeless chain: replay -> reverse_rec_fused (reductions inline) -> group_reduce."""
+    N = T // 64
+    z2 = lambda cols: torch.zeros(B * T, cols, device=DEV)
+    zhv = lambda: torch.zeros(B * T, HV, device=DEV)
+    tape5 = lambda: torch.zeros(B, HV, T, D, D, device=DEV)
+    dims = dict(B=B, T=T, H=H, HV=HV, N=N, BT=B * T, HD=H * D, HVD=HV * D)
+
+    tape_d = tape5()
+    dv = z2(HV * D)
+    dh0 = torch.zeros(B, HV, D, D, device=DEV)
+    dq_parts = z2(HV * D)
+    dk_parts = z2(HV * D)
+    dkddr_zero = z2(HV * D)
+    dbeta = zhv()
+    dg = zhv()
+    dq = z2(H * D)
+    dk = z2(H * D)
+
+    def call():
+        stg["replay"](dict(k=x["k"], v=x["v"], g=x["g"], beta=x["beta"], initial_state=x["h0"]),
+                      dims, dict(tape_d=tape_d))
+        stg["reverse_rec_fused"](
+            dict(q=x["q"], k=x["k"], v=x["v"], g=x["g"], beta=x["beta"], dout=x["dout"], dht=x["dht"], tape_d=tape_d),
+            dict(scale=SCALE, **dims),
+            dict(dq_parts=dq_parts, dk_parts=dk_parts, dv=dv, dbeta=dbeta, dg=dg, dh0=dh0))
+        stg["group_reduce"](dict(dq_parts=dq_parts, dkbz_parts=dk_parts, dkddr_parts=dkddr_zero),
+                            dims, dict(dq=dq, dk=dk))
+        return dict(dq=dq, dk=dk, dv=dv, dg=dg, dbeta=dbeta, dh0=dh0)
+
+    return call
+
+
 def timed(call, iters, warmup):
     for _ in range(warmup):
         call()
@@ -174,13 +210,13 @@ def main():
     ap.add_argument("--hv", type=int, default=0, help="value heads; 0 => equal to H")
     ap.add_argument("--iters", type=int, default=50)
     ap.add_argument("--warmup", type=int, default=10)
-    ap.add_argument("--variant", choices=("v1", "v2"), default="v1")
+    ap.add_argument("--variant", choices=("v1", "v2", "v3"), default="v1")
     a = ap.parse_args()
     B, T, H = SHAPES[a.shape]
     HV = a.hv or H
 
-    stems = V1 if a.variant == "v1" else V2
-    builder = build_call if a.variant == "v1" else build_call_v2
+    stems = {"v1": V1, "v2": V2, "v3": V3}[a.variant]
+    builder = {"v1": build_call, "v2": build_call_v2, "v3": build_call_v3}[a.variant]
     stg = compile_stages(stems)
     x = make_inputs(B, T, H, HV)
     call = builder(stg, x, B, T, H, HV)

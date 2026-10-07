@@ -141,3 +141,14 @@ mirroring a5, suffixed op name, HV axis, barrier sites) and run the dual-oracle
 (`grouped_recurrent` + `block_solve`) end-to-end through the unit runner; then the
 backward unit (dh0 §1.4). Re-estimate the ETA after the backward — the port is a
 full vector-stage rewrite, not the file-move the 34h in a2_gdn_abi.md §5 assumed.
+
+## Board bring-up result (2026-10-07)
+
+Validated end-to-end on 910B3 by `tests/test_a2_gdn_chunk.py` (dual fp32 oracle +
+autograd); numbers and the full checklist are in `docs/research/a2_gdn_abi.md` §7.
+Device bring-up (sim did not model b3's vector UB-address bounds) required explicit
+`count=` on the vector ops in `prepare`/`scores`/`output`, and — the one design
+deviation — `scan`'s two matrix contractions (`wy@S`, `knd^T@delta`) now run on the
+**cube** (matmul + L0C→GM→UB GMBuff ring) instead of the planned pure-vector matvec,
+which faults on b3 for a kernel-context reason (byte-identical to the working backward
+`reverse_rec`). ABI contract and numerics unchanged; see §7 for the rationale.

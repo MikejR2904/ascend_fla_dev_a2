@@ -89,7 +89,7 @@ def gdn_chunk_scores_a2_kernel(
 
             # knd = kn * exp(-gc)
             ex[0:C, 0:D] <<= gc[bb, cc, hv, 0:C, 0:D]
-            muls(ex, ex, -1.0)
+            muls(ex[0:C, 0:D], ex[0:C, 0:D], -1.0, count=C * D)   # explicit count (device vec repeat)
             exp(ex, ex, count=C * D)
             mul(ku, ku, ex, count=C * D)
             # qnd = qn * exp(gc) ; bkd = bk * exp(gc)
@@ -101,7 +101,7 @@ def gdn_chunk_scores_a2_kernel(
             # score = qnd . knd^T, causal (keep i >= j). A strided sub-column UB
             # store faults on the vector core, so scatter the valid entries with
             # scalar Var copies (which also apply the triangular mask).
-            dup(au, 0.0)
+            dup(au[0:C, 0:C], 0.0, count=C * C)
             for j in range(C):
                 _coldot(scol, qu, ku[j:j + 1, 0:D], tmp)
                 for i in range(j, C):
@@ -111,7 +111,7 @@ def gdn_chunk_scores_a2_kernel(
             score[bb, cc, hv, 0:C, 0:C] <<= au[0:C, 0:C]
 
             # lower = bkd . knd^T, strictly causal (keep i > j)
-            dup(au, 0.0)
+            dup(au[0:C, 0:C], 0.0, count=C * C)
             for j in range(C - 1):
                 _coldot(scol, bu, ku[j:j + 1, 0:D], tmp)
                 for i in range(j + 1, C):

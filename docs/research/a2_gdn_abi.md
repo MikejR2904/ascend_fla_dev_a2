@@ -289,3 +289,31 @@ full-attn are A2-10 and later.
   KDA's `kda_bwd`.
 - Trained-checkpoint gate span, bf16-vs-fp32 state divergence, block_dim ceiling, and the M16 BF16
   reproduction are **A2-10/A2-11 measurements**; this doc flags each rather than asserting it.
+
+## 7. 实现结果 (A2-K1, board-validated 2026-10-07 on 910B3, CANN 9.2.0-beta.1)
+
+Both units build and run on a2, validated by `tests/test_a2_gdn_chunk.py` against a dual fp32 CPU
+oracle (block-solve + head-local grouped recurrence) and autograd. Chains:
+`prepare→scores→wy→scan→output` (fwd) and
+`replay→reverse_rec→reverse_dq/dbeta/dg/dk_bz/dk_ddr→group_reduce` (bwd), at HV≠H (H=2, HV=4):
+
+- o / final_state rel-L2 **~3e-7** vs both oracles (zero and nonzero initial_state);
+- grads dq/dk/dv/dbeta/dg/dh0 **~1.6e-7–5.2e-7** vs autograd, with zero and nonzero `dht`;
+- two-segment chaining (seg-1 `final_state` → seg-2 `initial_state`) **bit-exact** vs a single-pass
+  oracle; `T % 64 != 0` is explicitly rejected (no tail path, §1.7).
+- All six ABI gaps (§1.1–1.7) exercised. §1.5 fp32-vs-bf16 state is **N/A**: the chunk units are all
+  fp32 (no bf16-state variant), so there is also no bf16 host op to audit (§4 N/A).
+- `tests/test_a2_accumulate_barriers.py` passes over the new units with a non-vacuous negative control
+  (deleting one `barrier(Pipe.M)` turns it red).
+
+**Deviation — the scan forward's two matrix contractions run on the cube, not pure-vector.** §5 Batch A
+planned `scan` as a pure-vector port of a5 `scan_vf`. That port compiles and is sim-correct, but its
+step-1 `wy@S` (`_spread8` + strided `mul` + tree-reduce matvec) **faults on b3 at runtime** ("UB VEC
+address out of bounds") for a kernel-context reason — the byte-identical matvec runs fine in the
+backward `reverse_rec`, and UB size, `GROUP`, tile order, column offset, and explicit `count=` were all
+ruled out on-device. The shipped `scan.py` therefore computes `wy@S` (contract D) and `knd^T@delta`
+(contract C) as cube `matmul`s with the L0C→GM→UB GMBuff-ring handoff (the b3-proven idiom from the
+chunk-parallel unit). `output` (stage 5) keeps the vector idiom (runs on b3 after an explicit-`count=`
+fix). This is an implementation-level device fix; the §1 ABI contract and numerics are unchanged. A
+separate pre-fix `prepare`/`scores`/`output` needed the same explicit-`count=` on vector ops (the prior
+"validated" was sim-only; sim does not model b3's vector UB-address bounds).

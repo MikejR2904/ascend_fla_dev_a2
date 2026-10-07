@@ -86,13 +86,13 @@ def gdn_chunk_output_a2_kernel(
                         dst_blk_stride=1, dst_rep_stride=HALFBLK,
                         src1_blk_stride=1, src1_rep_stride=ROWBLK,
                         src2_blk_stride=0, src2_rep_stride=1)
-                    add(scr[0:64, 0:GROUP], scr[0:64, 0:GROUP], scr[64:128, 0:GROUP])
-                    add(scr[0:32, 0:GROUP], scr[0:32, 0:GROUP], scr[32:64, 0:GROUP])
-                    add(scr[0:16, 0:GROUP], scr[0:16, 0:GROUP], scr[16:32, 0:GROUP])
-                    add(scr[0:8, 0:GROUP], scr[0:8, 0:GROUP], scr[8:16, 0:GROUP])
-                    add(scr[0:4, 0:GROUP], scr[0:4, 0:GROUP], scr[4:8, 0:GROUP])
-                    add(scr[0:2, 0:GROUP], scr[0:2, 0:GROUP], scr[2:4, 0:GROUP])
-                    add(scr[0:1, 0:GROUP], scr[0:1, 0:GROUP], scr[1:2, 0:GROUP])
+                    add(scr[0:64, 0:GROUP], scr[0:64, 0:GROUP], scr[64:128, 0:GROUP], count=64 * GROUP)
+                    add(scr[0:32, 0:GROUP], scr[0:32, 0:GROUP], scr[32:64, 0:GROUP], count=32 * GROUP)
+                    add(scr[0:16, 0:GROUP], scr[0:16, 0:GROUP], scr[16:32, 0:GROUP], count=16 * GROUP)
+                    add(scr[0:8, 0:GROUP], scr[0:8, 0:GROUP], scr[8:16, 0:GROUP], count=8 * GROUP)
+                    add(scr[0:4, 0:GROUP], scr[0:4, 0:GROUP], scr[4:8, 0:GROUP], count=4 * GROUP)
+                    add(scr[0:2, 0:GROUP], scr[0:2, 0:GROUP], scr[2:4, 0:GROUP], count=2 * GROUP)
+                    add(scr[0:1, 0:GROUP], scr[0:1, 0:GROUP], scr[1:2, 0:GROUP], count=1 * GROUP)
                     add(uu[i:i + 1, vs:vs + GROUP], uu[i:i + 1, vs:vs + GROUP],
                         scr[0:1, 0:GROUP])
 
@@ -108,12 +108,12 @@ def gdn_chunk_output_a2_kernel(
                         dst_blk_stride=1, dst_rep_stride=HALFBLK,
                         src1_blk_stride=1, src1_rep_stride=ROWBLK,
                         src2_blk_stride=0, src2_rep_stride=1)
-                    add(scr[0:32, 0:GROUP], scr[0:32, 0:GROUP], scr[32:64, 0:GROUP])
-                    add(scr[0:16, 0:GROUP], scr[0:16, 0:GROUP], scr[16:32, 0:GROUP])
-                    add(scr[0:8, 0:GROUP], scr[0:8, 0:GROUP], scr[8:16, 0:GROUP])
-                    add(scr[0:4, 0:GROUP], scr[0:4, 0:GROUP], scr[4:8, 0:GROUP])
-                    add(scr[0:2, 0:GROUP], scr[0:2, 0:GROUP], scr[2:4, 0:GROUP])
-                    add(scr[0:1, 0:GROUP], scr[0:1, 0:GROUP], scr[1:2, 0:GROUP])
+                    add(scr[0:32, 0:GROUP], scr[0:32, 0:GROUP], scr[32:64, 0:GROUP], count=32 * GROUP)
+                    add(scr[0:16, 0:GROUP], scr[0:16, 0:GROUP], scr[16:32, 0:GROUP], count=16 * GROUP)
+                    add(scr[0:8, 0:GROUP], scr[0:8, 0:GROUP], scr[8:16, 0:GROUP], count=8 * GROUP)
+                    add(scr[0:4, 0:GROUP], scr[0:4, 0:GROUP], scr[4:8, 0:GROUP], count=4 * GROUP)
+                    add(scr[0:2, 0:GROUP], scr[0:2, 0:GROUP], scr[2:4, 0:GROUP], count=2 * GROUP)
+                    add(scr[0:1, 0:GROUP], scr[0:1, 0:GROUP], scr[1:2, 0:GROUP], count=1 * GROUP)
                     add(uu[i:i + 1, vs:vs + GROUP], uu[i:i + 1, vs:vs + GROUP],
                         scr[0:1, 0:GROUP])
 

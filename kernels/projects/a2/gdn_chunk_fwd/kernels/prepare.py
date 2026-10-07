@@ -72,7 +72,7 @@ def gdn_chunk_prepare_a2_kernel(
             # kn = raw k
             kn[bb, cc, hv, 0:C, 0:D] <<= ku[0:C, 0:D]
             # qn = q * scale
-            muls(qu, qu, scale)
+            muls(qu[0:C, 0:D], qu[0:C, 0:D], scale, count=C * D)   # explicit count (device vec repeat)
             qn[bb, cc, hv, 0:C, 0:D] <<= qu[0:C, 0:D]
 
             # per-token scalar beta (bk = k*beta, wv = v*beta) and prefix of g
@@ -86,7 +86,7 @@ def gdn_chunk_prepare_a2_kernel(
                 gval.GetValueFrom(g[r0 + rr:r0 + rr + 1, hv:hv + 1])
                 gsum.set(gsum + gval)
                 # gc[rr, :] = gsum  (broadcast the scalar prefix to all channels)
-                dup(gcu[rr:rr + 1, 0:D], 0.0)
+                dup(gcu[rr:rr + 1, 0:D], 0.0, count=D)
                 adds(gcu[rr:rr + 1, 0:D], gcu[rr:rr + 1, 0:D], gsum, count=D)
 
             bk[bb, cc, hv, 0:C, 0:D] <<= bku[0:C, 0:D]

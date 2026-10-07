@@ -292,9 +292,11 @@ full-attn are A2-10 and later.
 
 ## 7. 实现结果 (A2-K1, board-validated 2026-10-07 on 910B3)
 
-Env identity (captured, `kernels/projects/a2/gdn_chunk_fwd/evidence/env.json`): SoC **Ascend910B3**,
-**CANN 9.2.0-beta.1**, **opp 9.2.0-beta.1** (ts 20260805_224858134), **npu-smi 25.5.1**. Raw acceptance
-numbers are in `evidence/acceptance_numbers.log`, the block-dim note in `evidence/blockdim_sweep.log`.
+Env identity (captured under `kernels/projects/a2/gdn_chunk_fwd/evidence/`): SoC **Ascend910B3**,
+**CANN 9.2.0-beta.1**, **opp 9.2.0-beta.1** (ts 20260805_224858134), **npu-smi 25.5.1**. The verbatim
+env captures are `evidence/opp_version.info` (the opp package manifest) and `evidence/npu_smi.log`
+(SoC + driver), summarized in `evidence/env.json`. Raw per-case acceptance numbers are in
+`evidence/acceptance_numbers.log`, the block-dim note in `evidence/blockdim_sweep.log`.
 
 Both units build and run on a2, validated by `tests/test_a2_gdn_chunk.py` against a dual fp32 CPU
 oracle (block-solve + head-local grouped recurrence) and autograd. Chains:

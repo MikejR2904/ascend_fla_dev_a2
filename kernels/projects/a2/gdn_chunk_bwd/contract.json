@@ -62,7 +62,8 @@
       "stage": "board",
       "status": "passed",
       "scope": "910B3, CANN 9.2.0-beta.1, opp 9.2.0-beta.1, npu-smi 25.5.1, block_dim=40. The 8-kernel chain is validated end-to-end by tests/test_a2_gdn_chunk.py against autograd: dq/dk/dv/dbeta/dg/dh0 rel-L2 1.56e-7..5.15e-7 at HV!=H (H=2,HV=4), zero and nonzero dht. Raw numbers in ../gdn_chunk_fwd/evidence/acceptance_numbers.log.",
-      "note": "Runnable unit.py / run.py / _unit_runner.py harness not yet ported; the committed pytest is the validation of record. The adjoint oracle is autograd (ref/reference.py::analytical), which does not slot into the CPU-reference unit protocol as cleanly as the forward's. The runner port is requested as a PM-sanctioned follow-up."
+      "note": "Runnable unit.py / run.py / _unit_runner.py harness not yet ported; the committed pytest is the validation of record. The adjoint oracle is autograd (ref/reference.py::analytical), which does not slot into the CPU-reference unit protocol as cleanly as the forward's. The runner port is DEFERRED to a follow-up task with PM approval (PR #138 REVIEW, 2026-10-07); until it lands this unit is NOT marked qualified in the full repo unit-protocol sense.",
+      "qualified": false
     }
   ],
   "provenance": {

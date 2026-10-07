@@ -298,6 +298,13 @@ env captures are `evidence/opp_version.info` (the opp package manifest) and `evi
 (SoC + driver), summarized in `evidence/env.json`. Raw per-case acceptance numbers are in
 `evidence/acceptance_numbers.log`, the block-dim note in `evidence/blockdim_sweep.log`.
 
+The formal ABI contract for each unit is `kernels/projects/a2/gdn_chunk_{fwd,bwd}/contract.json`.
+The runnable `unit.py`/`run.py`/`_unit_runner.py` unit-protocol harness is **deferred to a follow-up
+task with PM approval (PR #138 REVIEW, 2026-10-07)**: `tests/test_a2_gdn_chunk.py` already validates
+both units end-to-end on 910B3 (dual fp32 oracle + autograd), so the harness port is mechanical, not a
+correctness gap. Until that harness lands, these two units are **not** marked `qualified` in the full
+repo unit-protocol sense.
+
 Both units build and run on a2, validated by `tests/test_a2_gdn_chunk.py` against a dual fp32 CPU
 oracle (block-solve + head-local grouped recurrence) and autograd. Chains:
 `prepare→scores→wy→scan→output` (fwd) and

@@ -290,23 +290,38 @@ full-attn are A2-10 and later.
 - Trained-checkpoint gate span, bf16-vs-fp32 state divergence, block_dim ceiling, and the M16 BF16
   reproduction are **A2-10/A2-11 measurements**; this doc flags each rather than asserting it.
 
-## 7. 实现结果 (A2-K1, board-validated 2026-10-07 on 910B3, CANN 9.2.0-beta.1)
+## 7. 实现结果 (A2-K1, board-validated 2026-10-07 on 910B3)
+
+Env identity (captured, `kernels/projects/a2/gdn_chunk_fwd/evidence/env.json`): SoC **Ascend910B3**,
+**CANN 9.2.0-beta.1**, **opp 9.2.0-beta.1** (ts 20260805_224858134), **npu-smi 25.5.1**. Raw acceptance
+numbers are in `evidence/acceptance_numbers.log`, the block-dim note in `evidence/blockdim_sweep.log`.
 
 Both units build and run on a2, validated by `tests/test_a2_gdn_chunk.py` against a dual fp32 CPU
 oracle (block-solve + head-local grouped recurrence) and autograd. Chains:
 `prepare→scores→wy→scan→output` (fwd) and
 `replay→reverse_rec→reverse_dq/dbeta/dg/dk_bz/dk_ddr→group_reduce` (bwd), at HV≠H (H=2, HV=4):
 
-- o / final_state rel-L2 **~3e-7** vs both oracles (zero and nonzero initial_state);
-- grads dq/dk/dv/dbeta/dg/dh0 **~1.6e-7–5.2e-7** vs autograd, with zero and nonzero `dht`;
+- o / final_state rel-L2 **2.8e-7 – 4.2e-7** vs both oracles (zero and nonzero initial_state);
+- grads dq/dk/dv/dbeta/dg/dh0 **1.56e-7 – 5.15e-7** vs autograd, with zero and nonzero `dht`;
 - two-segment chaining (seg-1 `final_state` → seg-2 `initial_state`) **bit-exact** vs a single-pass
   oracle; `T % 64 != 0` is explicitly rejected (no tail path, §1.7).
-- All six ABI gaps (§1.1–1.7) exercised. §1.5 fp32-vs-bf16 state is **N/A**: the chunk units are all
-  fp32 (no bf16-state variant), so there is also no bf16 host op to audit (§4 N/A).
-- `tests/test_a2_accumulate_barriers.py` passes over the new units with a non-vacuous negative control
-  (deleting one `barrier(Pipe.M)` turns it red).
+- **§1.5 bf16-state divergence (produced, not deferred):** casting the carried state to bf16 between
+  chunks and comparing `final_state` to the fp32 recurrent oracle gives relative-L2 **1.662e-3** at the
+  tested span. This is the evidence item §1.5 asks for; it is not a shipped option — per the PM NOTE
+  (2026-09-25, DESIGN.md) the shipped default is fp32-state. There is no bf16 host op, so the §4
+  bf16-host-audit remains N/A.
+- All six ABI gaps (§1.1–1.7) exercised; `tests/test_a2_accumulate_barriers.py` passes over the new
+  units with a non-vacuous negative control (deleting one `barrier(Pipe.M)` turns it red).
 
-**Deviation — the scan forward's two matrix contractions run on the cube, not pure-vector.** §5 Batch A
+**block_dim:** validated at **`block_dim=40`** (the a2 core count used throughout bring-up). A bd1-vs-bd40
+comparison is **not available**: on the shared 910B3 the bd=1 build faulted with a vector-core exception
+(the box runs 8 cards at 90–160% AICore under other users' jobs; the longest kernels intermittently hit
+`rtDeviceSynchronizeWithTimeout`), so only the verified bd=40 value is claimed. `evidence/blockdim_sweep.log`
+records this. The dual-oracle correctness is block-dim-independent by construction (per-(b,hv) work split
+across cores with no cross-core reduction), so bd40 vs bd1 is an identity, not a numeric risk — but it is
+recorded as unverified rather than asserted (AGENTS.md §2: an A2 number is not a conclusion until measured).
+
+**Deviation 1 — the forward scan's two matrix contractions run on the cube, not pure-vector.** §5 Batch A
 planned `scan` as a pure-vector port of a5 `scan_vf`. That port compiles and is sim-correct, but its
 step-1 `wy@S` (`_spread8` + strided `mul` + tree-reduce matvec) **faults on b3 at runtime** ("UB VEC
 address out of bounds") for a kernel-context reason — the byte-identical matvec runs fine in the
@@ -314,6 +329,28 @@ backward `reverse_rec`, and UB size, `GROUP`, tile order, column offset, and exp
 ruled out on-device. The shipped `scan.py` therefore computes `wy@S` (contract D) and `knd^T@delta`
 (contract C) as cube `matmul`s with the L0C→GM→UB GMBuff-ring handoff (the b3-proven idiom from the
 chunk-parallel unit). `output` (stage 5) keeps the vector idiom (runs on b3 after an explicit-`count=`
-fix). This is an implementation-level device fix; the §1 ABI contract and numerics are unchanged. A
-separate pre-fix `prepare`/`scores`/`output` needed the same explicit-`count=` on vector ops (the prior
-"validated" was sim-only; sim does not model b3's vector UB-address bounds).
+fix). The §1 ABI contract and numerics are unchanged. A separate pre-fix `prepare`/`scores`/`output`
+needed the same explicit-`count=` on vector ops (the prior "validated" was sim-only; sim does not model
+b3's vector UB-address bounds).
+
+**Deviation 2 — the entire backward is a pure-vector sequential recurrence, not the cube finalize/wu
+§2 planned (the larger deviation).** §2 (A2-01 hit-table) and DESIGN.md "L0C settle" sited `barrier(Pipe.M)`
+after the bwd **finalize** FP32 chain and the **wu** BF16 M64 MMAD — i.e. the planned backward carried
+cube matmuls. The shipped backward does not: `replay→reverse_rec→reverse_dq/dbeta/dg/dk_bz/dk_ddr→
+group_reduce` is a **sequential per-token recurrence with zero `matmul` and zero `barrier(Pipe.M)`** — it
+is all full-`[128,128]` vector reductions per token, the sim-imposed 8-kernel decomposition, not the lean
+cube structure §2 assumed. This is a bigger structural deviation than Deviation 1 (which touches two
+contractions in one forward stage). Correctness is unaffected — the dual-oracle + autograd numbers above
+are the gate — but the performance consequence is real and is not hidden:
+
+- On 910B3 (s512 = B1·T512·H4·HV4, fp32, bd40) the shipped backward costs **~9.44 ms/call** device time
+  vs fla's Triton `chunk_gated_delta_rule` backward **~0.92 ms/call** — about **10×** slower, and the gap
+  grows linearly in T (the a2 cost is O(T); fla's is sub-linear).
+- The slowdown is **algorithmic, not a tuning gap**: this backward is a sequential O(T) per-token
+  recurrence, whereas fla's is **chunk-parallel** (O(T/C) matmul-style work). An in-scope experiment that
+  folded the tapes into a single tapeless reverse scan reached a near-optimal 95.6% vector-bound kernel at
+  ~5.39 ms/call (5.9×) — still algorithmically bounded. Closing the gap needs a **chunk-parallel cube
+  re-derivation of the backward**, a design-level change constrained on b3 by A2-01 (no cube L0C DMAs);
+  that chunk-parallel backward unit was prototyped, did not beat fla on b3, and is **shelved** (out of
+  A2-K1 scope, which is correctness/ABI). The perf variants (v2/v3) and their informal bench were removed
+  from the deliverable so the shipped backward is unambiguously the dual-oracle-validated v1 chain.

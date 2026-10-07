@@ -151,4 +151,9 @@ Device bring-up (sim did not model b3's vector UB-address bounds) required expli
 deviation — `scan`'s two matrix contractions (`wy@S`, `knd^T@delta`) now run on the
 **cube** (matmul + L0C→GM→UB GMBuff ring) instead of the planned pure-vector matvec,
 which faults on b3 for a kernel-context reason (byte-identical to the working backward
-`reverse_rec`). ABI contract and numerics unchanged; see §7 for the rationale.
+`reverse_rec`). ABI contract and numerics unchanged; see §7 for the rationale. Raw
+acceptance numbers, the block_dim=40 justification and the captured env identity are in
+`evidence/{acceptance_numbers,blockdim_sweep}.log` and `evidence/env.json`; the formal
+ABI contract is `contract.json`. The backward's larger pure-vector deviation (zero cube,
+zero `barrier(Pipe.M)`, vs the §2 cube finalize/wu) is disclosed in `a2_gdn_abi.md` §7
+Deviation 2 and `../gdn_chunk_bwd/DESIGN.md`.

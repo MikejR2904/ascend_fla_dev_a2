@@ -312,15 +312,28 @@ oracle (block-solve + head-local grouped recurrence) and autograd. Chains:
 
 - o / final_state rel-L2 **2.8e-7 – 4.2e-7** vs both oracles (zero and nonzero initial_state);
 - grads dq/dk/dv/dbeta/dg/dh0 **1.56e-7 – 5.15e-7** vs autograd, with zero and nonzero `dht`;
-- two-segment chaining (seg-1 `final_state` → seg-2 `initial_state`) **bit-exact** vs a single-pass
-  oracle; `T % 64 != 0` is explicitly rejected (no tail path, §1.7).
+- two-segment chaining (seg-1 `final_state` → seg-2 `initial_state`) matches a single-pass oracle to
+  **rel-L2 < 1e-4** (the test's `_TOL`; the earlier "bit-exact" wording was inaccurate — it is a
+  tolerance check, not bitwise); `T % 64 != 0` is rejected (no tail path, §1.7 — see the oracle/checklist
+  notes below for exactly where that check does and does not live).
 - **§1.5 bf16-state divergence (produced, not deferred):** casting the carried state to bf16 between
   chunks and comparing `final_state` to the fp32 recurrent oracle gives relative-L2 **1.662e-3** at the
   tested span. This is the evidence item §1.5 asks for; it is not a shipped option — per the PM NOTE
   (2026-09-25, DESIGN.md) the shipped default is fp32-state. There is no bf16 host op, so the §4
   bf16-host-audit remains N/A.
-- All six ABI gaps (§1.1–1.7) exercised; `tests/test_a2_accumulate_barriers.py` passes over the new
-  units with a non-vacuous negative control (deleting one `barrier(Pipe.M)` turns it red).
+- All six ABI gaps (§1.1–1.7) exercised. **Correction on the accumulate-barrier guard (the earlier
+  "non-vacuous negative control" claim was wrong).** `tests/test_a2_accumulate_barriers.py`'s detector
+  (`_is_accumulate_matmul`) matches only `matmul(..., is_init=False)` calls, and A2-K1's shipped kernels
+  contain none: the forward scan's two matmuls (`scan.py:103,116`) are single, non-accumulating products
+  (each writes a fresh L0C tile that is then copied out through the FIX→GM ring), and the entire backward
+  is pure vector (Deviation 2). So `test_every_accumulate_has_settle_barrier` matches nothing in these
+  kernels and passes **vacuously** for A2-K1 — deleting the one `barrier(Pipe.M)` at `scan.py:115` does
+  **not** turn it red (independently reproduced: 6 passed, 0 failed). That barrier orders the cube (M)
+  pipe between the two independent matmuls (L0C-settle discipline), not an `is_init=False` accumulate
+  chain. The guard's checker logic is still exercised by the test module's own synthetic positive/negative
+  controls (`test_checker_flags_missing_barrier` etc.); it simply has **zero coverage of A2-K1's kernels**
+  because every stage that would have carried an M10-081 accumulate hazard was architecturally bypassed
+  (Deviation 3).
 
 **block_dim:** validated at **`block_dim=40`** (the a2 core count used throughout bring-up). A bd1-vs-bd40
 comparison is **not available**: on the shared 910B3 the bd=1 build faulted with a vector-core exception
@@ -363,3 +376,31 @@ are the gate — but the performance consequence is real and is not hidden:
   that chunk-parallel backward unit was prototyped, did not beat fla on b3, and is **shelved** (out of
   A2-K1 scope, which is correctness/ABI). The perf variants (v2/v3) and their informal bench were removed
   from the deliverable so the shipped backward is unambiguously the dual-oracle-validated v1 chain.
+
+**Deviation 3 — the `inverse` stage (the task's motivating M10-081 example) was bypassed, not fixed.**
+A2-01 hit-table #17 / the task spec's `inverse.py:306/312/317-318` is an FP32 hand-chained M16 L0C
+accumulate — the canonical M10-081 case the `barrier(Pipe.M)` discipline exists for, and the opening
+motivation for A2-K1. The a2 port does **not** reimplement it as a cube matmul + settle barrier:
+`wy.py:70-77` solves the lower-triangular system by **row-sequential scalar forward substitution (zero
+cube ops)**, sidestepping the hazard class rather than repairing it. Numerically clean (wy rel-L2 6.1e-8;
+`DESIGN.md` describes it as a "row-sequential lower-triangular solve"), but — like Deviations 1 and 2 — it
+is a structural departure from the planned cube-with-settle form, called out here so a reader asking "was
+the inverse barrier fix done?" gets a direct answer: **the hazard was bypassed, not repaired.** Taken
+together, Deviations 1–3 are why the accumulate-barrier guard has no A2-K1 coverage (above): every
+cube-accumulate site the task anticipated was rewritten to vector / single-matmul / row-scalar form.
+
+**Oracle & checklist notes (REVIEW 2026-10-08).**
+- *Dual oracle.* `DESIGN.md:40` planned the fp32 dual oracle as "fla `naive`/`naive_recurrent` + repo
+  CPU ref." The shipped `tests/test_a2_gdn_chunk.py` instead uses two independent in-repo torch references
+  (`_grouped_recurrent`, a head-local grouped recurrence; `_block_solve`, the chunked block solve) plus
+  autograd for the grads, and does **not** import `fla`. This is a deviation from the AGENTS.md §6 letter
+  (one oracle being fla's `naive.py` itself); the two references are mutually independent formulations so
+  the cross-check is non-trivial, but it is not the fla-naive oracle the plan named.
+- *`T % 64` rejection.* The no-tail-path reject (§1.7) currently lives only in the test's host-side helper
+  (`tests/test_a2_gdn_chunk.py`, `if T % C: raise ValueError`) and is declared in `contract.json`'s
+  `domain`. It is **not** enforced inside the 13 kernel files or at an op-entry wrapper — code calling a
+  compiled kernel directly, bypassing the test harness, gets no such guard. Runtime enforcement on a
+  formal op entry is part of the PM-approved deferred `unit.py` harness.
+- *Segment-chaining number.* The chaining case is judged by the same `_rel(...) < 1e-4` tolerance as the
+  other cases (not a separate bitwise check); `evidence/acceptance_numbers.log` does not yet carry a
+  per-case raw number for it (wording corrected above).

@@ -3236,7 +3236,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "review",
+      "status": "open",
       "gate": null,
       "model": [
         "kimi-linear-48b-a3b",
@@ -3272,19 +3272,8 @@
       "spec": "docs/pm/tasks/A2-K1.md",
       "issue": 44,
       "pr": null,
-      "assignee": "MikejR2904",
-      "assignee_caps": {
-        "agent": "Claude Opus 4.8 (Claude Code)，operated by MikejR2904（自述）",
-        "socs": [
-          "a2"
-        ],
-        "soc_details": "自述（APPLY 03:13Z / 03:22Z）：a2，Ascend 910B3（20 AI cores / 40 vector cores、UB 192KB、AIV 1.8GHz）、CANN 9.2.0-beta.1、内置算子包含 910B3 平台、torch 2.10.0 / torch_npu 2.10.0.post2、Python 3.11（机器与卡归 assignee 管理，D-PM-28）；A2 真机数字在 A2-11 之前只是观测记录",
-        "ascriptor": "A2-07 期间已按自述固定到 library 90cfcdc / kernels b3b3f9c；A2-10 每份回执带这两个修订，对不上先发 RISK",
-        "fla": "有（自述）",
-        "fork": "MikejR2904/ascend_fla_dev_a2（真 fork，parent ddddwee1；APPLY 里原写的同名非 fork 仓跨仓 PR 不认）",
-        "availability": "异步",
-        "note": "规格已补全，直接派（APPLY 09:18Z 的既定候选）。范围收紧为 A2-07 §5 Batch A，不含门控跨度标定与 decode。"
-      },
+      "assignee": null,
+      "assignee_caps": null,
       "branch": "task/A2-K1",
       "timebox_h": 40,
       "reports": [
@@ -3391,6 +3380,10 @@
         {
           "at": "2026-10-10T05:10",
           "summary": "心跳：距上一条动作（commit 8e515d9e4，2026-10-08T04:51:47Z 的文档修正+ACK 待 force-push）超过 48h 无 STATUS，已发 PING（issue #138）。按协议再 24h 无回应收回任务。status 维持 review，仍在等 force-push + barrier/inverse 两项修复。"
+        },
+        {
+          "at": "2026-10-11T05:26",
+          "summary": "收回：48h 无 STATUS 的 PING（2026-10-10T05:08:48Z，issue #138 评论 6094067200）之后再等 24h（到 2026-10-11T05:08:48Z）仍无任何回应——匿名核对 #44 与 #138 自 PING 起的全部评论（截至 2026-10-11T05:22:02Z），只有 PING 这一条，没有 STATUS/RISK/BLOCKED/WITHDRAW/force-push；PR #138 head SHA 全程未变（仍是 8e515d9e49e0b6e8a11d155b2ec61b02d9afa233）。按 PROTOCOL.md §5：'进行中的任务 48 小时没有 STATUS 会收到 PING，再 24 小时没动静就收回，状态回 open，分支留着'。review -> open，清空 assignee/assignee_caps（同 GD2-02/PK-05/PK-06 收回先例）；分支 task/A2-K1 与 PR #138 均保留，不关闭 PR——其上的工作（30 commits、前向+反向全部六项 ABI 缺口 + L0C settle barrier、910B3 真机分 stage 验证、功能 sim 端到端双 oracle）是真实进展，不因收回而作废。下一个申领人（含 MikejR2904 本人若回来）可以在现有分支/PR 基础上接续，未完成的是上一轮 REVIEW(rework) 列的三项：①执行用户已批准的 force-push（清理 bb7e1c6 的泄露 commit）；②barrier 负对照声称证伪（scan.py 两处 matmul 缺 is_init=False，删 barrier 后test_a2_accumulate_barriers.py 仍 6 passed/0 failed）；③inverse 阶段 FP32 累加链被绕开而非按 barrier 方式修复这一 deviation 未在 a2_gdn_abi.md §7 披露；外加三条次要项（双 oracle 未用 fla.naive、T%64 检查只在测试 harness 不在 kernel 入口、'bit-exact'措辞与实际 1e-4 容差不符）。"
         }
       ],
       "result": null

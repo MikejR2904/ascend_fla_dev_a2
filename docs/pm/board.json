@@ -3236,7 +3236,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "open",
+      "status": "assigned",
       "gate": null,
       "model": [
         "kimi-linear-48b-a3b",
@@ -3272,8 +3272,19 @@
       "spec": "docs/pm/tasks/A2-K1.md",
       "issue": 44,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
+      "assignee": "MikejR2904",
+      "assignee_caps": {
+        "agent": "Claude Opus 4.8 (Claude Code), operated by MikejR2904 (self-reported) -- 恢复会话，沿用原环境",
+        "socs": [
+          "a2"
+        ],
+        "soc_details": "沿用此前自述（Ascend 910B3）；本轮 APPLY 未重新声明字段，环境未变（同 fork/同分支恢复）",
+        "ascriptor": "沿用 A2-07 期间固定的 library 90cfcdc / kernels b3b3f9c",
+        "fla": "沿用此前自述（有）",
+        "fork": "MikejR2904/ascend_fla_dev_a2（同一 fork，task/A2-K1 分支，PR #138 续用）",
+        "availability": "异步",
+        "note": "收回后重新 APPLY，恢复既有分支/PR #138，非全新开始。"
+      },
       "branch": "task/A2-K1",
       "timebox_h": 40,
       "reports": [
@@ -3384,6 +3395,10 @@
         {
           "at": "2026-10-11T05:26",
           "summary": "收回：48h 无 STATUS 的 PING（2026-10-10T05:08:48Z，issue #138 评论 6094067200）之后再等 24h（到 2026-10-11T05:08:48Z）仍无任何回应——匿名核对 #44 与 #138 自 PING 起的全部评论（截至 2026-10-11T05:22:02Z），只有 PING 这一条，没有 STATUS/RISK/BLOCKED/WITHDRAW/force-push；PR #138 head SHA 全程未变（仍是 8e515d9e49e0b6e8a11d155b2ec61b02d9afa233）。按 PROTOCOL.md §5：'进行中的任务 48 小时没有 STATUS 会收到 PING，再 24 小时没动静就收回，状态回 open，分支留着'。review -> open，清空 assignee/assignee_caps（同 GD2-02/PK-05/PK-06 收回先例）；分支 task/A2-K1 与 PR #138 均保留，不关闭 PR——其上的工作（30 commits、前向+反向全部六项 ABI 缺口 + L0C settle barrier、910B3 真机分 stage 验证、功能 sim 端到端双 oracle）是真实进展，不因收回而作废。下一个申领人（含 MikejR2904 本人若回来）可以在现有分支/PR 基础上接续，未完成的是上一轮 REVIEW(rework) 列的三项：①执行用户已批准的 force-push（清理 bb7e1c6 的泄露 commit）；②barrier 负对照声称证伪（scan.py 两处 matmul 缺 is_init=False，删 barrier 后test_a2_accumulate_barriers.py 仍 6 passed/0 failed）；③inverse 阶段 FP32 累加链被绕开而非按 barrier 方式修复这一 deviation 未在 a2_gdn_abi.md §7 披露；外加三条次要项（双 oracle 未用 fla.naive、T%64 检查只在测试 harness 不在 kernel 入口、'bit-exact'措辞与实际 1e-4 容差不符）。"
+        },
+        {
+          "at": "2026-10-12T01:42",
+          "summary": "APPLY（issue #44 评论 6116157131，01:31:14Z，MikejR2904）：请求重新 ASSIGN，恢复 task/A2-K1 分支 / PR #138。申领人解释心跳失联原因（唯一剩余步骤——force-push 清理 bb7e1c6——需要 owner 显式授权，等待期间应该发 BLOCKED 心跳而没发，承认是自己的疏漏），并指出上一轮 REVIEW 的第 2/3 项（barrier 负对照声称证伪、inverse 阶段 deviation 披露）其实已经在收回前就修好了——commit `8e515d9`（2026-10-08T04:51:47Z，本仓报告早先也记过这条commit，但当时只记成\"文档修正\"、没点出它具体修的是哪几项）。\n\n**PM 独立复核（clone MikejR2904/ascend_fla_dev_a2，checkout 8e515d9 直接读 diff，不采信自述）**：确认属实。该 commit 改了 `docs/research/a2_gdn_abi.md`，内容与上一轮 REVIEW 的第 2/3/4 项逐条对应——②barrier 负对照：correction 说清楚守卫检测器只认 `is_init=False` 的 matmul，A2-K1 的 kernel 里一个都没有（scan 两处矩乘都是非累加单次、backward 纯向量），所以守卫是**空洞通过**（删 barrier 不会变红），这是 REVIEW 原文给的二选一修复路径里的\"纠正声称\"一侧，不是\"补真实覆盖\"那一侧，但确实是合规的修复方式；③新增 Deviation 3，直接点名 inverse 阶段的 M10-081 场景被 `wy.py` 的逐行标量解绕开、不是按 barrier 方式修的；④三条次要项（双 oracle 非 fla.naive、T%64 检查只在测试 harness、\"bit-exact\"措辞修正为 rel-L2<1e-4）同样在这个 commit 里逐条改了。\n\n**这是我自己的流程错误，如实记录**：commit 8e515d9 的时间（2026-10-08T04:51:47Z）早于 48h PING（2026-10-10T05:08:48Z）——我在发 PING、以及随后 24h 到期收回时，两次都把第 2/3 项当成仍未处理重复写进通知，没有去重新核对那条已知 commit 具体修了什么。实际从那条 commit 起，唯一真正悬而未决的就是第 1 项（force-push，当时已是\"owner 已批准、等 in-session 授权\"状态）。收回本身按协议（48h PING + 24h 无回应）程序上没错——申领人确实失联超过时限、且没有发 BLOCKED 说明——但我在通知文案里对\"还剩几项\"的描述是错的，这里纠正。\n\n**处理**：open -> assigned，重新指给 MikejR2904，恢复 task/A2-K1 分支与 PR #138，assignee_caps 沿用历史记录（环境未变）。规格不变。下一步等申领人执行 force-push 并报新 SHA，PM 核实分支历史确实清除 `bb7e1c6` 后再排第三轮复核（这次范围缩小到只核验 force-push 本身，第 2/3/4 项已在本轮独立确认，不重复核）。"
         }
       ],
       "result": null

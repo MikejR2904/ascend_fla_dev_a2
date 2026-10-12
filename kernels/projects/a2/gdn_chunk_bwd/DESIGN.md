@@ -7,6 +7,18 @@ half (`../gdn_chunk_fwd`) is implemented and validated per-stage; this document
 plans the backward, to be built the same way (per-stage validation on 910B3 vs the
 analytical adjoint, then wired through the unit runner).
 
+> **Shipped chain (2026-10-07, board-validated).** The §40 "three-kernel structure"
+> below is the *planned* decomposition. What actually ships — and what
+> `tests/test_a2_gdn_chunk.py` validates on 910B3 against the dual oracle + autograd —
+> is the 8-kernel v1 chain `replay → reverse_rec → reverse_dq/dbeta/dg/dk_bz/dk_ddr →
+> group_reduce` (a sim-imposed decomposition; `replay` is the former `checkpoints`
+> stage, save point aside). It is **pure vector — zero `matmul`, zero
+> `barrier(Pipe.M)`**; the §2-planned cube finalize/wu stages do not exist in the
+> shipped chain. That structural deviation and its ~10× perf gap vs fla's chunk-parallel
+> Triton backward are disclosed in `docs/research/a2_gdn_abi.md` §7 (Deviation 2). The
+> earlier `checkpoints`/fused-`reduce`/tapeless-`reverse_rec_fused` (v2/v3) perf variants
+> were removed so the deliverable is unambiguously this validated v1 chain.
+
 ## The adjoint math (device-independent oracle)
 
 `a5/gdn_chunk_bwd/ref/reference.py::analytical` is the ground truth (no FLA, no

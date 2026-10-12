@@ -3139,8 +3139,8 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "gated",
-      "gate": "用户已放行（D-PM-43），待前置任务与规格",
+      "status": "open",
+      "gate": null,
       "model": [
         "kimi-linear-48b-a3b"
       ],
@@ -3160,14 +3160,16 @@
       "write_set": [
         "tests/test_kda_layer_npu.py",
         "benchmarks/bench_kda_train_step.py",
-        "benchmarks/bench_kda_torch_npu.py"
+        "benchmarks/bench_kda_torch_npu.py",
+        "ascend_fla/platform.py",
+        "docs/research/a2_kda_layer.md"
       ],
       "needs": {
         "npu": true,
         "ascriptor": true,
         "fla": true
       },
-      "spec": null,
+      "spec": "docs/pm/tasks/A2-15.md",
       "issue": 42,
       "pr": null,
       "assignee": null,
@@ -3178,6 +3180,10 @@
         {
           "at": "2026-09-20T03:48",
           "summary": "用户 2026-09-20 放行（D-PM-43「其他的也放行」）：原 gate = machines:a2。规格未写、前置未完成，所以状态位仍是 gated、gate 文案改成「用户已放行，待前置任务与规格」；PM 在前置完成、规格写好时改 open，不再问用户。"
+        },
+        {
+          "at": "2026-10-12T06:59",
+          "summary": "PM 补全规格并放行（按 D-PM-43：前置 A2-13/A2-14 均已完成，gate 本身用户已于更早批过\"待前置任务与规格\"，不再问用户）。gated -> open，spec -> docs/pm/tasks/A2-15.md。\n\n规格起草前核实了关键事实（不是转述）：公共调用链 `chunk_kda_fwd` 等已经是 SoC 中立的（`resolve_soc`/`require_qualified`，A2-02 的产出），但 `CAPABILITIES[\"a2\"][\"qualified\"]` 现在仍是 `False`——这意味着哪怕 A2-12/13/14 各自资格化了独立单元，公共入口（含 `ascend_fla.layers.kda.KimiDeltaAttention` 这个层）在 A2 真机上调用现在仍会被 `require_qualified` 挡住。A2-15 的核心产出就是把层级验证做完、交出证据，供 PM 审查后翻这个总开关（本任务本身不翻，沿用 A2-12 定的\"qualified 只有 PM 审过才翻\"规矩）。\n\n另核实 `tests/test_kda_layer_npu.py`（已存在，第二期 A5 时代写的）测试逻辑本身不含 SoC 字面量，理论上翻开 qualified 后能直接在 A2 上跑；真正的 A5 硬编码在两个 benchmark 脚本（`bench_kda_train_step.py:69` 的 `prepare(\"a5\", ...)`）。写集据此定：复用三个既有文件 + `platform.py`（只改 qualified 字面量的证据文案，不改翻转本身）+ 新建一份研究文档。"
         }
       ],
       "result": null

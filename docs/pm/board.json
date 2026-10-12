@@ -3236,7 +3236,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "assigned",
+      "status": "review",
       "gate": null,
       "model": [
         "kimi-linear-48b-a3b",
@@ -3399,6 +3399,10 @@
         {
           "at": "2026-10-12T01:42",
           "summary": "APPLY（issue #44 评论 6116157131，01:31:14Z，MikejR2904）：请求重新 ASSIGN，恢复 task/A2-K1 分支 / PR #138。申领人解释心跳失联原因（唯一剩余步骤——force-push 清理 bb7e1c6——需要 owner 显式授权，等待期间应该发 BLOCKED 心跳而没发，承认是自己的疏漏），并指出上一轮 REVIEW 的第 2/3 项（barrier 负对照声称证伪、inverse 阶段 deviation 披露）其实已经在收回前就修好了——commit `8e515d9`（2026-10-08T04:51:47Z，本仓报告早先也记过这条commit，但当时只记成\"文档修正\"、没点出它具体修的是哪几项）。\n\n**PM 独立复核（clone MikejR2904/ascend_fla_dev_a2，checkout 8e515d9 直接读 diff，不采信自述）**：确认属实。该 commit 改了 `docs/research/a2_gdn_abi.md`，内容与上一轮 REVIEW 的第 2/3/4 项逐条对应——②barrier 负对照：correction 说清楚守卫检测器只认 `is_init=False` 的 matmul，A2-K1 的 kernel 里一个都没有（scan 两处矩乘都是非累加单次、backward 纯向量），所以守卫是**空洞通过**（删 barrier 不会变红），这是 REVIEW 原文给的二选一修复路径里的\"纠正声称\"一侧，不是\"补真实覆盖\"那一侧，但确实是合规的修复方式；③新增 Deviation 3，直接点名 inverse 阶段的 M10-081 场景被 `wy.py` 的逐行标量解绕开、不是按 barrier 方式修的；④三条次要项（双 oracle 非 fla.naive、T%64 检查只在测试 harness、\"bit-exact\"措辞修正为 rel-L2<1e-4）同样在这个 commit 里逐条改了。\n\n**这是我自己的流程错误，如实记录**：commit 8e515d9 的时间（2026-10-08T04:51:47Z）早于 48h PING（2026-10-10T05:08:48Z）——我在发 PING、以及随后 24h 到期收回时，两次都把第 2/3 项当成仍未处理重复写进通知，没有去重新核对那条已知 commit 具体修了什么。实际从那条 commit 起，唯一真正悬而未决的就是第 1 项（force-push，当时已是\"owner 已批准、等 in-session 授权\"状态）。收回本身按协议（48h PING + 24h 无回应）程序上没错——申领人确实失联超过时限、且没有发 BLOCKED 说明——但我在通知文案里对\"还剩几项\"的描述是错的，这里纠正。\n\n**处理**：open -> assigned，重新指给 MikejR2904，恢复 task/A2-K1 分支与 PR #138，assignee_caps 沿用历史记录（环境未变）。规格不变。下一步等申领人执行 force-push 并报新 SHA，PM 核实分支历史确实清除 `bb7e1c6` 后再排第三轮复核（这次范围缩小到只核验 force-push 本身，第 2/3/4 项已在本轮独立确认，不重复核）。"
+        },
+        {
+          "at": "2026-10-12T02:15",
+          "summary": "DONE（issue #138 评论 6116236131，01:40Z，MikejR2904）+ STATUS（issue #44 评论 6116239852）：声称 force-push 已完成，head 变为 `4be726b`（build 在 `fa041cd` 之上的单个干净 commit），四项全部解决。\n\n**安全事件（已处理）**：DONE 评论的历史清理验证段里，为证明泄露字符串已清除，把该字符串原样贴进了这条公开评论正文（相邻的账号检查用了占位符，这一条没有）——等于用新载体重复了一次原来的泄露。PM 立即发现并要求申领人先编辑脱敏、后改为直接删除重发（因为 GitHub 的评论编辑历史仍可能保留旧版本），申领人已照做并自查了 #44/#138 上其余评论确认无同类问题。已向用户上报此事（用户尚未回复，PM 未等待用户即指示申领人删除重发，判断为低风险的自我纠错、可逆、不涉及仓库本身，等用户后续若有不同意见再调整）。\n\n**PM 独立复核（不采信自述）**：① fresh clone 申领人 fork，`git log --all | grep bb7e1c6` 结果为0，确认泄露 commit 在新历史中不可达；② 用 GitHub compare API 对比新 head `4be726b` 与此前已审的 `8e515d9`，发现 `kernels/projects/a2/gdn_chunk_bwd/kernels/` 下少了三个文件（checkpoints.py/reduce.py/reverse_rec_fused.py）——起初怀疑是隐藏的功能回归，查 `gdn_chunk_bwd/contract.json` 约 73 行已有披露：这是被搁置的 perf 变体（v2/v3 tapeless fused reverse），移除属于 A2-K1 正确性范围之外的有意清理（呼应 D-PM-59 的\"chunk-parallel 重写不现在立项\"），不是隐藏回归。\n\n**已派出第三轮独立复核**（worktree-isolated subagent，不采信自述，独立 clone、独立跑 host 测试、逐项核对验收清单与原始 evidence 数字），结果未回，status 先置为 review。前两轮已确认的六项不要求重复证明；本轮聚焦：写集边界、原始数字核对、accumulate-barrier 守卫的\"空洞通过\"解释是否技术上成立、host 侧 BF16 审计。"
         }
       ],
       "result": null

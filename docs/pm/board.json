@@ -3236,7 +3236,7 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "review",
+      "status": "done",
       "gate": null,
       "model": [
         "kimi-linear-48b-a3b",
@@ -3271,7 +3271,7 @@
       },
       "spec": "docs/pm/tasks/A2-K1.md",
       "issue": 44,
-      "pr": null,
+      "pr": 138,
       "assignee": "MikejR2904",
       "assignee_caps": {
         "agent": "Claude Opus 4.8 (Claude Code), operated by MikejR2904 (self-reported) -- 恢复会话，沿用原环境",
@@ -3403,9 +3403,24 @@
         {
           "at": "2026-10-12T02:15",
           "summary": "DONE（issue #138 评论 6116236131，01:40Z，MikejR2904）+ STATUS（issue #44 评论 6116239852）：声称 force-push 已完成，head 变为 `4be726b`（build 在 `fa041cd` 之上的单个干净 commit），四项全部解决。\n\n**安全事件（已处理）**：DONE 评论的历史清理验证段里，为证明泄露字符串已清除，把该字符串原样贴进了这条公开评论正文（相邻的账号检查用了占位符，这一条没有）——等于用新载体重复了一次原来的泄露。PM 立即发现并要求申领人先编辑脱敏、后改为直接删除重发（因为 GitHub 的评论编辑历史仍可能保留旧版本），申领人已照做并自查了 #44/#138 上其余评论确认无同类问题。已向用户上报此事（用户尚未回复，PM 未等待用户即指示申领人删除重发，判断为低风险的自我纠错、可逆、不涉及仓库本身，等用户后续若有不同意见再调整）。\n\n**PM 独立复核（不采信自述）**：① fresh clone 申领人 fork，`git log --all | grep bb7e1c6` 结果为0，确认泄露 commit 在新历史中不可达；② 用 GitHub compare API 对比新 head `4be726b` 与此前已审的 `8e515d9`，发现 `kernels/projects/a2/gdn_chunk_bwd/kernels/` 下少了三个文件（checkpoints.py/reduce.py/reverse_rec_fused.py）——起初怀疑是隐藏的功能回归，查 `gdn_chunk_bwd/contract.json` 约 73 行已有披露：这是被搁置的 perf 变体（v2/v3 tapeless fused reverse），移除属于 A2-K1 正确性范围之外的有意清理（呼应 D-PM-59 的\"chunk-parallel 重写不现在立项\"），不是隐藏回归。\n\n**已派出第三轮独立复核**（worktree-isolated subagent，不采信自述，独立 clone、独立跑 host 测试、逐项核对验收清单与原始 evidence 数字），结果未回，status 先置为 review。前两轮已确认的六项不要求重复证明；本轮聚焦：写集边界、原始数字核对、accumulate-barrier 守卫的\"空洞通过\"解释是否技术上成立、host 侧 BF16 审计。"
+        },
+        {
+          "at": "2026-10-12T03:23",
+          "summary": "第三轮独立复核（worktree-isolated subagent）结论 accept：亲手复现删 barrier 负对照（6 passed/0 failed，确认\"空洞通过\"属实而非检测器失效，并核对仓内既有单元 kda_fwd_stable 对该守卫仍有效覆盖）、真实 3-way merge 到当前 main（零冲突，24 文件/2347 行与声明写集逐一对应）、pytest 收集数前后对比（+4 恰好是新增 4 个测试）、AST 扫描关键字、GQA 头映射源码核对、host 侧 BF16/红旗 grep 审计、真实 npu-smi 拓扑与 evidence 日志比对。非阻塞备注：契约摘要区间与 acceptance_numbers.log 实测值有个小口径误差（不影响判定）；L0C settle barrier 在本 PR 范围内是空集（已披露的架构选型，不是回归）；unit.py 脚手架延后是此前已批准的既定缺口。\n\nPM 独立核对写集合规性（gh pr diff --name-only、GitHub compare API 确认 a2_gdn_abi.md 纯追加）后，按 D-PM-33 自行合入：`gh pr merge 138 --squash --match-head-commit 4be726b` → `b36597a`。\n\n**合入后复跑 main 全量 host pytest 时发现一个和这次改动无关、但影响验证可信度的环境问题**：本机沙箱实际有真机 torch_npu/NPU（之前一直假设没有），直接 `pytest tests/ -q` 因 conftest.py 的 session fixture 撞上本机缺装的 ascriptor 包而整体崩溃（在合入前的 c992e85 上同样复现，确认与 A2-K1 无关）。改用排除那 6 个 npu 测试文件的方式重新对比合入前后：20→24 failed、1448 passed、106 skipped 都不变，新增的 4 个 failed 精确对应 A2-K1 自己新增的 4 个测试（本机缺 ascriptor 导致，非代码缺陷）——A2-K1 本身零回归。但这个发现同时让此前 PK-06/A2-13 合入记录里\"本机 PM 沙箱，无 NPU/torch_npu\"的前提站不住，已单独上报用户，本轮不深究、不追溯改动那两条记录，等用户决定。\n\nstatus -> done，关闭 issue #44。"
         }
       ],
-      "result": null
+      "result": {
+        "commits": [
+          "b36597a"
+        ],
+        "evidence": [
+          "PR #138 (squash merge commit b36597adeddf550671293c458e9fcc45b0b62f48)",
+          "kernels/projects/a2/gdn_chunk_fwd/evidence/{env.json,npu_smi.log,opp_version.info,acceptance_numbers.log,blockdim_sweep.log}",
+          "docs/research/a2_gdn_abi.md §7 (Deviation 1-3 + barrier-guard correction + oracle/checklist notes)",
+          "tests/test_a2_gdn_chunk.py (4 new tests)"
+        ],
+        "numbers": "六项 ABI 缺口（GQA/GVA、token-major、非零 initial_state、dh0+非零dht、final_state FP32、scale+no-tail-path）在真机 910B3 上验证：前向 o/final_state rel-L2 2.8e-7~4.2e-7，反向 dq/dk/dv/dbeta/dg/dh0 rel-L2 1.17e-7~5.15e-7，均远在 1e-4 契约预算内（独立复核逐行核对acceptance_numbers.log 原始数字）。block_dim 验证在 bd=40；bd1 对比因共享卡占用未取得，已如实标注非隐藏缺口。L0C settle 的 barrier 验收在这个 PR 范围内实际是空集——inverse 被 wy.py 逐行标量解绕开、backward 整条纯向量，没有一处落入 is_init=False 累加模式，已在 a2_gdn_abi.md §7 Deviation 1-3 披露，独立复核亲手删除 scan.py:115 的 barrier 复现\"空洞通过\"（6 passed/0 failed 未变红）、并确认该守卫对仓内既有 a2 单元（kda_fwd_stable）仍是有效覆盖，不是检测器坏了。写集 24 个文件全部落在规格范围内（独立用 compare API 核实，a2_gdn_abi.md 115 行纯追加、0 删除）。\n\n合入前独立复核链路：三轮 REVIEW（两条 embedded + 本 PM 另开两个 worktree-isolated subagent，第二个专做第三轮最终复核，含真实 3-way merge、AST 关键字扫描、pytest 收集数比对、负对照亲手复现）均 accept，第三轮无新阻塞。\n\n**合入后 main 全量复跑（本机沙箱）**：直接 `pytest tests/ -q` 会话级崩溃（本机实际装了torch_npu 且 npu-smi 可见真实 910B3，conftest.py 的 session autouse fixture 一碰到任何 test_kda_*_npu.py 就会调 ascend_fla.ops.kda.prepare()，而本机未装 ascriptor 包，整个session 报错，与 A2-K1 内容无关——在合入前的 commit c992e85 上同样复现，已排除是本次改动造成）。改用显式 --ignore 排掉那 6 个文件后得到有意义的对比：合入前 20 failed/1448 passed/106 skipped，合入后 24 failed/1448 passed/106 skipped——passed/skipped 不变，新增的 4 个failed 精确对应 tests/test_a2_gdn_chunk.py 自己的 4 个新测试（本机没装 ascriptor 导致 ModuleNotFoundError，是和其余 a2/a5 任务同类的沙箱缺口，不是代码缺陷），0 项既有测试新增回归。\n\n**另发现一个需要用户关注的独立问题（已单独上报）**：本机沙箱实际有真机 NPU/torch_npu，与此前 PK-06/A2-13 合入记录里\"本机 PM 沙箱，无 NPU/torch_npu\"的前提矛盾，那两条记录当时具体怎么跑出干净结果的，本次未能重新复现确认，留给用户判断是否需要追查。"
+      }
     },
     {
       "id": "A2-20",

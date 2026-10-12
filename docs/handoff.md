@@ -9,6 +9,33 @@
 **这是一次 PM 账号本身的交接，不是算子进度交接。** 下面按"现在手上有什么、有什么坑、
 下一步该干什么"排列，配合 `docs/pm/board.json`（权威）和 `python tools/pm_board.py --render` 看。
 
+> **2026-10-12 更新（PM 沙箱环境纪律，真机复核时踩出来的）：这台 PM 沙箱实际有真机
+> torch_npu/NPU**（`torch.npu.is_available()` 返回 `True`，`npu-smi info` 能看到真实 910B3，
+> 是共享机器，常有别的任务在跑），**但没有装 `ascriptor` 包**（同级目录有源码 checkout，没
+> pip install）。`tests/conftest.py` 的 session 级 autouse fixture 只要选中的测试里有任何一个
+> `test_kda_{bwd_deep_npu,bwd_npu,caches_npu,decode,fwd_npu,layer_npu}.py`，就会调
+> `ascend_fla.ops.kda.prepare(...)`，这一步需要 `ascriptor`——缺它就在 session 级别崩溃，
+> 表现为**整个 `pytest tests/ -q` 几乎全军覆没**（1600+ 个测试几乎全部 `ERROR`，包括完全不
+> 相关的 `test_pm_github.py`），很容易被误读成"大面积回归"。**这不是哪次改动引入的**——在
+> A2-K1 合入前的 commit 上同样复现。要拿到有意义的 host 全量对比，必须显式排除那 6 个文件：
+> `pytest tests/ -q --ignore=tests/test_kda_bwd_deep_npu.py --ignore=tests/test_kda_bwd_npu.py
+> --ignore=tests/test_kda_caches_npu.py --ignore=tests/test_kda_decode.py
+> --ignore=tests/test_kda_fwd_npu.py --ignore=tests/test_kda_layer_npu.py`——排除后 A2-K1
+> 合入前后对比干净：20→24 failed（新增 4 个恰好是 A2-K1 自己新增的 `test_a2_gdn_chunk.py`，
+> 本机缺 `ascriptor` 导致，非代码缺陷）、1448 passed、106 skipped 两边都不变。
+>
+> **留给用户的未决问题**：这条发现同时说明，此前（同一个会话里）PK-06、A2-13 两次合入记录
+> 写的"本机 PM 沙箱，无 NPU/torch_npu"这个前提，和刚测出来的机器状态矛盾——那两次具体怎么
+> 跑出干净数字的，本次没能重新复现确认，PM 已上报用户，暂不追溯改动那两条记录。下一个
+> session 如果要信一条"本机 PM 沙箱复跑"结论，先用上面这条 `--ignore` 命令亲自跑一遍，不要
+> 只信转述的 passed/failed 数字。
+>
+> **2026-10-12 更新：A2-K1（issue #44，GDN chunk 前向+反向搬到 A2）done，PR #138 → `b36597a`。**
+> 过程中一次心跳 PING/收回后，PM 自己发现把已经修好的两项错记成"仍未处理"（如实记入看板，
+> 不影响任务本身）；申领人重新 APPLY、完成 force-push 清理泄露 commit 时又在验证评论里把
+> 待清除的字符串本身贴回了公开评论——PM 发现后立即要求删除重发，已处理。三轮独立复核
+> （含两个 worktree-isolated subagent）均 accept，详见 `docs/pm/board.json` 的 A2-K1 reports。
+>
 > **2026-10-07T07:35Z 更新（D-PM-60，用户直接决定，原话"批了，新建派生单元修这个"）：
 > A2-13（issue #40）用真实前向缓存资格化 KDA 反向时测出 `kda_bwd_stable` 的 `g_cumsum` 四个消费者
 > （`scan_fused`/`inverse_epilogue`/`finalize_pre`/`finalize_post`）只吃 BF16，默认初始化真实会

@@ -125,6 +125,188 @@ No super-linear blow-up anywhere through T=4096. The dominant kernel shifts with
 `dqkw` lead at T=256, while `reverse_scan` becomes the single largest by T=4096 (431 µs), because
 its serial critical path grows faster than the chunk-parallel kernels around it.
 
+### 2.1 A large shape: T=16384, H=16 — sub-linear, and the occupancy problem is H=8's, not the kernel's
+
+Measured 2026-10-14 on the post-concurrency state, B=1, **T=16384, H=16**, K=V=128 — 16× the work
+of the reference shape (8× T, 2× H). Two single-group `PipeUtilization` passes, warmup 2 /
+repeats 3, warm medians: totals **14246.9 and 14238.5 µs**. **Timing-only** — the CPU oracle was
+not run at this size, so correctness remains asserted only at the five composition cases up to
+T=2048. Raw CSVs in `round_concurrency_2026_10_14/`.
+
+| kernel | µs | blk | `aic_mac` | ΣAIC | cube % | real MAC % |
+|---|--:|--:|--:|--:|--:|--:|
+| `train_wy` | 2051.4 | 28 | 0.474 | 1.130 | **98.5** | 46.7 |
+| `train_scan` | 2826.4 | 28 | 0.810 | 1.586 | 57.0 | 46.1 |
+| `dv_local` | 545.1 | 28 | 0.686 | 1.441 | **99.3** | 68.1 |
+| `reverse_scan` | 3382.5 | 28 | 0.581 | 1.050 | 57.0 | 33.1 |
+| `dqkw` | 2381.0 | 28 | 0.696 | 1.284 | **99.2** | 69.0 |
+| `wy_matmuls` | 1566.9 | 28 | 0.830 | 1.883 | **98.6** | **81.9** |
+| `wy_reduce` | 982.1 | 56 | — | — | **97.5** (vec) | — |
+| `finalize` | 503.2 | 56 | — | — | **93.8** (vec) | — |
+| **total** | **14238.5** | | | | | |
+
+**Scaling is slightly sub-linear.** 16× the work costs 15.6×: 14.24 ms against the 14.59 ms that
+16 × 912.1 µs predicts. Per unit of work (chunks × heads) the cost falls from 3.563 to 3.477 µs,
+−2.4%. So the reference shape is the *pessimistic* one; do not extrapolate 912 µs linearly and
+assume it is conservative.
+
+**`reverse_scan`'s lattice limit was a property of H=8, not of the kernel** — this partly retires
+the §8.4 floor argument. At the reference shape it launched 16 of 28 cube blocks because work
+items = `B·H·ceil(V/TV)` = 1·8·2 = 16, and the reachable set {8, 16, 32, …} skips (16, 28]. At
+H=16 there are 32 items, so it launches all 28 blocks. The 57.0% occupancy that remains is **wave
+quantization, not idle cores**: 32 items over 28 cores is two waves and 32/(2·28) = 57.1%, which
+the measurement reproduces to 0.1 point. `train_scan` sits at 57.0% for the same reason. The
+honest statement for both is *launch-quantized*, not *under-occupied*, and the lever is a
+work-item count that is a multiple of 28 — not more parallelism.
+
+**Six of eight kernels clear the 80% occupancy bar here** (93.8–99.3%) against two of eight at the
+reference shape. On *real MAC* utilization (`cube % × aic_mac`) only `wy_matmuls` clears it, at
+81.9%; `reverse_scan`'s 33.1% is the fp32 MMAD issue rate of §9, not a scheduling defect.
+
+
+### 2.2 How do we know 4.87 ms is good? Oracle lineage and an arithmetic floor
+
+Two questions were open: whether our goldens encode GDR's real semantics, and whether
+the measured latency is anywhere near what the machine can do. Neither is answered by
+the operator's own history, so both are answered here against outside references.
+
+#### Oracle lineage — validated against fla, fp32 CPU
+
+`AGENTS.md` practice in the sibling `ascend_fla_dev` repo requires a dual oracle, the
+first being fla's `naive.py` as the **semantic authority**. Our goldens had never been
+checked against it; they were transcribed from our own forward golden, so every test
+would have agreed with a misreading. Checked now (`fla` 0.5.2,
+`fla.ops.gated_delta_rule.naive`, fp32 CPU, identical pre-activated `beta` and
+log-space `g` passed to both, `scale = 1/sqrt(K)`):
+
+| comparison | max_abs | rel L2 |
+|---|--:|--:|
+| our `_chunk` vs `naive_chunk_gated_delta_rule` | **0.000e+00** | **0.000e+00** |
+| our `_recurrent` final state vs `naive_recurrent_gated_delta_rule` | **0.000e+00** | **0.000e+00** |
+| our `_recurrent` output `o` vs fla | 2.1e-4 – 4.2e-4 | 2.0e-7 – 4.6e-7 |
+| our chunk vs fla recurrent (cross-path) | 1.7e-4 – 3.1e-3 | 2.1e-6 – 3.7e-6 |
+
+Four shapes: `(1,128,2,64,64)`, `(1,192,2,128,128)`, `(1,256,4,128,128)`,
+`(2,128,3,128,96)`. **Bit-identical on the chunk path and on the recurrent state.**
+The only deviation is the output projection, which differs because our line reads
+`(b_q[..., None] * h).sum(-2)` where fla uses `einsum('bhd,bhdm->bhm', ...)` — pure
+fp32 reduction order, not semantics, and confirmed as such by the state being
+bit-exact. At ~3e-7 relative it is five orders of magnitude inside the 2e-2 bar.
+
+The backward golden is `torch.autograd.grad` of that forward oracle, so it inherits
+the validation; fla has no separate backward reference to compare against, since it
+also obtains gradients by autograd. The chunk-vs-recurrent agreement at ~3e-6 is the
+cross-path check that the same practice calls "each other's best oracle".
+
+**Still open**, and not claimed: no torch_npu composed oracle exists for this operator
+(the second of the two), correctness has never been verified at the T=16384/H=16 shape
+whose latency §2.1 quotes, and there is no prefill/decode consistency test.
+
+
+#### The second oracle, which is also the performance baseline
+
+`fla`'s `naive_chunk_gated_delta_rule` is pure torch, so it runs on `torch_npu` and
+serves as the composed-native-op implementation the dual-oracle practice asks for —
+"同时是性能基线". Measured on the same part, same session, synchronized wall time
+(`torch.npu.synchronize()` around each call), fp32 inputs, `scale = 1/sqrt(K)`:
+
+| shape | fla `naive_chunk` @ torch_npu | our forward, wall | **speedup** | our forward, device |
+|---|--:|--:|--:|--:|
+| B=1, T=2048, H=8, K=V=128 | 9161.3 µs | 695.1 µs | **13.2×** | 316.6 µs |
+| B=1, T=16384, H=16, K=V=128 | 32361.7 µs | 5391 µs | **6.0×** | 4873.3 µs |
+
+fla samples at the large shape were 31422 / 32362 / 33488 µs (±3%); ours are medians
+of 21 repeats at production and 5 at the large shape. As oracle #2 it also agrees with
+oracle #1: `naive_chunk` on NPU against `naive_recurrent` on CPU gives
+`max_abs 5.615e-03`, `rel L2 1.903e-06` at `(1,192,2,128,128)` against a peak of
+2.783e+03 — the same decade as our own chunk-vs-recurrent figure, so the two oracles
+corroborate rather than merely coexist.
+
+**Five caveats, because this ratio is easy to overread:**
+
+1. **`naive_chunk` is a *naive reference*, not a tuned torch_npu implementation.** Its
+   triangular inverse is a 63-iteration Python loop doing in-place slice assignment,
+   so a large part of its cost is eager-mode launch overhead rather than arithmetic.
+   Beating it is **necessary but nowhere near sufficient** — a competently written
+   torch_npu composition (batched inverse, no Python loop) would land far below it.
+   The arithmetic floor above is the stronger claim precisely because it does not
+   depend on how good somebody else's reference is.
+2. **The ratio shrinks with size**, 13.2× → 6.0×, because fla's fixed eager overhead
+   amortises as T grows. Quote the shape with the number, never the number alone.
+3. **`naive_chunk` is forward-only and emits no training intermediates.** Our forward
+   emits 17 tensors, several existing only to feed the backward, so it is being
+   charged for strictly more work than the baseline — this axis understates us.
+4. **Different numerics**: fla naive is fp32 throughout; our public inputs are bf16
+   with fp32 accumulation.
+5. **Our own host overhead is large at small shapes** — 695.1 µs wall against 316.6 µs
+   device at production is 2.2×, i.e. 54% of wall time is dispatch, falling to 10% at
+   the large shape (5391 vs 4873). So at production shape our wall-clock materially
+   understates the kernels' device efficiency, and a wall-to-wall ratio is the
+   conservative one to publish. This is the AGENTS.md iron rule about host overhead
+   swamping device time, observed on our own side.
+
+Harness committed as `tests/.../fla_npu_baseline.py`.
+
+#### Arithmetic floor at B=1, T=16384, H=16, K=V=128
+
+Counting the MACs the chunked WY forward actually requires, per `(b,h,chunk)` with
+C=64, K=V=128 — `items = B·H·N = 4096`:
+
+| step | shape | MAC |
+|---|---|--:|
+| `A = tril(k_beta @ kᵀ)` | [C,K]×[K,C] | 524288 |
+| `attn = (I−A)⁻¹` | triangular inverse | 43690 |
+| `w = attn @ k_beta` | [C,C]×[C,K] | 524288 |
+| `u = attn @ v_beta` | [C,C]×[C,V] | 524288 |
+| `S_qk = tril(q @ kᵀ)` | [C,K]×[K,C] | 524288 |
+| `o_intra = S_qk @ u_new` | [C,C]×[C,V] | 524288 |
+| `o_inter = q_decay @ S` | [C,K]×[K,V] | 1048576 |
+| `w_S = w @ S` | [C,K]×[K,V] | 1048576 |
+| `S += k_decayᵀ @ (u − w_S)` | [K,C]×[C,V] | 1048576 |
+| **total** | | **5810858** |
+
+→ **23.80 GMAC** for the forward at this shape. Against the machine peaks measured by
+the back-to-back `[64,64]×[64,64]` MMAD probe (§9), one MMAD being 262144 MAC:
+
+| | ns/MMAD | per core | machine peak | floor for this shape |
+|---|--:|--:|--:|--:|
+| fp32 | 623 | 420.8 GMAC/s | 11.78 TMAC/s (23.6 TFLOP/s) | **2020 µs** |
+| bf16 | 42 | 6241.5 GMAC/s | 174.76 TMAC/s (349.5 TFLOP/s) | **136 µs** |
+
+So the measured 4873 µs decomposes into three independent, separately attackable gaps:
+
+| | µs | |
+|---|--:|---|
+| measured forward | 4873 | |
+| &nbsp;&nbsp;of which MAC-busy | 3259 | 67% of the window |
+| &nbsp;&nbsp;of which not MAC-busy | 1614 | 33% — the target of §8/§9 |
+| fp32 arithmetic floor | 2020 | **measured = 2.41× floor** |
+| MACs actually issued | 38.40 GMAC | **1.61× the algorithmic 23.80** |
+
+1. **1.61× redundant MAC issue.** Tile padding, the two `tril`-masked matmuls that
+   compute a full C×C and discard half, and the transposed duplicates (`q_t`, `w_t`)
+   that exist to feed the backward. Some of that is legitimate training-forward work,
+   not waste — this is a *training* forward emitting 17 tensors.
+2. **33% non-MAC window**, which is what the two concurrency rounds attacked.
+3. **A 14.8× dtype penalty built into the floor itself.** Even with perfect scheduling
+   and zero redundant MACs, fp32 caps this shape at 2020 µs where bf16 caps it at
+   136 µs. This is the largest single factor by an order of magnitude, and it is what
+   the reverted bf16 work (§9) was chasing.
+
+**What this licenses us to say, and what it does not.** Defensible: the forward runs
+at 2.41× its fp32 arithmetic floor on this machine, issues 1.61× the algorithmic
+minimum MACs, and is 13.0% faster than our own previous version with bit-identical
+outputs. **Not** defensible: that it is the fastest GDR on A5. That would need a tuned
+competitor kernel, and the only GDR-family kernels available on this part are the
+vector-only ascriptor GDN/PGDN units, whose comparison is confounded by parallelism,
+pipe usage, DSL/compiler and numerics simultaneously. The floor above is
+competitor-independent, which is why it is the more useful number.
+
+Caveat on the MAC count: it is derived from the chunked WY algorithm as enumerated
+above, not by auditing the shipped kernels' matmul list. It is therefore a statement
+about what the mathematics requires, which is what a roofline should be — the 1.61×
+gap is precisely the difference between that and what the kernels issue.
+
 All eight kernels, µs, at B=1, T=2048, K=V=128 (B could not be varied — see the envelope above, so
 H carries this axis and total work grows with it):
 

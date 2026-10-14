@@ -313,3 +313,42 @@ Whatever causes the discrepancy against the receipts applies to the GDN/PGDN
 4. **Different numerics.** GDR has bf16 public inputs/outputs with fp32 cube
    accumulation; the GDN/PGDN fp32 rows are fp32 public, and their bf16 rows convert
    I/O only.
+
+### Caveat 0, which outranks the four above: different DSL, compiler and strategy
+
+The table compares **PyPTO-Pro** (GDR) against **ascriptor → CCE** (GDN, PGDN).
+These are different kernel DSLs with different compilers and code generators, so a
+ratio between them is not a statement about the algorithms.
+
+Verified, not assumed:
+
+- Both GDN/PGDN units are ascriptor: `kernels/stages.py` opens
+  `from ascriptor.a5 import *`.
+- They compile to CCE: `pgdn_chunk_fwd/contract.json` describes "six FP32 **CCE**
+  stages", and the sources refer to "the CCE graph" (`gdn_chunk_fwd/kernels/pipeline.py:22`)
+  and "CCE mixed-width condition operands" (`pgdn_chunk_fwd/kernels/stages.py:184`).
+  The measured path is native CCE.
+- They are vector-only: `gdn_chunk_fwd/kernels/stages.py` opens "Five-launch FP32
+  **Vector** baseline", and the msprof evidence above shows zero cube MMADs.
+- GDR is PyPTO-Pro (`pypto` 0.2.1) and uses **both** the cube and vector pipes.
+
+So the 33–64× raw gap, and the ~1.17×/2.28× equal-core residual, each conflate at
+least four independent differences: parallelism (28 blocks vs 2), pipe usage
+(cube+vector vs vector-only), compiler/DSL (PyPTO-Pro vs ascriptor/CCE), and
+numerics. **The only one this measurement isolates is parallelism**, since that is
+read directly off `Block Num`. Treat the rest as unattributed.
+
+What the table does support, and all it supports: GDN and PGDN as they stand on A5
+use 2 of 56 vector cores and no cube at all, while a cube-using implementation of the
+same operator family on the same box achieves 18.6 ns per token-head. That is a
+reason to investigate, not a measured speedup available from a dtype or scheduling
+change.
+
+### Exactly what was measured
+
+| | code under test | harness | notes |
+|---|---|---|---|
+| PGDN | `kernels/projects/a5/pgdn_chunk_fwd/` | its own `measure.py`; `benchmark.py --case pgdn340m_bd2` as independent cross-check (38634.6 µs, agrees); `run.py reference` for 60 device-free cases | kernel sources byte-identical to evidence pins (`stages.py 6d07abf7`, `atk.py e5643c78`, `pipeline.py e078814a`, `measure.py 94c80206`); wrapper `ops/pgdn_chunk_fwd.py` `786005e7` vs pin `3ce60fbe` (gained bf16 dispatch, kernels unchanged) |
+| GDN | `kernels/projects/a5/gdn_chunk_fwd/kernels/` | **`gdn_chunk_fwd_bf16/measure.py`** — *not* `gdn_chunk_fwd/benchmark.py`, which is dead code on this branch | fp32 arm drives the legacy unit via an immutable baseline checkout reconstructed read-only from rev `bdce6671`, whose `ops/gdn_chunk_fwd.py` matches the evidence `baseline_source_sha256` `32f9c19c`. This is why GDN ran at H=HV=8, not the contract's H=16 |
+| ascriptor | library rev `90cfcdc720bb` | editable install in an isolated venv per §5 | the `ascriptor_pin.current_compatibility_pin.library` from `docs/matrix/ops.json`; recovered from a pre-existing checkout on the test box because gitcode is auth-walled. Backends `cce`, `pto_isa`, `pypto_pro` register; CCE is the path exercised |
+| GDR | `kernels/` in this directory | `test_composition.py` forward chain, msprof `PipeUtilization` | PyPTO-Pro 0.2.1, cube + vector |

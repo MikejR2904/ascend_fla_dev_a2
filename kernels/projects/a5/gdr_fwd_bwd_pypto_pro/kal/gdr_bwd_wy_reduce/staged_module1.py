@@ -1,0 +1,165 @@
+import pypto_pro.language as pl
+from pypto_pro.language import Vf as vf  # noqa: N813
+
+# The runner's older PyPTO build leaves gaps in its DT_* pybind
+# coverage: some constants (DT_BF16 among them) arrive as bare ints
+# that VF-layer kwarg checks reject ("expected ir::DataType, but got
+# int"), while others on the same build are real DataType objects
+# (add_rms_norm_dynamic_quant exercised FP16/FP32/INT8/INT16/UINT32
+# there). Rebuild the broken ones from the enum value AT MODULE
+# SCOPE -- the VF parser inlines helper calls and rejects
+# isinstance, so the fixups must be plain names by the time a
+# decorated body mentions them. A healthy build passes through.
+_DTT = type(pl.DT_FP32)
+def _dt_fix(v):
+    return v if isinstance(v, _DTT) else _DTT(v)
+_PL_BF16 = _dt_fix(pl.DT_BF16)
+_PL_FP16 = _dt_fix(pl.DT_FP16)
+_PL_FP32 = _dt_fix(pl.DT_FP32)
+_PL_INT8 = _dt_fix(pl.DT_INT8)
+_PL_INT16 = _dt_fix(pl.DT_INT16)
+_PL_INT32 = _dt_fix(pl.DT_INT32)
+_PL_INT64 = _dt_fix(pl.DT_INT64)
+_PL_UINT8 = _dt_fix(pl.DT_UINT8)
+_PL_UINT16 = _dt_fix(pl.DT_UINT16)
+_PL_UINT32 = _dt_fix(pl.DT_UINT32)
+_PL_UINT64 = _dt_fix(pl.DT_UINT64)
+
+@pl.vector_function
+def passk_vf(t_dkbg, t_dkb, t_dkt, t_k, t_dkp, ub_beta, ub_decay, ub_dbeta, ub_dg2, Kd):
+    _tmp_maskreg_0 = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+    active = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+    for pk_c in pl.range(0, 64, 1):
+        bbc = vf.load_align(ub_beta, pk_c, dist=pl.LoadDist.BRC_B32)
+        dbc = vf.load_align(ub_decay, pk_c, dist=pl.LoadDist.BRC_B32)
+        gde = vf.mul(dbc, bbc, active)
+        inner = vf.full(0.0, active, dtype=_PL_FP32)
+        db3 = vf.full(0.0, active, dtype=_PL_FP32)
+        kdkt = vf.full(0.0, active, dtype=_PL_FP32)
+        for pk_r in pl.range(0, ((Kd + 64 - 1) // 64), 1):
+            mred = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+            mred = vf.update_mask(pl.max(0, (pl.min(64, (Kd - (pk_r * 64))))), dtype=_PL_FP32)
+            a = vf.load_align(t_dkbg, (pk_c) * 128 + (pk_r * 64), dtype=_PL_FP32)
+            kk = vf.load_align(t_k, (pk_c) * 128 + (pk_r * 64), dtype=_PL_FP32)
+            bb = vf.load_align(t_dkb, (pk_c) * 128 + (pk_r * 64), dtype=_PL_FP32)
+            tt = vf.load_align(t_dkt, (pk_c) * 128 + (pk_r * 64), dtype=_PL_FP32)
+            prod = vf.mul(a, kk, mred)
+            part = vf.reduce_sum(prod, mred)
+            inner = vf.add(inner, part, active)
+            prod = vf.mul(bb, kk, mred)
+            part = vf.reduce_sum(prod, mred)
+            db3 = vf.add(db3, part, active)
+            prod = vf.mul(kk, tt, mred)
+            part = vf.reduce_sum(prod, mred)
+            kdkt = vf.add(kdkt, part, active)
+            dkp = vf.load_align(t_dkp, (pk_c) * 128 + (pk_r * 64), dtype=_PL_FP32)
+            dkt1 = vf.mul(a, gde, active)
+            dk2 = vf.mul(bb, bbc, active)
+            dk2 = vf.add(dk2, tt, active)
+            dk2 = vf.add(dk2, dkt1, active)
+            dk2 = vf.add(dk2, dkp, active)
+            vf.store_align(t_dkp + (pk_c) * 128 + (pk_r * 64), dk2, _tmp_maskreg_0)
+        db1 = vf.mul(inner, dbc, active)
+        dg2l = vf.mul(db1, bbc, active)
+        bd3 = vf.mul(db3, bbc, active)
+        dg2c = vf.add(dg2l, bd3, active)
+        dg2c = vf.sub(dg2c, kdkt, active)
+        vf.store_align(ub_dg2 + pk_c, dg2c, _tmp_maskreg_0, dist=pl.StoreDist.FIRST_ELEMENT)
+        dbp = vf.add(db1, db3, active)
+        vf.store_align(ub_dbeta + pk_c, dbp, _tmp_maskreg_0, dist=pl.StoreDist.FIRST_ELEMENT)
+
+@pl.vector_function
+def passv_vf(t_dvb, t_vc, t_vbf, ub_beta, ub_dbeta, Vd, vc_rows):
+    _tmp_maskreg_0 = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+    active = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+    z = vf.full(0.0, active, dtype=_PL_FP32)
+    for pv_cast in pl.range(0, vc_rows, 1):
+        for pv_cr in pl.range(0, ((Vd + 64 - 1) // 64), 1):
+            vb = vf.load_align(t_vbf, (pv_cast) * 128 + (pv_cr * 64), dist=pl.LoadDist.UNPK_B16)
+            vfp = vf.astype(vb, active, dtype=_PL_FP32, layout=pl.CastLayout.ZERO)
+            vf.store_align(t_vc + (pv_cast) * 128 + (pv_cr * 64), vfp, _tmp_maskreg_0)
+    for pv_pad in pl.range(vc_rows, 64, 1):
+        for pv_pr in pl.range(0, ((Vd + 64 - 1) // 64), 1):
+            vf.store_align(t_vc + (pv_pad) * 128 + (pv_pr * 64), z, _tmp_maskreg_0)
+    vf.mem_bar(mode=pl.MemBarMode.VST_VLD)
+    for pv_c in pl.range(0, 64, 1):
+        bbc = vf.load_align(ub_beta, pv_c, dist=pl.LoadDist.BRC_B32)
+        db2 = vf.full(0.0, active, dtype=_PL_FP32)
+        for pv_r in pl.range(0, ((Vd + 64 - 1) // 64), 1):
+            mred = vf.create_mask(pattern=pl.MaskPattern.ALL, dtype=_PL_FP32)
+            mred = vf.update_mask(pl.max(0, (pl.min(64, (Vd - (pv_r * 64))))), dtype=_PL_FP32)
+            dvb = vf.load_align(t_dvb, (pv_c) * 128 + (pv_r * 64), dtype=_PL_FP32)
+            vcr = vf.load_align(t_vc, (pv_c) * 128 + (pv_r * 64), dtype=_PL_FP32)
+            prod = vf.mul(dvb, vcr, mred)
+            part = vf.reduce_sum(prod, mred)
+            db2 = vf.add(db2, part, active)
+            dvout = vf.mul(dvb, bbc, active)
+            vf.store_align(t_dvb + (pv_c) * 128 + (pv_r * 64), dvout, _tmp_maskreg_0)
+        dbp = vf.load_align(ub_dbeta, pv_c, dist=pl.LoadDist.BRC_B32)
+        dbeta = vf.add(dbp, db2, active)
+        vf.store_align(ub_dbeta + pv_c, dbeta, _tmp_maskreg_0, dist=pl.StoreDist.FIRST_ELEMENT)
+
+
+@pl.jit(auto_mutex=True)
+def gdr_bwd_wy_reduce_kernel(dkbg: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dvb: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dkb: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dkt: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], k_f32: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], beta_act: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], decay_exp: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dk_p: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], v: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_BF16], dk: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dv: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dbeta_wy: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], dg2: pl.Tensor[[1, pl.DYNAMIC, pl.DYNAMIC, pl.DYNAMIC], pl.DT_FP32], B: pl.DT_INT32, T: pl.DT_INT32, H: pl.DT_INT32, Kd: pl.DT_INT32, Vd: pl.DT_INT32, N: pl.DT_INT32, Cc: pl.DT_INT32):
+    g_t_dkbg = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x0, mutex_ids=[0])
+    g_t_dkb = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x8000, mutex_ids=[1])
+    g_t_dkt = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x10000, mutex_ids=[2])
+    g_t_k = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x18000, mutex_ids=[3])
+    g_t_dkp = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x20000, mutex_ids=[4])
+    g_t_vbf = pl.make_tile_group(type=pl.TileType(shape=[64, 128], dtype=pl.DT_BF16, target_memory=pl.MemorySpace.Vec), addrs=0x28000, mutex_ids=[5])
+    g_ub_beta = pl.make_tile_group(type=pl.TileType(shape=[1, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x2c000, mutex_ids=[6])
+    g_ub_decay = pl.make_tile_group(type=pl.TileType(shape=[1, 128], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x2c200, mutex_ids=[7])
+    g_ub_dbeta = pl.make_tile_group(type=pl.TileType(shape=[1, 64], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x2c400, mutex_ids=[8])
+    g_ub_dg2 = pl.make_tile_group(type=pl.TileType(shape=[1, 64], dtype=pl.DT_FP32, target_memory=pl.MemorySpace.Vec), addrs=0x2c500, mutex_ids=[9])
+    with pl.section_vector():
+        t1_t_dkbg = g_t_dkbg.next()
+        t2_t_dkb = g_t_dkb.next()
+        t3_t_dkt = g_t_dkt.next()
+        t4_t_k = g_t_k.next()
+        t5_t_dkp = g_t_dkp.next()
+        t6_t_vbf = g_t_vbf.next()
+        t7_ub_beta = g_ub_beta.next()
+        t8_ub_decay = g_ub_decay.next()
+        t9_ub_dbeta = g_ub_dbeta.next()
+        t10_ub_dg2 = g_ub_dg2.next()
+        _k0 = ((B * H) * N)
+        _k7 = (_k0 + pl.get_block_num() - 1)
+        _k9 = (_k7 // pl.get_block_num())
+        _k10 = (_k9 * pl.get_block_idx())
+        for tid in pl.range(_k10, (pl.min((_k10 + _k9), _k0)), 1):
+            pl.set_validshape(t1_t_dkbg, [64, Kd])
+            _k1 = (tid % (H * N))
+            _k2 = (tid // (H * N))
+            _k3 = (_k1 % N)
+            _k4 = (_k1 // N)
+            pl.load(t1_t_dkbg, dkbg, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t2_t_dkb, [64, Kd])
+            pl.load(t2_t_dkb, dkb, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t3_t_dkt, [64, Kd])
+            pl.load(t3_t_dkt, dkt, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t4_t_k, [64, Kd])
+            pl.load(t4_t_k, k_f32, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t5_t_dkp, [64, Kd])
+            pl.load(t5_t_dkp, dk_p, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t7_ub_beta, [1, 64])
+            pl.load(t7_ub_beta, beta_act, [_k2, _k4, _k3, 0])
+            pl.set_validshape(t8_ub_decay, [1, 64])
+            pl.load(t8_ub_decay, decay_exp, [_k2, _k4, _k3, 0])
+            passk_vf(t1_t_dkbg, t2_t_dkb, t3_t_dkt, t4_t_k, t5_t_dkp, t7_ub_beta, t8_ub_decay, t9_ub_dbeta, t10_ub_dg2, Kd)
+            pl.set_validshape(t5_t_dkp, [64, Kd])
+            pl.store(dk, t5_t_dkp, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t10_ub_dg2, [1, 64])
+            pl.store(dg2, t10_ub_dg2, [_k2, _k4, _k3, 0])
+            pl.set_validshape(t1_t_dkbg, [64, Vd])
+            pl.load(t1_t_dkbg, dvb, [_k2, _k4, _k3, 0, 0])
+            _k5 = (_k3 * 64)
+            _k6 = (T - _k5)
+            _k8 = (pl.min(_k6, 64))
+            pl.set_validshape(t6_t_vbf, [_k8, Vd])
+            pl.load(t6_t_vbf, v, [_k2, _k5, _k4, 0])
+            passv_vf(t1_t_dkbg, t2_t_dkb, t6_t_vbf, t7_ub_beta, t9_ub_dbeta, Vd, _k8)
+            pl.set_validshape(t1_t_dkbg, [64, Vd])
+            pl.store(dv, t1_t_dkbg, [_k2, _k4, _k3, 0, 0])
+            pl.set_validshape(t9_ub_dbeta, [1, 64])
+            pl.store(dbeta_wy, t9_ub_dbeta, [_k2, _k4, _k3, 0])

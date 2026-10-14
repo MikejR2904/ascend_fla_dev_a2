@@ -436,6 +436,10 @@ ascend_fla/
 │   ├── compat/          # 可选：fla 风格签名 wrapper（布局转换）
 │   └── reference/       # torch oracle
 ├── kernels/projects/<soc>/  # 本仓自有的 ascriptor 单元（unit 协议），按 SoC 分目录
+│   └── a5/gdr_fwd_bwd_pypto_pro/  # ✗ 例外：PyPTO-Pro，不是 ascriptor，无 unit 协议。
+│                                  #   A5 GDR 前向+反向的工作副本与性能记录
+│                                  #   （来源 cann/pypto-gym），仅作参考与对照，
+│                                  #   无人 import，可随时移出；见其 README 首节
 ├── tests/  benchmarks/
 ├── docs/handoff.md      # ★ 会话交接：现状 + 下一步 + 已纠正的判断
 ├── docs/plan.md         # 构建规划

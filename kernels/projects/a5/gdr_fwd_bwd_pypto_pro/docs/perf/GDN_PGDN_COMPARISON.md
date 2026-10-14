@@ -226,3 +226,90 @@ their pinned revisions, in an isolated
 `python -m venv --system-site-packages` per AGENTS.md §5 — nothing was installed into
 the shared container environment. No git state was modified or committed in either
 repo. Device and host identities omitted per AGENTS.md §5.
+
+---
+
+# Forward-only comparison: GDR vs GDN vs PGDN
+
+Added after the above. **Forward only, for GDR, means `train_wy` + `train_scan`** —
+the other six kernels in that pipeline are backward.
+
+## GDR forward at B=1, T=16384, H=16, K=V=D=128
+
+Dedicated forward-only run (the two kernels and nothing else), two msprof
+`PipeUtilization` passes, warmup 2 / repeats 5:
+
+| kernel | µs | blk | `aic_mac` | ΣAIC | cube % | real MAC % |
+|---|--:|--:|--:|--:|--:|--:|
+| `gdr_fwd_train_wy` | 2047.4 | 28 | 0.474 | 1.135 | **98.6** | 46.8 |
+| `gdr_fwd_train_scan` | 2825.9 | 28 | 0.810 | 1.586 | 56.9 | 46.1 |
+| **forward total** | **4873.3** | | | | | |
+
+Totals 4876.1 and 4870.4 µs. Host-side wall time including dispatch is 5391 µs, so
+dispatch is ~10% at this shape.
+
+**The forward kernels cost the same alone as inside the full fwd+bwd pipeline**:
+2051.1 / 2043.6 here against 2051.4 in-pipeline for `train_wy`, and 2825.0 / 2826.8
+against 2826.4 for `train_scan` — 0.09% apart on the total. So there is no L2
+interference from the six backward kernels, and forward cost is cleanly separable.
+
+Forward is **34.2% of the 14.24 ms training pipeline**; backward is 9.37 ms, i.e.
+**1.92× the forward**.
+
+## Normalised against GDN and PGDN
+
+The shapes cannot be matched directly: PGDN's contract caps T at 4096, and the only
+working GDN timing harness runs H=HV=8 (see the dead `benchmark.py` above). So
+normalise by work units = tokens × heads — GDR has 8× as many (262144 vs 32768).
+
+| operator | shape | total | ns per token·head | vs GDR |
+|---|---|--:|--:|--:|
+| **GDR forward** (`train_wy`+`train_scan`) | T=16384, H=16 | 4.87 ms | **18.6** | 1.00× |
+| GDN forward, fp32 | T=4096, H=8 | 19.96 ms | 609.1 | 32.8× |
+| GDN forward, bf16 | T=4096, H=8 | 19.64 ms | 599.4 | 32.2× |
+| PGDN forward + ATK, fp32 | T=4096, H=8 | 38.81 ms | 1184.4 | 63.7× |
+| PGDN forward + ATK, bf16 | T=4096, H=8 | 38.52 ms | 1175.5 | 63.2× |
+
+**Most of that 33–64× is parallelism, not kernel quality.** GDN and PGDN launch
+`Block Num = 2` against 56 vector cores; GDR launches 28 blocks and uses both the
+cube and vector pipes. Giving GDN/PGDN a *perfect* hypothetical 28× scaling from 2 to
+56 vector cores — which real code never achieves — the picture becomes:
+
+| operator | ns per token·head, core-normalised | vs GDR |
+|---|--:|--:|
+| **GDR forward** | 18.6 | 1.00× |
+| GDN forward, fp32 | 21.8 | 1.17× |
+| PGDN forward + ATK, fp32 | 42.3 | 2.28× |
+
+So on equal-core terms GDR's forward is still ~1.2× faster than GDN's and ~2.3×
+faster than PGDN's, and the honest headline is that **the GDN/PGDN gap is dominated
+by using 2 of 56 cores**. Closing that is worth far more to them than any dtype or
+scheduling change.
+
+### Why this comparison is sound even though the receipts disagree by 15×
+
+The ~15× gap flagged above is between *these GDN/PGDN measurements* and the
+**recorded `evidence/` receipts**. It does not affect the comparison in this section,
+because the GDR and GDN/PGDN numbers here were taken on the **same machine, same
+CANN 9.1.0-beta.1, same SoC revision `957b`, within the same working session**.
+Whatever causes the discrepancy against the receipts applies to the GDN/PGDN
+*environment*, which both sides of this table share.
+
+### Four caveats on reading the table
+
+1. **GDR's forward is a *training* forward and emits 17 tensors**, including
+   `attn`, `w_t`, `kbeta_t`, `q_t` and `a_mat` that exist only to feed the backward.
+   GDN/PGDN forward emit `o` plus final state(s). So GDR is being charged for strictly
+   more work than an inference forward would do — a separate fused inference-only
+   forward exists (`kernels/gated_delta_rule_fwd_impl.py`) and was **not** measured
+   here. The GDR row is therefore pessimistic as an inference comparison and
+   favourable as a training-forward one.
+2. **PGDN computes more than GDN or GDR** — it carries an extra ATK state and an
+   asymmetric key transform. Its own GDN-equation cost baseline (36.78 ms fp32 at
+   T=4096) is the fairer GDN-side figure, and PGDN is 1.04–1.11× that.
+3. **Normalising by tokens × heads assumes linearity in both.** It holds well for
+   GDR (measured sub-linear, 16× work for 15.6× cost) but was not verified for
+   GDN/PGDN across H.
+4. **Different numerics.** GDR has bf16 public inputs/outputs with fp32 cube
+   accumulation; the GDN/PGDN fp32 rows are fp32 public, and their bf16 rows convert
+   I/O only.

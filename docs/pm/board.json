@@ -5729,7 +5729,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "-",
-      "status": "open",
+      "status": "assigned",
       "model": [],
       "kernel": [
         "gdn_fwd",
@@ -5743,7 +5743,10 @@
       "deps": [
         "PK-06"
       ],
-      "write_set": [],
+      "write_set": [
+        "benchmarks/profile_gda05_*.py",
+        "docs/research/gda05_profile.md"
+      ],
       "needs": {
         "npu": true,
         "ascriptor": true,
@@ -5752,9 +5755,14 @@
       "spec": "docs/pm/tasks/GDA-05.md",
       "issue": 96,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "limjiunnbin",
+      "assignee_caps": {
+        "agent": "Codex；GDN/PGDN 接续，GDN-2 与 A2 任务由其它 session 处理",
+        "session": "dev-20261015T120229Z-gda05-91c95270",
+        "predecessor_session": "dev-20261007T021301Z-pk06-afaf8516（PK-06 已结单，本次重新申领）",
+        "socs": "a5"
+      },
+      "branch": "task/GDA-05",
       "timebox_h": 24,
       "reports": [
         {
@@ -5768,6 +5776,10 @@
         {
           "at": "2026-10-08T02:45",
           "summary": "另一位共享 limjiunnbin 账号的 PM 进程处理了 limjiunnbin 的一轮 APPLY（6036424855 @10:55，申领人自己说明\"不是领取成功\"，只是预约接续，仍持有 PK-06）+ 五条 NO_TASK/NOTE（10:55~19:20Z），正确依据任务文档自身的\"PK-06 完成（=合入）后才补规格\"条款，未 ASSIGN，判断与处理均正确，本轮仅补记入看板。\n\nPK-06 现已真正合入+close（见本任务同轮 PK-06 report）。PM 已补全 profile 阶段范围并发到 #96：六个既有实现（GDA-01/02/03、PK-03/05、GDA-04/PK-06）只测不改，写集限 `benchmarks/profile_gda05_*.py` 新文件 + `docs/research/gda05_profile.md`，不碰 ascend_fla/ops/kernels/tests，交付判据含 device/host 耗时拆分+缓存键开销单独测+不下优化结论。邀请申领人重新 APPLY；status 维持 open，等 APPLY 后 ASSIGN。"
+        },
+        {
+          "at": "2026-10-15T12:10",
+          "summary": "收到重新 APPLY（issue #96, comment 6191608184），直接核实：PR #139 merge commit cf2475d08f4c7cdec005dddeedf19b5411d5fcf9 确认、issue #95 confirmed closed，与申领人所述一致。写集/范围/方法与 PM 自己此前发出的 NOTE6051129132 一致（benchmarks/profile_gda05_*.py + docs/research/gda05_profile.md，不碰 ascend_fla/kernels/tests）。申领人指出 NOTE6051129132 把 GDA-04 误标成\"短 conv\"——PM 独立读 kernels/projects/a5/ 与 ascend_fla/ops/ 源码核实：GDN 系列只有 gdn_fused_recurrent（短步递推），*_short_conv_decode 只存在于 GDN-2，不在本任务范围——更正属实，已写进 docs/pm/tasks/GDA-05.md。本阶段（测量，不优化）PM 已按 D-PM-43 既有放行 + NOTE6051129132 的承诺直接 ASSIGN，不额外问用户；写集按本次规格为准（不是申领人评论里的转述）。open → assigned。"
         }
       ],
       "result": null,

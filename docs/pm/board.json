@@ -3139,8 +3139,8 @@
       "wave": "W-A2",
       "soc": "a2",
       "priority": "P1",
-      "status": "gated",
-      "gate": "user-decision: 写集需扩大到 ops/kda 公共入口 + 新增 a2 派生单元，或改派前置任务",
+      "status": "assigned",
+      "gate": null,
       "model": [
         "kimi-linear-48b-a3b"
       ],
@@ -3162,7 +3162,12 @@
         "benchmarks/bench_kda_train_step.py",
         "benchmarks/bench_kda_torch_npu.py",
         "ascend_fla/platform.py",
-        "docs/research/a2_kda_layer.md"
+        "docs/research/a2_kda_layer.md",
+        "ascend_fla/ops/kda/chunk.py",
+        "ascend_fla/ops/kda/chunk_bwd.py",
+        "ascend_fla/ops/kda/fused_recurrent.py",
+        "kernels/projects/a2/kda_layout/",
+        "kernels/projects/a2/kda_prep/"
       ],
       "needs": {
         "npu": true,
@@ -3172,9 +3177,13 @@
       "spec": "docs/pm/tasks/A2-15.md",
       "issue": 42,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
-      "branch": null,
+      "assignee": "limjiunnbin",
+      "assignee_caps": {
+        "agent": "Codex；只做 KDA/PKDA，不接 GDN/PGDN",
+        "session": "01a0b7ce-3daf-7550-a7bf-31c67eb91ca3",
+        "socs": "a2"
+      },
+      "branch": "task/A2-15",
       "timebox_h": 16,
       "reports": [
         {
@@ -3188,6 +3197,10 @@
         {
           "at": "2026-10-15T14:10",
           "summary": "收到 APPLY（issue #42, comment 6193819063），申领人做了真实 preflight（临时在进程内把 qualified 设 True 跑 prepare()，不是空口猜测）后报告：A2-15 原写集（测试+benchmark+platform.py 的 qualified 字面量+研究文档）不足以产出真实层级证据。PM 独立核实，确认属实：\n\n1) kernels/projects/a5/kda_layout/runtime.py:29 与 kda_prep/runtime.py:42,124 的 prepare()/prepare_backward() 硬性 `if device != 'a5': raise ValueError`，且\n2) ascend_fla/ops/kda/chunk.py 的 `_stable_kernels_root()`、chunk_bwd.py 的 `_stable_bwd_root()`、fused_recurrent.py 的 `_native_kernel()` 三处都**不接受/不使用 device 参数**，路径字面量硬编码 `kernels/projects/a5/{kda_fwd_stable,kda_bwd_stable,kda_fused_recurrent_bf16}`；chunk.py:115/403 对 kda_prep/kda_layout 的路径同样硬编码 a5，无 device 分支。\n\n也就是说：即使把 CAPABILITIES[\"a2\"][\"qualified\"] 翻成 True，公共入口实际加载的仍是 A5 的 kernel 源码路径，不会路由到 A2-12/13/14 已经资格化并确实存在的 kernels/projects/a2/{kda_fwd_stable,kda_bwd_stable,kda_bwd_stable_fp32gc,kda_fused_recurrent}；而 kda_layout、kda_prep（BF-07/FMT-02 阶段后补的门控变换/raw-flags 预处理，发生在 A2 的 工作主线之后）在 kernels/projects/a2 下完全不存在对应派生单元。\n\n2026-10-12 补全规格时我自己写的\"公共调用链已经是 SoC 中立的\"这条判断是不完整的——我当时只核了 platform.py 的 resolve_soc/require_qualified 和两个 benchmark 脚本，没有往下核三层 loader 函数本身。这个更正由申领人指出，PM 已独立逐处读源码验证，不是转述。\n\n结论：A2-15 不能按原写集（仅测试/benchmark/platform.py 字面量+文档）完成，需要以下二选一，均超出本任务已批写集、涉及新增 ops/kda 公共入口改动与新增 kernels/projects/a2 派生单元——按 D-PM-33「写集扩大」与标准轮询协议「positioning-change」两条，均需用户决定，PM 不自行批准：\n(a) 扩大 A2-15 写集，把 chunk.py/chunk_bwd.py/fused_recurrent.py 三处 loader 的 device 分支 和新增 kernels/projects/a2/{kda_layout,kda_prep} 派生单元都纳入本任务；\n(b) 拆出一个前置任务专做\"A2 KDA 公共入口接线 + kda_layout/kda_prep 的 a2 派生单元\"，A2-15 之后再做纯层级验证。\n\n已回复申领人：问题转给用户，站住不动，不自行扩大范围也不先 ASSIGN 原窄范围（那样做不出真实证据，等同制造 silent-wrong-result）。status: open -> gated，write_set 暂留作记录（已知不足以达成目标，等用户选 a/b 后重新定）。"
+        },
+        {
+          "at": "2026-10-15T14:30",
+          "summary": "用户直接决定选 (a)：扩大 A2-15 写集，把三处 kernel loader 的 device 分支和新增 kernels/projects/a2/{kda_layout,kda_prep} 派生单元都纳入本任务，不拆前置任务。docs/pm/tasks/A2-15.md 已按此重写（新增\"2026-10-15 写集扩大\"说明段、范围第 0 步、对应的明确不在范围内/验收条目），write_set 已扩大。gated -> assigned，assignee=limjiunnbin（APPLY 见 issue #42 comment 6193819063，环境/ascriptor/fla pin 已核对一致）。"
         }
       ],
       "result": null

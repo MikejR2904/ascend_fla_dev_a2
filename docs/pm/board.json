@@ -3167,7 +3167,8 @@
         "ascend_fla/ops/kda/chunk_bwd.py",
         "ascend_fla/ops/kda/fused_recurrent.py",
         "kernels/projects/a2/kda_layout/",
-        "kernels/projects/a2/kda_prep/"
+        "kernels/projects/a2/kda_prep/",
+        "ascend_fla/ops/kda/autograd.py"
       ],
       "needs": {
         "npu": true,
@@ -3201,6 +3202,10 @@
         {
           "at": "2026-10-15T14:30",
           "summary": "用户直接决定选 (a)：扩大 A2-15 写集，把三处 kernel loader 的 device 分支和新增 kernels/projects/a2/{kda_layout,kda_prep} 派生单元都纳入本任务，不拆前置任务。docs/pm/tasks/A2-15.md 已按此重写（新增\"2026-10-15 写集扩大\"说明段、范围第 0 步、对应的明确不在范围内/验收条目），write_set 已扩大。gated -> assigned，assignee=limjiunnbin（APPLY 见 issue #42 comment 6193819063，环境/ascriptor/fla pin 已核对一致）。"
+        },
+        {
+          "at": "2026-10-16T10:40",
+          "summary": "处理申领人在 PR #142 评论 6209806081 报的 write-set-expansion RISK。PM 独立读源码核实：1) ascend_fla/ops/kda/autograd.py 的 _RawNorm/_RawGate/_RawBeta/_prepare_autograd_inputs/_ChunkKDA 调用 _prep_runtime()/_layout_runtime() 时这两个函数本身是零参数（lru_cache(maxsize=1) 硬编码 a5 路径），加 device 分支后这些调用点需要把已有的 device 变量传进去——纯参数传递，不改数学/A5行为，确认属实，批准加入写集。2) 申领人同时指出规格文档错误：原文把 _stable_kernels_root() 的 a2 目标写成\"新的 kda_layout\"，但 _stable_kernels_root()/_stable_bwd_root()/_native_kernel() 对应的是三个核心算子（forward/backward/decode），A2 侧已经由 A2-03/09/14 建好现成单元，这三处只需要接路由、不需要新建；真正需要新建的是 _prep_runtime()/_layout_runtime() 这两个另外的loader（raw-flags预处理/布局转换）。PM 已核实并更正 docs/pm/tasks/A2-15.md。write_set 加入 ascend_fla/ops/kda/autograd.py（仅限传参，范围内已写明边界）。"
         }
       ],
       "result": null

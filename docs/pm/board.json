@@ -6160,6 +6160,94 @@
         "kind": "user",
         "note": "用户 2026-09-21（D-PM-57「#122授权」，PM 请求里的选项 A）：合入 BF-08 并立即另立 P0 性能任务"
       }
+    },
+    {
+      "id": "PK-07",
+      "title": "PKDA chunk 前向：性能优化（先 profile 再动手）",
+      "wave": "W0",
+      "soc": "a5",
+      "priority": "P2",
+      "status": "open",
+      "model": [],
+      "kernel": [
+        "pkda_chunk_fwd"
+      ],
+      "dtype": [
+        "fp32"
+      ],
+      "deps": [
+        "PK-04"
+      ],
+      "write_set": [
+        "kernels/projects/a5/pkda_chunk_fwd/**",
+        "ascend_fla/ops/pkda_chunk_fwd.py",
+        "tests/test_pkda_chunk_fwd.py",
+        "docs/research/pkda_chunk_fwd_gate_range.md"
+      ],
+      "needs": {
+        "npu": true,
+        "ascriptor": true,
+        "fla": true
+      },
+      "spec": "docs/pm/tasks/PK-07.md",
+      "issue": null,
+      "pr": null,
+      "assignee": null,
+      "assignee_caps": null,
+      "branch": null,
+      "timebox_h": 16,
+      "reports": [
+        {
+          "at": "2026-10-16T00:00",
+          "summary": "用户直接要求开 PKDA 性能优化任务。PK-04 的真机数字（T1024: 46.8-47.1ms vs torch_npu eager 基线 604.8-613.6ms；T4096: 179.8-179.9ms vs 4679-4697ms，block_dim=4，仅FP32）已经是 13-26 倍于一个弱基线（naive eager），本任务不预设瓶颈，第一步仍是对真实形状（不是契约的 T1024/4096 玩具形状）做自己的 stage 级profile，同 GD2-03 先例的方法论。open，无前置阻塞（PK-04 已 done）。"
+        }
+      ],
+      "result": null
+    },
+    {
+      "id": "PK-08",
+      "title": "PGDN chunk 前向：性能优化（复用 GDA-05 的 profile 结论）",
+      "wave": "W0",
+      "soc": "a5",
+      "priority": "P2",
+      "status": "open",
+      "model": [],
+      "kernel": [
+        "pgdn_chunk_fwd"
+      ],
+      "dtype": [
+        "fp32",
+        "bf16"
+      ],
+      "deps": [
+        "PK-03",
+        "GDA-05"
+      ],
+      "write_set": [
+        "kernels/projects/a5/pgdn_chunk_fwd/**",
+        "ascend_fla/ops/pgdn_chunk_fwd.py",
+        "tests/test_pgdn_chunk_fwd.py",
+        "docs/research/pgdn_chunk_fwd_gate_range.md"
+      ],
+      "needs": {
+        "npu": true,
+        "ascriptor": true,
+        "fla": true
+      },
+      "spec": "docs/pm/tasks/PK-08.md",
+      "issue": null,
+      "pr": null,
+      "assignee": null,
+      "assignee_caps": null,
+      "branch": null,
+      "timebox_h": 16,
+      "reports": [
+        {
+          "at": "2026-10-16T00:00",
+          "summary": "用户直接要求开 PGDN 性能优化任务。PK-03 的真机数字显示 PGDN 比一个人造的'GDN 方程成本基线'（同 5 个 kernel、关掉 ATK）慢 3.4%-4.5%（T4096 FP32/BF16 ≈566ms vs ≈548ms；T1024 ≈144ms vs ≈138ms）。ATK 逐 token 串行是直觉怀疑点，不是已确认瓶颈。GDA-05（issue #96，assigned，未完成）正在对 PK-03 做 stage 级 device/host 拆分 profile，本任务依赖它的结论、不重新测——deps 加 GDA-05，status=open 但 PM 会在真实 APPLY 时按依赖未满足 NO_TASK，同 GDA-05 当年等 PK-06 的处理方式。"
+        }
+      ],
+      "result": null
     }
   ],
   "label_github_login": "ascend-fla-pm-bot",

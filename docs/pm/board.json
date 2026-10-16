@@ -5810,6 +5810,10 @@
         {
           "at": "2026-10-15T12:10",
           "summary": "收到重新 APPLY（issue #96, comment 6191608184），直接核实：PR #139 merge commit cf2475d08f4c7cdec005dddeedf19b5411d5fcf9 确认、issue #95 confirmed closed，与申领人所述一致。写集/范围/方法与 PM 自己此前发出的 NOTE6051129132 一致（benchmarks/profile_gda05_*.py + docs/research/gda05_profile.md，不碰 ascend_fla/kernels/tests）。申领人指出 NOTE6051129132 把 GDA-04 误标成\"短 conv\"——PM 独立读 kernels/projects/a5/ 与 ascend_fla/ops/ 源码核实：GDN 系列只有 gdn_fused_recurrent（短步递推），*_short_conv_decode 只存在于 GDN-2，不在本任务范围——更正属实，已写进 docs/pm/tasks/GDA-05.md。本阶段（测量，不优化）PM 已按 D-PM-43 既有放行 + NOTE6051129132 的承诺直接 ASSIGN，不额外问用户；写集按本次规格为准（不是申领人评论里的转述）。open → assigned。"
+        },
+        {
+          "at": "2026-10-16T10:33",
+          "summary": "RISK（class=shared-machine，issue #96 comment 6213561474）：共享设备占用反复打断剩余测量；申领人明确不请求 PM 仲裁（D-PM-28：机器/卡归 agent 自己管）。进展：7/20组完整验收（GDN前向bd1/2、GDN decode bd1/2/4/8/16），受干扰的部分测量全部拒收不发布。仅记录，不仲裁、不提供占用证据。"
         }
       ],
       "result": null,

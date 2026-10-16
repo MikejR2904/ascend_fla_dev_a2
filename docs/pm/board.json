@@ -4134,7 +4134,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "P1",
-      "status": "open",
+      "status": "assigned",
       "model": [
         "gdn2-1.3b-fineweb-edu-100b"
       ],
@@ -4159,8 +4159,12 @@
       "spec": "docs/pm/tasks/GD2-02.md",
       "issue": 63,
       "pr": null,
-      "assignee": null,
-      "assignee_caps": null,
+      "assignee": "ddddwee1",
+      "assignee_caps": {
+        "agent": "Codex",
+        "session": "01a143b7-9f20-7801-a064-45acfb513a2a",
+        "socs": "a5"
+      },
       "branch": "task/GD2-02",
       "timebox_h": 16,
       "origin": {
@@ -4213,6 +4217,10 @@
         {
           "at": "2026-10-01T13:26",
           "summary": "收回：48h 无 STATUS 的 PING（2026-09-30T13:22，issue #63 评论 5912202284）之后再等 24h（到 2026-10-01T13:22）仍无任何回应——匿名核对 #63 自 PING 起的全部评论（截至 2026-10-01T13:26:57Z），只有 PING 这一条，没有 STATUS/RISK/BLOCKED/WITHDRAW。按 PROTOCOL.md §5：'进行中的任务 48 小时没有 STATUS 会收到 PING，再 24 小时没动静就收回，状态回 open，分支留着'。in_progress -> open，清空 assignee/assignee_caps（同 PK-05 24h-无-ACK 收回先例）；分支 task/GD2-02 保留。任务已有的真实进展（GD2-01 契约全集真机通过、bd 跨档位逐位一致、95B FP32 logits 跨后端相对 L2=4.09e-5 在预算内）不因收回而作废——下一个申领人可以在现有分支基础上接续，未完成项是：cache 跨后端比对（落盘脚本未拿到cache 张量）、BF16 轮次（预算 1e-2）、性能三明治出包、draft PR。"
+        },
+        {
+          "at": "2026-10-16T11:00",
+          "summary": "收到仓库所有者（ddddwee1）本人账号的 APPLY（issue #63 comment 6211631770）。PM 已核实：task/GD2-02 分支在 limjiunnbin/ascend_fla_dev 确实存在，head=02af1095cbf7eb09aa397616e871cde009f9e0a8，与申领人所述一致；95B checkpoint SHA-256 与 models.json 记录一致（只读确认，未加载）；环境信息（CANN 9.2.0 timestamp 20260901_000323870，opp 含 ascend950/910b/910_93，ascriptor pin 核对）齐全。写集仍是 benchmarks/bench_gdn2_chunk_fwd_a5.py，不碰 reserved_paths。这是一次正常的 APPLY/ASSIGN，不因申领人是仓主账号而走特殊流程——D-PM-28 角色边界下 PM 只管任务进度与代码质量，机器/账号归 agent 自己管理；GD2-02 本身不在仓主的独立轨道范围内（那条轨道是 reserved_paths 列的 GDN-2 核心模型/层文件），而是这块看板管的常规任务。open -> assigned。接续起点：旧分支已有的真实进展（GD2-01 契约全集真机通过、bd 跨档位逐位一致、95B FP32 logits 跨后端相对 L2=4.09e-5 在预算内、torch_npu 组合基线对比约快 61 倍）仍然有效，未完成项是 cache 跨后端比对、BF16 轮次、性能三明治出包、draft PR——同之前收回时记录的一致。"
         }
       ],
       "result": null

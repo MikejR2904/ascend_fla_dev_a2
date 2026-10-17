@@ -5763,7 +5763,7 @@
       "wave": "W0",
       "soc": "a5",
       "priority": "-",
-      "status": "assigned",
+      "status": "done",
       "model": [],
       "kernel": [
         "gdn_fwd",
@@ -5788,7 +5788,7 @@
       },
       "spec": "docs/pm/tasks/GDA-05.md",
       "issue": 96,
-      "pr": null,
+      "pr": 143,
       "assignee": "limjiunnbin",
       "assignee_caps": {
         "agent": "Codex；GDN/PGDN 接续，GDN-2 与 A2 任务由其它 session 处理",
@@ -5818,9 +5818,33 @@
         {
           "at": "2026-10-16T10:33",
           "summary": "RISK（class=shared-machine，issue #96 comment 6213561474）：共享设备占用反复打断剩余测量；申领人明确不请求 PM 仲裁（D-PM-28：机器/卡归 agent 自己管）。进展：7/20组完整验收（GDN前向bd1/2、GDN decode bd1/2/4/8/16），受干扰的部分测量全部拒收不发布。仅记录，不仲裁、不提供占用证据。"
+        },
+        {
+          "at": "2026-10-17T05:23",
+          "summary": "DONE（PR #143）审查完成：PM 自审 + 隔离 worktree 子代理独立复核，verdict ACCEPT （写集/脚本/文档数字/host 测试均独立复核，无争议）。按 D-PM-33 自行合入：GH_TOKEN=$(gh auth token -u ascend-fla-pm-bot) gh pr merge 143 --match-head-commit 4d42396cdd89b21fb9df95501a8612044d9ac764 --squash → 4c286d5b9bc03d0b809a6487ccbf65f16863d4f8（2026-10-17T05:23:28Z）。合入后 main 全量复跑（排除本机已知缺 ascriptor 的 6 个文件，docs/handoff.md 记录的既有口径）：24 failed/1448 passed/106 skipped，与既有基线数字完全一致，未引入回归。assigned → done。"
         }
       ],
-      "result": null,
+      "result": {
+        "merged_commit": "4c286d5b9bc03d0b809a6487ccbf65f16863d4f8",
+        "merged_at": "2026-10-17T05:23:28Z",
+        "pr": 143,
+        "head_sha_reviewed_and_merged": "4d42396cdd89b21fb9df95501a8612044d9ac764",
+        "write_set_actual": [
+          "benchmarks/profile_gda05_cache.py",
+          "benchmarks/profile_gda05_report.py",
+          "benchmarks/profile_gda05_run.py",
+          "benchmarks/profile_gda05_workloads.py",
+          "docs/research/gda05_profile.md"
+        ],
+        "diff_stat": "5 files changed, 7107 insertions(+), 0 deletions(-); all ADDED, 0 touched outside write_set",
+        "doc_sha256": "5f5ffce8b88b7a96d7e4cb9806edc23ab562c1a0a7b5d37b1c10e24c25de7589",
+        "summary": "六个既有实现（GDN fwd/bwd、GDN decode、PGDN chunk fwd/bwd、PGDN decode）设备侧/host侧拆分耗时，只测不改。20 个独立 family/bd 进程（chunk 扫 bd1/2，decode 扫 bd1/2/4/8/16/28）、76 个计时 case、14 个额外完整工作负载检查；每 family/bd 独立 build/进程，跨 bd 输出字节一致性核验。PGDN backward 的 disclosure_required_nonpass 按实际披露保留非 PASS，未改名为 PASS（未用全梯度范数替代既有逐元素判据）。PGDN decode 因共享设备外来占用整组换卡重测，旧卡 bd1 记录作补充不拼入跨 bd 扫描（RISK class=shared-machine，仅记录不仲裁，D-PM-28）。实现基线 63ce5956；ascriptor library pin 90cfcdc7 / kernels pin b3b3f9c1；SoC a5(Ascend950PR)、CANN/OPP 9.1.0-beta.1（含 ascend950 内置算子包）。CPU-only 主机套件 1582 passed / 14 skipped / 5 warnings，exit 0；pm_board/gen_matrix 校验通过。",
+        "review": "PM 自审 + 隔离 worktree 子代理独立复核（verdict ACCEPT）：写集核对（gh pr view --json files 与 git diff 双证，5 个新文件 0 删除）；交叉读 ascend_fla/runtime/compile.py 核实 O(1) 缓存键声明非循环论证；核实 block_dim 隔离（一 family/bd 一进程 + 跨 bd 输出字节一致断言）；文档身份头与两条被引用的具体数字逐字核对；核实 PGDN backward 非 PASS 披露未被静默改报；核实报告未给出优化建议。子代理自己沙箱最初复算出入（缺 ASCRIPTOR_WORKSPACE/oracle 环境变量 + 意外的真实共享 NPU 访问）已查清是子代理沙箱自身环境缺口，非 PR 缺陷，修正环境变量后复算 6 failed/1486 passed/104 skipped 与申报数字（1582/14）合计总数 1596 一致。issue #96（31 条评论）与 PR #143（0 条评论）均无异议。",
+        "host_suite_postmerge_main": "main（4c286d5b，本 PM host，排除 6 个已记录的 ascriptor-session-fixture 依赖文件——docs/handoff.md 2026-10-12 记录的已知环境缺口，本机无 ascriptor 包）：24 failed / 1448 passed / 106 skipped，与 docs/handoff.md 记录的既有基线数字完全一致（含 A2-K1 此前新增的 4 个同类失败）；merge 未引入新的测试回归。",
+        "commits": [
+          "4c286d5b"
+        ]
+      },
       "origin": {
         "kind": "request",
         "issue": 89,

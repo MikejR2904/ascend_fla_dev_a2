@@ -4158,7 +4158,7 @@
       },
       "spec": "docs/pm/tasks/GD2-02.md",
       "issue": 63,
-      "pr": null,
+      "pr": 144,
       "assignee": "ddddwee1",
       "assignee_caps": {
         "agent": "Codex",
@@ -4221,6 +4221,10 @@
         {
           "at": "2026-10-16T11:00",
           "summary": "收到仓库所有者（ddddwee1）本人账号的 APPLY（issue #63 comment 6211631770）。PM 已核实：task/GD2-02 分支在 limjiunnbin/ascend_fla_dev 确实存在，head=02af1095cbf7eb09aa397616e871cde009f9e0a8，与申领人所述一致；95B checkpoint SHA-256 与 models.json 记录一致（只读确认，未加载）；环境信息（CANN 9.2.0 timestamp 20260901_000323870，opp 含 ascend950/910b/910_93，ascriptor pin 核对）齐全。写集仍是 benchmarks/bench_gdn2_chunk_fwd_a5.py，不碰 reserved_paths。这是一次正常的 APPLY/ASSIGN，不因申领人是仓主账号而走特殊流程——D-PM-28 角色边界下 PM 只管任务进度与代码质量，机器/账号归 agent 自己管理；GD2-02 本身不在仓主的独立轨道范围内（那条轨道是 reserved_paths 列的 GDN-2 核心模型/层文件），而是这块看板管的常规任务。open -> assigned。接续起点：旧分支已有的真实进展（GD2-01 契约全集真机通过、bd 跨档位逐位一致、95B FP32 logits 跨后端相对 L2=4.09e-5 在预算内、torch_npu 组合基线对比约快 61 倍）仍然有效，未完成项是 cache 跨后端比对、BF16 轮次、性能三明治出包、draft PR——同之前收回时记录的一致。"
+        },
+        {
+          "at": "2026-10-16T16:15",
+          "summary": "ACK（comment 6215637432）+ BLOCKED（comment 6219404659，draft PR #144，1 文件/402 行/0 删除，与写集一致）。阻塞原因是纯基础设施：之前核验过的 A5 host/容器 SSH 入口多次连接超时，备用入口也超时，另一个可连的入口没有 npu-smi 无法确认设备健康——按 D-PM-28 机器/卡归 agent 自己管，PM 不仲裁、不提供/索要访问证据，仅记录。当前只有CPU-only host harness 测试结果（64 passed/1 skipped），没有真机数字，PR 仍 draft，没有 DONE/合入请求。"
         }
       ],
       "result": null

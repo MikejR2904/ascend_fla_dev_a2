@@ -6242,6 +6242,7 @@
       ],
       "write_set": [
         "kernels/projects/a5/pgdn_chunk_fwd/**",
+        "kernels/projects/a5/pgdn_chunk_fwd_bf16/**",
         "ascend_fla/ops/pgdn_chunk_fwd.py",
         "tests/test_pgdn_chunk_fwd.py",
         "docs/research/pgdn_chunk_fwd_gate_range.md"
@@ -6262,6 +6263,10 @@
         {
           "at": "2026-10-16T00:00",
           "summary": "用户直接要求开 PGDN 性能优化任务。PK-03 的真机数字显示 PGDN 比一个人造的'GDN 方程成本基线'（同 5 个 kernel、关掉 ATK）慢 3.4%-4.5%（T4096 FP32/BF16 ≈566ms vs ≈548ms；T1024 ≈144ms vs ≈138ms）。ATK 逐 token 串行是直觉怀疑点，不是已确认瓶颈。GDA-05（issue #96，assigned，未完成）正在对 PK-03 做 stage 级 device/host 拆分 profile，本任务依赖它的结论、不重新测——deps 加 GDA-05，status=open 但 PM 会在真实 APPLY 时按依赖未满足 NO_TASK，同 GDA-05 当年等 PK-06 的处理方式。"
+        },
+        {
+          "at": "2026-10-16T16:10",
+          "summary": "GDA-05 交付 DONE 时（issue #96 comment 6216256035）指出 PK-08 原写集的一个假设是错的：ascend_fla/ops/pgdn_chunk_fwd.py:139 按 q.dtype 把 BF16 分派到完全独立的kernels/projects/a5/pgdn_chunk_fwd_bf16（不是同一套代码同时处理两种dtype）。PM 读源码核实属实。按 D-PM-35\"BF16优先\"，write_set 扩大纳入 pgdn_chunk_fwd_bf16/**。docs/pm/tasks/PK-08.md 已更新。依赖仍是 PK-03（done）+ GDA-05（DONE，PR #143 待PM审查合入，合入前不开始真机测量）。"
         }
       ],
       "result": null

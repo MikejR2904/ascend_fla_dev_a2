@@ -150,6 +150,27 @@ Per step, medians of paired samples interleaved within one run:
 | + steps queued on alternating streams | **860** | **12311** |
 | against the shipped chain | **1.90x** | **1.22x** |
 
+The last row is what `gated_delta_rule_fwd_bwd_pipelined` does, and it is the
+figure to quote for the operator: it is the per-step cost of a training loop.
+Re-measured through that function on a later day, with the arms again
+interleaved in one run, the same comparison at the reference shape reads
+
+| | µs per step | |
+|---|--:|--:|
+| the eight wrappers chained as they ship | 1693 | 1.00x |
+| one synchronised step | 1016 | 1.67x |
+| `gated_delta_rule_fwd_bwd_pipelined` | **928** | **1.82x** |
+
+**The ratio reproduces; the absolute level does not.** Both runs are internally
+valid -- every arm interleaved with the others -- and the whole table moved by
+about 7% between them, which is this box rather than the code: the hand-written
+loop that produced the 860 µs row itself re-measured at 919 µs in the later
+session. Treat 1.8-1.9x as the result and the microsecond figures as the level
+on the day. Of that gap, about 20 µs per step is the entry point's own
+bookkeeping over a minimal hand-written loop, chiefly the `record_stream` call
+each returned tensor needs because it was produced on a step stream and is read
+on the caller's; sequences longer than four steps amortise part of it.
+
 Every row is bit-identical to every other, and to the sequential chain: the
 stream assignment and the core budgets change only how independent item spaces
 fold onto cores, never the arithmetic. `tests/test_train_entry.py` asserts that
@@ -201,8 +222,8 @@ depending on the kernel. The two figures answer different questions and neither
 alone is "utilisation".
 
 **Defensible from the above**: the pipeline runs at 912 µs of device time at the
-production shape, and a composed step costs 860 µs there with steps queued,
-1.90 times less than chaining the wrappers as they ship; the forward is 2.41 times its float32 arithmetic floor on this part and
+production shape, and a pipelined step costs 1.8 to 1.9 times less there than
+chaining the wrappers as they ship, which is 860-930 µs depending on the run; the forward is 2.41 times its float32 arithmetic floor on this part and
 issues 1.61 times the algorithmic minimum of multiply-accumulates; it is 6.0 to
 13.2 times faster than the framework's own reference implementation at the
 shapes stated. **Not defensible**: that it is the fastest implementation of this

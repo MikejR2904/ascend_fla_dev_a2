@@ -76,7 +76,7 @@ sets it.
 # end to end: all eight operators chained, against the autograd oracle
 python tests/test_composition.py
 
-# the composed training step: concurrent vs sequential vs the shipped chain
+# the composed and pipelined training step, against the shipped chain
 python tests/test_train_entry.py
 
 # the same chain, reporting per-kernel device time
@@ -100,13 +100,19 @@ A test imports its kernel from `../kernels` and its goldens from its own
 directory, so the directory is self-contained: copy it anywhere and the commands
 above still work.
 
-To run a training step, call `gated_delta_rule_train.gated_delta_rule_fwd_bwd`
-rather than chaining the eight wrappers by hand. It issues the same eight
-launches with one device synchronisation instead of eight and the two
-independent branches on separate streams, which is 1.90 times cheaper per step
-at the reference shape and bit-identical to the hand-written chain. Its
-docstring states how a training loop should call it; `docs/PERFORMANCE.md` has
-the measurements.
+To run training steps, call
+`gated_delta_rule_train.gated_delta_rule_fwd_bwd_pipelined(batches)` rather than
+chaining the eight wrappers by hand. It takes one independent step per batch --
+the microbatches of an accumulation window -- and issues them back to back on
+one device, with a single synchronisation for the whole sequence and the two
+independent branches of each step on separate streams. That is **1.8 to 1.9
+times cheaper per step** than the shipped chain and bit-identical to it. All of
+the concurrency is streams within one device; nothing here spans devices, and a
+batch whose tensors are not all on the same device is rejected.
+
+`gated_delta_rule_fwd_bwd` runs a single step and synchronises, for when one
+isolated step is what you want; it costs about 9% more per step.
+`docs/PERFORMANCE.md` has the measurements.
 
 ## Where it stands
 

@@ -49,6 +49,7 @@ if _KERNELS_DIR not in sys.path:
 
 from gated_delta_rule_train import (  # noqa: E402
     gated_delta_rule_fwd_bwd,
+    gated_delta_rule_fwd_bwd_pipelined,
     scan_core_budget,
     reverse_scan_core_budget,
 )
@@ -169,7 +170,48 @@ def test_train_entry_pipelined():
         _assert_equal(reference, out, f"queued step {i}")
 
 
+def test_pipelined_entry_point():
+    """The shipped pipelined entry point, which is the path a loop should take.
+
+    Distinct steps, so an ordering or stream-hazard bug cannot hide behind
+    identical inputs: each step gets its own seed, and each result is checked
+    against that step's own single-step reference. Also covers one step (the
+    degenerate sequence), an empty sequence, and the single-device guard.
+    """
+    device = _get_device()
+    shape = dict(B=1, T=192, H=2, K=128, V=128)
+    seeds = (2024, 7, 99, 1234, 55)
+    batches = [_mk_inputs(device=device, seed=seed, **shape) for seed in seeds]
+    references = [gated_delta_rule_fwd_bwd(*batch) for batch in batches]
+
+    for depth in (1, 2, 3):
+        results = gated_delta_rule_fwd_bwd_pipelined(batches, step_streams=depth)
+        logging.info("CASE pipelined entry point, %d distinct steps, %d stream(s) %s",
+                     len(batches), depth, shape)
+        assert len(results) == len(batches), "one result per batch, in order"
+        for i, (reference, result) in enumerate(zip(references, results)):
+            _assert_equal(reference, result, f"depth={depth} step {i}")
+
+    assert gated_delta_rule_fwd_bwd_pipelined([]) == [], "an empty sequence yields nothing"
+    _assert_equal(references[0],
+                  gated_delta_rule_fwd_bwd_pipelined(batches[:1])[0],
+                  "single-step sequence")
+
+    if torch.npu.device_count() > 1:
+        other = torch.device(f"npu:{(device.index or 0) ^ 1}")
+        mixed = list(batches[0][:-1]) + [batches[0][-1].to(other)]
+        try:
+            gated_delta_rule_fwd_bwd_pipelined([tuple(mixed)])
+        except ValueError:
+            logging.info("  %-44s rejected, as it must", "tensors split across two devices")
+        else:
+            raise AssertionError("a batch spanning two devices must be rejected")
+    else:
+        logging.info("  %-44s skipped (one device visible)", "multi-device rejection")
+
+
 if __name__ == "__main__":
     test_train_entry_equivalence()
     test_train_entry_pipelined()
+    test_pipelined_entry_point()
     logging.info("ALL TRAIN ENTRY TESTS PASS")

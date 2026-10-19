@@ -14,6 +14,21 @@ point. This module is the composition of the eight that a training step needs,
 and it exists because the way they are chained is itself part of the operator's
 cost rather than a detail left to the caller.
 
+It offers two entry points, both single-device:
+
+* `gated_delta_rule_fwd_bwd_pipelined(batches)` runs a sequence of independent
+  steps back to back and is **the one to use**. It is the cheapest per-step cost
+  the operator reaches: 1.8 to 1.9 times less than chaining the eight component
+  wrappers by hand.
+* `gated_delta_rule_fwd_bwd(...)` runs one step and synchronises, about 1.09
+  times the pipelined cost. It is the right call for a single isolated step, and
+  it is what the pipelined form issues internally.
+
+Both are bit-identical to the hand-written chain. Ratios are quoted rather than
+absolute microseconds because they are what reproduces: this part's absolute
+per-step medians drift several percent between runs, so every figure in
+`docs/PERFORMANCE.md` comes from arms interleaved within a single run.
+
 Two properties of the dependency graph drive the composition.
 
 **The chain needs one device synchronisation, not eight.** Every component
@@ -61,7 +76,10 @@ from gdr_bwd_finalize_impl import gdr_bwd_finalize_wrapper
 REVERSE_SCAN_TV = 64    # V sub-block width of gdr_bwd_reverse_scan
 MIN_SCAN_CORES = 8      # floor on the forward scan's share of the part
 
+STEP_STREAMS = 2        # steps in flight; successive steps alternate over these
+
 _STREAMS = {}
+_STEP_STREAMS = {}
 
 
 def _streams_for(device):
@@ -76,6 +94,21 @@ def _streams_for(device):
         pair = (torch.npu.Stream(device=index), torch.npu.Stream(device=index))
         _STREAMS[index] = pair
     return pair
+
+
+def _step_streams_for(device, count):
+    """The cached streams that successive steps alternate over, on one device.
+
+    These are streams, not devices: the concurrency is inside a single device,
+    and every stream here belongs to the device the inputs live on.
+    """
+    index = device.index if device.index is not None else torch.npu.current_device()
+    key = (index, count)
+    streams = _STEP_STREAMS.get(key)
+    if streams is None:
+        streams = tuple(torch.npu.Stream(device=index) for _ in range(count))
+        _STEP_STREAMS[key] = streams
+    return streams
 
 
 def reverse_scan_core_budget(B, H, V):
@@ -145,18 +178,11 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
         bfloat16, `dg` and `dbeta` in float32, all in the public [B, T, H, *]
         layout.
 
-    A training loop should not call this with `sync=True` per step. Queue the
-    steps and synchronise once, which lets the host dispatch of one step run
-    under the device execution of the one before it. Successive microbatches are
-    independent, so issuing them on alternating streams overlaps their device
-    work as well:
-
-        step_streams = (torch.npu.Stream(), torch.npu.Stream())
-        for i, batch in enumerate(batches):
-            with torch.npu.stream(step_streams[i % 2]):
-                out = gated_delta_rule_fwd_bwd(*batch, sync=False)
-            ...                      # consume `out` on that stream
-        torch.npu.synchronize()      # once, at the end
+    A training loop should not call this per step, because a synchronised step
+    pays its host dispatch where the device cannot hide it. Use
+    `gated_delta_rule_fwd_bwd_pipelined`, which issues this function with
+    `sync=False` over a sequence of steps and is 168 us per step cheaper at the
+    reference shape.
     """
     (q_s, k_f32, v_b, g_f32, beta_act, sig, q_t, decay, decay_exp,
      dfac, q_de, attn, a_mat, kbeta_t, u, w, w_t) = gdr_fwd_train_wy_wrapper(
@@ -213,3 +239,99 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
     if sync:
         torch.npu.synchronize()
     return o, dq, dk_out, dv_out, dg, dbeta
+
+
+def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
+                                       step_streams=STEP_STREAMS,
+                                       scan_core_budget_override=None,
+                                       reverse_scan_core_budget_override=None):
+    """Run a sequence of independent training steps on one device, and return their results.
+
+    This is the cheapest per-step cost the operator reaches and the path a
+    training loop should take. At B=1, T=2048, H=8, K=V=128, with all arms
+    interleaved in one run: 928 us per step against 1016 us for the same step
+    issued and synchronised on its own and 1693 us for the eight component
+    wrappers chained as they ship, so **1.82 times** the shipped chain. An
+    earlier run of the same comparison read 860 / 1028 / 1638 us, i.e. 1.90
+    times; the ratio reproduces and the absolute level does not, because this
+    part drifts several percent between runs.
+
+    Two overlaps produce that, and both live inside one device -- these are
+    streams, not devices, and every launch goes to the device the inputs are
+    already on:
+
+    * **A step's host dispatch hides under the previous step's device work.**
+      There is one synchronisation for the whole sequence rather than one per
+      step, so the host runs ahead of the device instead of waiting for it.
+    * **Successive steps' device work overlaps.** The steps are independent, so
+      they are issued on alternating streams; one step's vector tail can run
+      while the next step's cube head is already going. In the earlier run the
+      per-step cost fell below the 911.98 us sum of the eight kernels'
+      individually measured device times, which is only possible if the device
+      itself is overlapped and not merely kept fed.
+
+    Args:
+        batches: an iterable of `(q, k, v, g, beta, grad_o)` tuples, one per
+            step, with the dtypes and shapes `gated_delta_rule_fwd_bwd`
+            documents. The steps must be independent of each other, which
+            successive microbatches of an accumulation window are; this does
+            **not** hold for steps separated by an optimiser update, which must
+            be run in separate calls.
+        concurrent: issue each step's two independent branches on separate
+            streams, as `gated_delta_rule_fwd_bwd` does. Left on by default.
+            Note that in the pipelined regime this matters much less than it
+            does for a single step, because queueing already fills the same
+            idle; it is worth roughly 1% per step.
+        step_streams: how many steps may be in flight. Two is enough to collect
+            the overlap and is what the figures above were measured with; three
+            measured slightly worse. Longer sequences are marginally cheaper per
+            step than short ones, eight steps reading about 2% under four, since
+            the one synchronisation and the per-call bookkeeping amortise.
+        scan_core_budget_override, reverse_scan_core_budget_override: as on
+            `gated_delta_rule_fwd_bwd`, applied to every step.
+
+    Returns:
+        A list of `(o, dq, dk, dv, dg, dbeta)` tuples, one per input batch, in
+        the order the batches were given, ready to read on the host.
+
+    Every result is bit-identical to running the same step on its own: this
+    changes only when work is issued, never what is computed.
+
+    Memory is the cost of the overlap. Each step in flight holds its own
+    intermediates until the whole sequence is drained, so peak device memory
+    scales with `step_streams`, not with one step. Two is the default for that
+    reason. Passing an enormous batch list is safe for correctness but will hold
+    every step's outputs at once, since all of them are returned; feed it an
+    accumulation window at a time.
+    """
+    batches = list(batches)
+    if not batches:
+        return []
+
+    devices = {tensor.device for batch in batches for tensor in batch}
+    if len(devices) != 1:
+        raise ValueError(
+            f"every tensor of every step must live on one device, got {sorted(map(str, devices))}")
+    device = devices.pop()
+
+    here = torch.npu.current_stream()
+    streams = _step_streams_for(device, max(1, int(step_streams)))
+    for stream in streams:
+        stream.wait_stream(here)
+
+    results = []
+    for index, batch in enumerate(batches):
+        with torch.npu.stream(streams[index % len(streams)]):
+            results.append(gated_delta_rule_fwd_bwd(
+                *batch, concurrent=concurrent, sync=False,
+                scan_core_budget_override=scan_core_budget_override,
+                reverse_scan_core_budget_override=reverse_scan_core_budget_override))
+
+    # The results were produced on the step streams and are read from this one.
+    for stream in streams:
+        here.wait_stream(stream)
+    for result in results:
+        for tensor in result:
+            tensor.record_stream(here)
+    torch.npu.synchronize()
+    return results

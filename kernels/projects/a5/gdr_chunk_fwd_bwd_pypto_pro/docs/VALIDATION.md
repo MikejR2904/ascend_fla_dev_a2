@@ -123,9 +123,20 @@ It covers three shapes (`B=1` with `T=128 H=4 K=V=64`, `T=192 H=2 K=V=128`, and
 the production `T=2048 H=8 K=V=128`) across six configurations each: the
 sequential order, the concurrent order at the computed budgets, and four
 `(scan, reverse)` budget pairs that under-commit, exactly commit and
-over-commit the 28 cube cores. It then queues four steps on two alternating
-streams with no per-step synchronisation and requires each of the four to equal
-the same reference. Twenty-two equality checks in total.
+over-commit the 28 cube cores.
+
+It then gates the pipelined entry point, which is the shipped path. Four steps
+queued on two alternating streams with no per-step synchronisation must each
+equal the single-step reference; and
+`gated_delta_rule_fwd_bwd_pipelined` is run over **five steps with distinct
+per-step inputs** at one, two and three streams in flight, each step compared
+against its own single-step result. Distinct inputs matter here: with the same
+batch repeated, a stream hazard or an ordering mistake would return the right
+answer anyway. The degenerate sequences are covered too -- one step, and none --
+as is the rejection of a batch whose tensors do not all live on one device,
+which is skipped with a logged note when only one device is visible.
+
+Thirty-eight equality checks in total.
 
 ## What is not validated
 

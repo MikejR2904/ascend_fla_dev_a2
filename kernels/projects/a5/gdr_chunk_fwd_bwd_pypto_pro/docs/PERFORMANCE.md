@@ -152,24 +152,48 @@ Per step, medians of paired samples interleaved within one run:
 
 The last row is what `gated_delta_rule_fwd_bwd_pipelined` does, and it is the
 figure to quote for the operator: it is the per-step cost of a training loop.
-Re-measured through that function on a later day, with the arms again
-interleaved in one run, the same comparison at the reference shape reads
 
-| | µs per step | |
-|---|--:|--:|
-| the eight wrappers chained as they ship | 1693 | 1.00x |
-| one synchronised step | 1016 | 1.67x |
-| `gated_delta_rule_fwd_bwd_pipelined` | **928** | **1.82x** |
+**Quote the ratio, not the microseconds.** Re-measured through that function on
+a later day, the same comparison read 1693 / 1016 / 928 µs, i.e. 1.82x. Both
+runs are internally valid -- every arm interleaved with the others -- and the
+whole table moved by about 7% between them. That is the box, not the code, and
+it was chased down rather than assumed:
 
-**The ratio reproduces; the absolute level does not.** Both runs are internally
-valid -- every arm interleaved with the others -- and the whole table moved by
-about 7% between them, which is this box rather than the code: the hand-written
-loop that produced the 860 µs row itself re-measured at 919 µs in the later
-session. Treat 1.8-1.9x as the result and the microsecond figures as the level
-on the day. Of that gap, about 20 µs per step is the entry point's own
-bookkeeping over a minimal hand-written loop, chiefly the `record_stream` call
-each returned tensor needs because it was produced on a step stream and is read
-on the caller's; sequences longer than four steps amortise part of it.
+* The **device side is stable.** The eight kernels re-profiled at 909.14 µs
+  against the 911.98 µs in the table above, 0.3% apart, every kernel within
+  2 µs of its published figure. Nothing regressed on device.
+* The **860 µs row was a favourable sample.** Re-running the byte-identical
+  probe that produced it, in the same tree, gave 883 µs; its own p90 in the
+  original run was 893 µs. The reproducible median for that configuration is
+  875-905 µs, so a single sample at the bottom of the band is not a target.
+* Ruled out by measurement, each with a control: arm ordering (medians flat
+  across positions to 5 µs), the `record_stream` calls the entry point adds
+  (removing them is not faster), the runtime's repeated per-launch log records
+  (worth 1.3 µs here, though they do cost 95 µs of *host* dispatch -- that
+  dispatch overlaps device execution rather than serialising with it), distinct
+  versus repeated input batches (5 µs), the number of streams in flight, and
+  device contention (the device was idle and healthy throughout).
+
+What the hunt did turn up is a better default, below.
+
+### Within-step streams and cross-step streams are substitutes
+
+`gated_delta_rule_fwd_bwd_pipelined` defaults to `concurrent=False`, the
+opposite of the single-step entry point. Queueing successive steps already
+fills the idle that splitting a step's two branches fills, so doing both puts
+four streams on one device and oversubscribes the scheduler. Over 21 rotated
+iterations through the shipped function:
+
+| | median | p10 | p90 | worst |
+|---|--:|--:|--:|--:|
+| within-step concurrency on | 906.8 µs | 893.4 | 1018.2 | 1765.0 |
+| within-step concurrency **off** | **900.6** | **887.9** | **921.4** | 1366.4 |
+
+Faster in the median and much tighter in the tail, which is why it is the
+default. The same pattern appears in the original probe, where the arm with both
+axes enabled had a p90 of 1106 µs against a median of 883. Within-step
+concurrency remains the right choice for a *single* synchronised step, where
+there is no next step to overlap with.
 
 Every row is bit-identical to every other, and to the sequential chain: the
 stream assignment and the core budgets change only how independent item spaces

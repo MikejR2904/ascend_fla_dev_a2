@@ -19,7 +19,9 @@ It offers two entry points, both single-device:
 * `gated_delta_rule_fwd_bwd_pipelined(batches)` runs a sequence of independent
   steps back to back and is **the one to use**. It is the cheapest per-step cost
   the operator reaches: 1.8 to 1.9 times less than chaining the eight component
-  wrappers by hand.
+  wrappers by hand. Note that it defaults to NOT using the within-step stream
+  split, because queueing already collects that overlap and doing both
+  oversubscribes the device.
 * `gated_delta_rule_fwd_bwd(...)` runs one step and synchronises, about 1.09
   times the pipelined cost. It is the right call for a single isolated step, and
   it is what the pipelined form issues internally.
@@ -60,6 +62,9 @@ space folds onto cores, never the arithmetic. `tests/test_train_entry.py` is the
 acceptance gate for that claim.
 """
 
+import logging
+import os
+
 import torch
 import torch_npu  # noqa: F401  (registers the NPU backend)
 from pypto_pro.runtime.platform import get_platform_info
@@ -77,6 +82,64 @@ REVERSE_SCAN_TV = 64    # V sub-block width of gdr_bwd_reverse_scan
 MIN_SCAN_CORES = 8      # floor on the forward scan's share of the part
 
 STEP_STREAMS = 2        # steps in flight; successive steps alternate over these
+
+_LOG_DEDUPE = None
+
+
+class _DropRepeatedRuntimeRecords(logging.Filter):
+    """Pass the first occurrence of each runtime log message and drop repeats.
+
+    The runtime emits a fixed pair of records on every kernel launch when its
+    exception-dump callback cannot be registered, because registration is
+    retried per launch and only a success is remembered. That is 24 records for
+    one training step here, all on the root logger, and writing them costs
+    host time on the critical path: measured over the eight launches of one
+    step, 974 us of host dispatch with them against 879 us without.
+
+    Host time matters at this shape precisely because a pipelined loop runs the
+    host ahead of the device. The eight kernels are 909 us of device time, so
+    974 us of host dispatch makes the loop host-bound and sets the per-step
+    floor above the device; 879 us puts it back under, which is what lets the
+    device be the limit and lets successive steps overlap. For a single
+    synchronised step the same records are invisible, since the host finishes
+    well inside the device's window.
+
+    The filter is deliberately narrow. It only considers records emitted from
+    inside the runtime package, so nothing a caller logs is ever touched, and it
+    keys on the formatted message rather than the format string, so distinct
+    messages from one call site are not collapsed. The first occurrence of each
+    message is always passed: the condition it reports is real and worth knowing
+    once.
+    """
+
+    _ORIGIN = os.path.join("pypto_pro", "runtime")
+
+    def __init__(self):
+        super().__init__()
+        self._seen = set()
+
+    def filter(self, record):
+        if self._ORIGIN not in (record.pathname or ""):
+            return True
+        key = (record.name, record.levelno, record.getMessage())
+        if key in self._seen:
+            return False
+        self._seen.add(key)
+        return True
+
+
+def install_runtime_log_dedupe():
+    """Attach `_DropRepeatedRuntimeRecords` to the root logger, once per process.
+
+    It must persist to be worth anything: a filter installed and removed around
+    each step passes the first occurrence of every message each time, so the
+    records are never actually dropped.
+    """
+    global _LOG_DEDUPE
+    if _LOG_DEDUPE is None:
+        _LOG_DEDUPE = _DropRepeatedRuntimeRecords()
+        logging.getLogger().addFilter(_LOG_DEDUPE)
+    return _LOG_DEDUPE
 
 _STREAMS = {}
 _STEP_STREAMS = {}
@@ -241,20 +304,26 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
     return o, dq, dk_out, dv_out, dg, dbeta
 
 
-def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
+def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=False,
                                        step_streams=STEP_STREAMS,
+                                       dedupe_runtime_log=True,
                                        scan_core_budget_override=None,
                                        reverse_scan_core_budget_override=None):
     """Run a sequence of independent training steps on one device, and return their results.
 
     This is the cheapest per-step cost the operator reaches and the path a
-    training loop should take. At B=1, T=2048, H=8, K=V=128, with all arms
-    interleaved in one run: 928 us per step against 1016 us for the same step
-    issued and synchronised on its own and 1693 us for the eight component
-    wrappers chained as they ship, so **1.82 times** the shipped chain. An
-    earlier run of the same comparison read 860 / 1028 / 1638 us, i.e. 1.90
-    times; the ratio reproduces and the absolute level does not, because this
-    part drifts several percent between runs.
+    training loop should take: **1.8 to 1.9 times** less per step than the eight
+    component wrappers chained as they ship, measured with the arms interleaved
+    in one run.
+
+    In absolute terms it lands just under the 909 us of device time the eight
+    kernels need, between about 875 and 905 us per step depending on the
+    session. Being below that sum is the thing worth checking, because it can
+    only happen if successive steps' device work genuinely overlaps. Quote the
+    ratio rather than the microseconds: repeated runs of one unchanged
+    configuration span roughly 3%, so a single favourable sample is not a
+    target. The device side is the stable part -- the eight kernels re-measure
+    at 909.14 us against a 911.98 us baseline, 0.3% apart.
 
     Two overlaps produce that, and both live inside one device -- these are
     streams, not devices, and every launch goes to the device the inputs are
@@ -263,12 +332,16 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
     * **A step's host dispatch hides under the previous step's device work.**
       There is one synchronisation for the whole sequence rather than one per
       step, so the host runs ahead of the device instead of waiting for it.
+      This only holds while host dispatch stays under the device's 909 us, so
+      the loop is sensitive to host cost in a way a single step is not --
+      `dedupe_runtime_log` is what keeps it there, and turning it off makes the
+      loop host-bound.
     * **Successive steps' device work overlaps.** The steps are independent, so
       they are issued on alternating streams; one step's vector tail can run
-      while the next step's cube head is already going. In the earlier run the
-      per-step cost fell below the 911.98 us sum of the eight kernels'
-      individually measured device times, which is only possible if the device
-      itself is overlapped and not merely kept fed.
+      while the next step's cube head is already going. The per-step cost lands
+      below the sum of the eight kernels' individually measured device times,
+      which is only possible if the device itself is overlapped and not merely
+      kept fed.
 
     Args:
         batches: an iterable of `(q, k, v, g, beta, grad_o)` tuples, one per
@@ -278,10 +351,20 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
             **not** hold for steps separated by an optimiser update, which must
             be run in separate calls.
         concurrent: issue each step's two independent branches on separate
-            streams, as `gated_delta_rule_fwd_bwd` does. Left on by default.
-            Note that in the pipelined regime this matters much less than it
-            does for a single step, because queueing already fills the same
-            idle; it is worth roughly 1% per step.
+            streams, as `gated_delta_rule_fwd_bwd` does. **Off by default here**,
+            which is the opposite of the single-step entry point and is
+            deliberate: queueing successive steps already fills the idle that
+            the within-step streams fill, so enabling both puts four streams on
+            one device and oversubscribes the scheduler. Measured over 21
+            rotated iterations, leaving it off is worth 6 us in the median and
+            far more in the tail -- p90 921 us against 1018, worst case 1366
+            against 1765. The two concurrency axes are substitutes, and using
+            both is worse than using either.
+        dedupe_runtime_log: drop repeats of the runtime's per-launch log
+            records, which cost 95 us of host time per step here and decide
+            whether this loop is host-bound or device-bound. See
+            `_DropRepeatedRuntimeRecords`; the first occurrence of each message
+            still reports. Pass False to leave the root logger untouched.
         step_streams: how many steps may be in flight. Two is enough to collect
             the overlap and is what the figures above were measured with; three
             measured slightly worse. Longer sequences are marginally cheaper per
@@ -304,6 +387,9 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
     every step's outputs at once, since all of them are returned; feed it an
     accumulation window at a time.
     """
+    if dedupe_runtime_log:
+        install_runtime_log_dedupe()
+
     batches = list(batches)
     if not batches:
         return []

@@ -19,9 +19,8 @@ It offers two entry points, both single-device:
 * `gated_delta_rule_fwd_bwd_pipelined(batches)` runs a sequence of independent
   steps back to back and is **the one to use**. It is the cheapest per-step cost
   the operator reaches: 1.8 to 1.9 times less than chaining the eight component
-  wrappers by hand. Note that it defaults to NOT using the within-step stream
-  split, because queueing already collects that overlap and doing both
-  oversubscribes the device.
+  wrappers by hand, and the most predictable, because each in-flight step is
+  given its own branch streams.
 * `gated_delta_rule_fwd_bwd(...)` runs one step and synchronises, about 1.09
   times the pipelined cost. It is the right call for a single isolated step, and
   it is what the pipelined form issues internally.
@@ -145,17 +144,30 @@ _STREAMS = {}
 _STEP_STREAMS = {}
 
 
-def _streams_for(device):
-    """The cached pair of side streams for one device.
+def _streams_for(device, slot=0):
+    """The cached pair of branch streams for one device and one step slot.
 
-    Streams are created once per device and reused. Creating them per call
-    would put stream construction on the training step's critical path.
+    Streams are created once and reused; creating them per call would put stream
+    construction on the step's critical path.
+
+    `slot` is what keeps two steps in flight from sharing a pair, and it is not
+    optional for correctness of the overlap. A step takes its branch streams,
+    makes them wait on the stream it is itself running on, and then makes that
+    stream wait on them. If a second step running on a different stream borrows
+    the same pair, those waits cross: the pair ends up waiting on both steps'
+    streams while both steps' streams wait on the pair, so neither step's
+    branches can start until the other's queue drains. The device work still
+    overlaps sometimes and serialises other times, depending on where the
+    device had got to when each launch was queued -- which shows up as a long
+    tail rather than a slower median. One pair per in-flight slot removes the
+    sharing, and with it the coupling.
     """
     index = device.index if device.index is not None else torch.npu.current_device()
-    pair = _STREAMS.get(index)
+    key = (index, slot)
+    pair = _STREAMS.get(key)
     if pair is None:
         pair = (torch.npu.Stream(device=index), torch.npu.Stream(device=index))
-        _STREAMS[index] = pair
+        _STREAMS[key] = pair
     return pair
 
 
@@ -211,7 +223,8 @@ def scan_core_budget(B, H, V):
 
 
 def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
-                             sync=True, scan_core_budget_override=None,
+                             sync=True, stream_slot=0,
+                             scan_core_budget_override=None,
                              reverse_scan_core_budget_override=None):
     """Run the training forward and backward, and return the public results.
 
@@ -229,6 +242,11 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
             any result on the host; ordering on the device is already
             guaranteed. It also lets successive steps overlap, which is how a
             training loop should call this -- see below.
+        stream_slot: which cached pair of branch streams this step may use.
+            Steps that can be in flight at the same time must be given
+            different slots, or their branch streams couple and the overlap
+            becomes order-dependent -- see `_streams_for`. A caller running one
+            step at a time can leave it at 0.
         scan_core_budget_override: the cores `gdr_fwd_train_scan` plans for
             while it runs concurrently, in place of `scan_core_budget`. Ignored
             when `concurrent` is False.
@@ -269,7 +287,7 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
         reverse_budget = (reverse_scan_core_budget_override
                           if reverse_scan_core_budget_override is not None
                           else reverse_scan_core_budget(B, H, V))
-        scan_stream, backward_stream = _streams_for(grad_o.device)
+        scan_stream, backward_stream = _streams_for(grad_o.device, stream_slot)
         here = torch.npu.current_stream()
         # Both branches read train_wy's outputs, which were produced here.
         scan_stream.wait_stream(here)
@@ -304,7 +322,7 @@ def gated_delta_rule_fwd_bwd(q, k, v, g, beta, grad_o, *, concurrent=True,
     return o, dq, dk_out, dv_out, dg, dbeta
 
 
-def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=False,
+def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
                                        step_streams=STEP_STREAMS,
                                        dedupe_runtime_log=True,
                                        scan_core_budget_override=None,
@@ -334,8 +352,11 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=False,
       step, so the host runs ahead of the device instead of waiting for it.
       This only holds while host dispatch stays under the device's 909 us, so
       the loop is sensitive to host cost in a way a single step is not --
-      `dedupe_runtime_log` is what keeps it there, and turning it off makes the
-      loop host-bound.
+      `dedupe_runtime_log` is what keeps it there.
+    * **Each in-flight step owns its streams.** A step takes a pair of branch
+      streams for its two independent halves, and steps that can be in flight
+      together are given different pairs. Sharing one pair couples them and the
+      overlap becomes order-dependent; `_streams_for` has the mechanism.
     * **Successive steps' device work overlaps.** The steps are independent, so
       they are issued on alternating streams; one step's vector tail can run
       while the next step's cube head is already going. The per-step cost lands
@@ -351,15 +372,19 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=False,
             **not** hold for steps separated by an optimiser update, which must
             be run in separate calls.
         concurrent: issue each step's two independent branches on separate
-            streams, as `gated_delta_rule_fwd_bwd` does. **Off by default here**,
-            which is the opposite of the single-step entry point and is
-            deliberate: queueing successive steps already fills the idle that
-            the within-step streams fill, so enabling both puts four streams on
-            one device and oversubscribes the scheduler. Measured over 21
-            rotated iterations, leaving it off is worth 6 us in the median and
-            far more in the tail -- p90 921 us against 1018, worst case 1366
-            against 1765. The two concurrency axes are substitutes, and using
-            both is worse than using either.
+            streams, as `gated_delta_rule_fwd_bwd` does. On by default: each
+            in-flight step is given its own pair of branch streams, so the two
+            concurrency axes compose instead of interfering. Measured over 25
+            rotated iterations, per-step medians with the tail:
+
+                one branch pair for all steps   922.0  p90 1202.1  spread 377.0
+                one pair per in-flight step     914.1  p90  971.7  spread  89.6
+                no within-step concurrency      921.4  p90 1025.2  spread 185.8
+
+            The middle row is this default: the best median and a spread four
+            times tighter than sharing a pair, two times tighter than not
+            splitting the step at all. See `_streams_for` for why sharing a pair
+            across steps produces that tail.
         dedupe_runtime_log: drop repeats of the runtime's per-launch log
             records, which cost 95 us of host time per step here and decide
             whether this loop is host-bound or device-bound. See
@@ -407,9 +432,10 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=False,
 
     results = []
     for index, batch in enumerate(batches):
-        with torch.npu.stream(streams[index % len(streams)]):
+        slot = index % len(streams)
+        with torch.npu.stream(streams[slot]):
             results.append(gated_delta_rule_fwd_bwd(
-                *batch, concurrent=concurrent, sync=False,
+                *batch, concurrent=concurrent, sync=False, stream_slot=slot,
                 scan_core_budget_override=scan_core_budget_override,
                 reverse_scan_core_budget_override=reverse_scan_core_budget_override))
 

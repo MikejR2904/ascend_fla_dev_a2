@@ -176,24 +176,38 @@ it was chased down rather than assumed:
 
 What the hunt did turn up is a better default, below.
 
-### Within-step streams and cross-step streams are substitutes
+### Why a step's branch streams must not be shared between steps
 
-`gated_delta_rule_fwd_bwd_pipelined` defaults to `concurrent=False`, the
-opposite of the single-step entry point. Queueing successive steps already
-fills the idle that splitting a step's two branches fills, so doing both puts
-four streams on one device and oversubscribes the scheduler. Over 21 rotated
-iterations through the shipped function:
+Enabling both concurrency axes at once used to be slower in the median and much
+worse in the tail -- p90 1202 µs against a 922 µs median, with a 377 µs spread
+run to run. The cause was not oversubscription. It was that the pair of branch
+streams a step uses for its two independent halves was cached **per device**, so
+every step in flight borrowed the same pair, and the waits crossed: the pair
+ends up waiting on both steps' streams while both of those wait on the pair.
+Neither step's branches can begin until the other's queue drains, and whether
+that bites depends on where the device had reached when each launch was queued.
+That produces a long tail rather than a slower median, which is exactly what was
+seen.
 
-| | median | p10 | p90 | worst |
-|---|--:|--:|--:|--:|
-| within-step concurrency on | 906.8 µs | 893.4 | 1018.2 | 1765.0 |
-| within-step concurrency **off** | **900.6** | **887.9** | **921.4** | 1366.4 |
+One pair per in-flight step removes the sharing. Over 25 rotated iterations
+through the shipped function:
 
-Faster in the median and much tighter in the tail, which is why it is the
-default. The same pattern appears in the original probe, where the arm with both
-axes enabled had a p90 of 1106 µs against a median of 883. Within-step
-concurrency remains the right choice for a *single* synchronised step, where
-there is no next step to overlap with.
+| | median | p10 | p90 | worst | spread |
+|---|--:|--:|--:|--:|--:|
+| one branch pair for all steps | 922.0 µs | 905.7 | 1202.1 | 1281.3 | 377.0 |
+| **one pair per in-flight step** | **914.1** | **904.6** | **971.7** | **986.2** | **89.6** |
+| no within-step concurrency | 921.4 | 910.3 | 1025.2 | 1077.4 | 185.8 |
+
+The best median and a spread four times tighter than sharing a pair, two times
+tighter than not splitting the step at all -- so the two axes do compose, and
+`concurrent=True` is the default. The earlier reading that they were substitutes,
+and that disabling the within-step split was the better trade, was an artefact of
+the shared pair.
+
+`tests/test_train_entry.py` pins the structure rather than the timing: with N
+steps in flight it asserts that N distinct slots were allocated and that no
+stream object is shared between them. A correctness test cannot see this defect,
+since sharing the pair gives the right answer and only disturbs when work runs.
 
 Every row is bit-identical to every other, and to the sequential chain: the
 stream assignment and the core budgets change only how independent item spaces

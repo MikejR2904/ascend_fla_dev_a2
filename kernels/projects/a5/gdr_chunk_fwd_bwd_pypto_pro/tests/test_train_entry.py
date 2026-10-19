@@ -52,6 +52,7 @@ from gated_delta_rule_train import (  # noqa: E402
     gated_delta_rule_fwd_bwd_pipelined,
     scan_core_budget,
     reverse_scan_core_budget,
+    _STREAMS,
 )
 from gdr_fwd_train_wy_impl import gdr_fwd_train_wy_wrapper  # noqa: E402
 from gdr_fwd_train_scan_impl import gdr_fwd_train_scan_wrapper  # noqa: E402
@@ -210,8 +211,40 @@ def test_pipelined_entry_point():
         logging.info("  %-44s skipped (one device visible)", "multi-device rejection")
 
 
+def test_in_flight_steps_do_not_share_branch_streams():
+    """Steps that can be in flight together must get different branch streams.
+
+    Sharing one pair couples them: the pair waits on both steps' streams while
+    both wait on the pair, so their branches serialise or overlap depending on
+    where the device had got to -- a long tail rather than a slower median, and
+    the kind of defect a correctness test cannot see. This pins the structure
+    instead: with N streams in flight, N distinct branch-stream slots must have
+    been allocated, and they must be distinct stream objects.
+    """
+    device = _get_device()
+    shape = dict(B=1, T=128, H=4, K=64, V=64)
+    batches = [_mk_inputs(device=device, seed=seed, **shape) for seed in (1, 2, 3, 4)]
+
+    for in_flight in (2, 3):
+        _STREAMS.clear()
+        gated_delta_rule_fwd_bwd_pipelined(batches, concurrent=True,
+                                           step_streams=in_flight)
+        slots = sorted(slot for _index, slot in _STREAMS)
+        assert slots == list(range(in_flight)), (
+            f"{in_flight} steps in flight must use slots {list(range(in_flight))}, got {slots}")
+        pairs = [_STREAMS[key] for key in _STREAMS]
+        flat = [stream for pair in pairs for stream in pair]
+        assert len({id(stream) for stream in flat}) == len(flat), (
+            "every in-flight step needs its own branch streams; a stream is shared")
+        logging.info("  %-44s %d slots, %d distinct streams",
+                     f"in flight={in_flight}", len(slots), len(flat))
+
+    _STREAMS.clear()
+
+
 if __name__ == "__main__":
     test_train_entry_equivalence()
     test_train_entry_pipelined()
     test_pipelined_entry_point()
+    test_in_flight_steps_do_not_share_branch_streams()
     logging.info("ALL TRAIN ENTRY TESTS PASS")

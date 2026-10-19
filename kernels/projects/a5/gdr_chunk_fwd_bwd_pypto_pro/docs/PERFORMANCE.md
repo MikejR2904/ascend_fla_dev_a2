@@ -152,20 +152,31 @@ Per step, medians of paired samples interleaved within one run:
 
 The last row is what `gated_delta_rule_fwd_bwd_pipelined` does, and it is the
 figure to quote for the operator: it is the per-step cost of a training loop.
+**It depends strongly on how many steps are queued per call**, which the table
+below makes precise; the 860 µs row above was four steps a call, and sixteen is
+better.
 
-**Quote the ratio, not the microseconds.** Re-measured through that function on
-a later day, the same comparison read 1693 / 1016 / 928 µs, i.e. 1.82x. Both
-runs are internally valid -- every arm interleaved with the others -- and the
-whole table moved by about 7% between them. That is the box, not the code, and
-it was chased down rather than assumed:
+Earlier attempts to re-measure it read as high as 928 µs, and that was an
+artefact of how it was measured rather than the code. Two mistakes, both worth
+recording because they are easy to repeat:
+
+* **The pipeline needs about ten iterations to reach steady state** and reads
+  ~50% high before it does — 2408 µs on the first iteration, 1364 on the fifth,
+  settled by the tenth. Three warm-up iterations, which is enough for a single
+  synchronised launch, is not enough here.
+* **Interleaving configurations stops any of them settling.** Alternating three
+  arms within one loop gave every arm 914–922 µs, worse than the *worst* arm of
+  a cleaner run. Each configuration now gets its own block with its own
+  warm-up.
+
+The rest was chased down rather than assumed:
 
 * The **device side is stable.** The eight kernels re-profiled at 909.14 µs
   against the 911.98 µs in the table above, 0.3% apart, every kernel within
   2 µs of its published figure. Nothing regressed on device.
-* The **860 µs row was a favourable sample.** Re-running the byte-identical
-  probe that produced it, in the same tree, gave 883 µs; its own p90 in the
-  original run was 893 µs. The reproducible median for that configuration is
-  875-905 µs, so a single sample at the bottom of the band is not a target.
+* The **860 µs row is reproducible once measured properly**, and is beaten:
+  that configuration queued four steps a call, and queueing sixteen reaches
+  828.5 µs. See the table below.
 * Ruled out by measurement, each with a control: arm ordering (medians flat
   across positions to 5 µs), the `record_stream` calls the entry point adds
   (removing them is not faster), the runtime's repeated per-launch log records
@@ -174,7 +185,36 @@ it was chased down rather than assumed:
   versus repeated input batches (5 µs), the number of streams in flight, and
   device contention (the device was idle and healthy throughout).
 
-What the hunt did turn up is a better default, below.
+### How many steps to queue, and the headline
+
+Every call fills the pipeline and drains it: the first step has nothing ahead of
+it to overlap with, the last step's tail has nothing following. Those two edges
+are paid once per call however long the sequence, so a short sequence pays them
+over few steps. One session, each arm in its own block with 12 warm-up
+iterations discarded and 24 measured:
+
+| | µs per step | best | p90 | vs the chain |
+|---|--:|--:|--:|--:|
+| the eight wrappers chained as they ship | 1617.5 | 1602.1 | 1637.9 | 1.00x |
+| one synchronised step | 1027.0 | 1015.2 | 1193.1 | 1.58x |
+| pipelined, 4 steps queued | 912.7 | 883.2 | 922.4 | 1.77x |
+| pipelined, 8 steps queued | 864.7 | 858.7 | 868.9 | 1.87x |
+| **pipelined, 16 steps queued** | **828.5** | **824.7** | **831.4** | **1.95x** |
+
+**828.5 µs per step, 1.95x the shipped chain**, and the longest sequence is also
+the steadiest: p90 831.4 against a 828.5 median, where four steps a call spans
+912.7 to 922.4. Queue the whole accumulation window in one call.
+
+That figure is well under the 909.14 µs of device time the eight kernels need
+on their own, which is only possible because successive steps' device work
+overlaps. The cube is busy for nearly all of a step — the two scans are co-sized
+to fill the part exactly — so what the next step overlaps with is chiefly the
+66.4 µs of pure-vector tail in `wy_reduce` and `finalize`, where the cube is
+idle. Being below the device sum is the thing worth checking in any re-measure.
+
+Steps in flight is not the lever: at sixteen queued, two / three / four in
+flight give 833.2 / 832.5 / 836.1 µs. Two is the default because it holds the
+least memory.
 
 ### Why a step's branch streams must not be shared between steps
 
@@ -260,8 +300,9 @@ depending on the kernel. The two figures answer different questions and neither
 alone is "utilisation".
 
 **Defensible from the above**: the pipeline runs at 912 µs of device time at the
-production shape, and a pipelined step costs 1.8 to 1.9 times less there than
-chaining the wrappers as they ship, which is 860-930 µs depending on the run; the forward is 2.41 times its float32 arithmetic floor on this part and
+production shape, and a pipelined step costs 828.5 µs there with the
+accumulation window queued in one call, 1.95 times less than chaining the
+wrappers as they ship; the forward is 2.41 times its float32 arithmetic floor on this part and
 issues 1.61 times the algorithmic minimum of multiply-accumulates; it is 6.0 to
 13.2 times faster than the framework's own reference implementation at the
 shapes stated. **Not defensible**: that it is the fastest implementation of this

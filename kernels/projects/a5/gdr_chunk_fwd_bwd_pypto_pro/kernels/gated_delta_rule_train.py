@@ -17,13 +17,14 @@ cost rather than a detail left to the caller.
 It offers two entry points, both single-device:
 
 * `gated_delta_rule_fwd_bwd_pipelined(batches)` runs a sequence of independent
-  steps back to back and is **the one to use**. It is the cheapest per-step cost
-  the operator reaches: 1.8 to 1.9 times less than chaining the eight component
-  wrappers by hand, and the most predictable, because each in-flight step is
-  given its own branch streams.
-* `gated_delta_rule_fwd_bwd(...)` runs one step and synchronises, about 1.09
-  times the pipelined cost. It is the right call for a single isolated step, and
-  it is what the pipelined form issues internally.
+  steps back to back and is **the one to use**: 828.5 us per step with sixteen
+  steps queued, against 1617.5 us for the eight component wrappers chained by
+  hand, so **1.95 times**. Queue as many steps as the accumulation window
+  allows -- four steps a call gives only 1.77 times, because each call pays for
+  filling and draining the pipeline.
+* `gated_delta_rule_fwd_bwd(...)` runs one step and synchronises, 1027.0 us. It
+  is the right call for a single isolated step, and it is what the pipelined
+  form issues internally.
 
 Both are bit-identical to the hand-written chain. Ratios are quoted rather than
 absolute microseconds because they are what reproduces: this part's absolute
@@ -330,18 +331,31 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
     """Run a sequence of independent training steps on one device, and return their results.
 
     This is the cheapest per-step cost the operator reaches and the path a
-    training loop should take: **1.8 to 1.9 times** less per step than the eight
-    component wrappers chained as they ship, measured with the arms interleaved
-    in one run.
+    training loop should take.
 
-    In absolute terms it lands just under the 909 us of device time the eight
-    kernels need, between about 875 and 905 us per step depending on the
-    session. Being below that sum is the thing worth checking, because it can
-    only happen if successive steps' device work genuinely overlaps. Quote the
-    ratio rather than the microseconds: repeated runs of one unchanged
-    configuration span roughly 3%, so a single favourable sample is not a
-    target. The device side is the stable part -- the eight kernels re-measure
-    at 909.14 us against a 911.98 us baseline, 0.3% apart.
+    **How many steps you queue per call is the single biggest factor.** Every
+    call fills the pipeline and drains it: the first step has nothing running
+    ahead of it to overlap with and the last step's tail has nothing following,
+    so those two edges are paid once per call however long the sequence is.
+    Queue four steps and the edges are half of them. At B=1, T=2048, H=8,
+    K=V=128, per step:
+
+        the eight wrappers chained as they ship   1617.5 us   1.00x
+        one synchronised step                     1027.0      1.58x
+        pipelined, 4 steps queued                  912.7      1.77x
+        pipelined, 8 steps queued                  864.7      1.87x
+        pipelined, 16 steps queued                 828.5      1.95x
+
+    So queue the whole accumulation window in one call rather than a few steps
+    at a time. Longer is also steadier: at 16 the p90 is 831.4 us against a
+    828.5 us median, where at 4 it is 922.4 against 912.7.
+
+    828.5 us is well under the 909.14 us the eight kernels need as device time
+    on their own, which is only possible because successive steps' device work
+    overlaps. The cube is busy for almost all of a step -- the forward scan and
+    the reverse scan are co-sized to fill the part exactly -- so what the next
+    step overlaps with is chiefly the 66 us of pure-vector tail in `wy_reduce`
+    and `finalize`, where the cube would otherwise be idle.
 
     Two overlaps produce that, and both live inside one device -- these are
     streams, not devices, and every launch goes to the device the inputs are
@@ -390,11 +404,11 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
             whether this loop is host-bound or device-bound. See
             `_DropRepeatedRuntimeRecords`; the first occurrence of each message
             still reports. Pass False to leave the root logger untouched.
-        step_streams: how many steps may be in flight. Two is enough to collect
-            the overlap and is what the figures above were measured with; three
-            measured slightly worse. Longer sequences are marginally cheaper per
-            step than short ones, eight steps reading about 2% under four, since
-            the one synchronisation and the per-call bookkeeping amortise.
+        step_streams: how many steps may be in flight. Two collects the
+            overlap; three and four are a wash (832.5 and 836.1 us against
+            833.2 at sixteen steps queued), so two is the default because it
+            holds the least memory. This is not the lever -- the number of steps
+            QUEUED is, as the table above shows.
         scan_core_budget_override, reverse_scan_core_budget_override: as on
             `gated_delta_rule_fwd_bwd`, applied to every step.
 
@@ -405,12 +419,15 @@ def gated_delta_rule_fwd_bwd_pipelined(batches, *, concurrent=True,
     Every result is bit-identical to running the same step on its own: this
     changes only when work is issued, never what is computed.
 
-    Memory is the cost of the overlap. Each step in flight holds its own
-    intermediates until the whole sequence is drained, so peak device memory
-    scales with `step_streams`, not with one step. Two is the default for that
-    reason. Passing an enormous batch list is safe for correctness but will hold
-    every step's outputs at once, since all of them are returned; feed it an
-    accumulation window at a time.
+    Memory is the cost. Each step in flight holds its own intermediates, so
+    that part scales with `step_streams` and not with the length of the
+    sequence; but every step's six results are returned, so those scale with
+    the number queued. An accumulation window per call is the right granularity:
+    long enough to amortise the pipeline's edges, bounded by the window.
+
+    One note for anyone benchmarking this rather than training with it: the
+    pipeline needs about ten iterations to reach steady state, and reads roughly
+    50% high before it does. Three warm-up iterations are not enough.
     """
     if dedupe_runtime_log:
         install_runtime_log_dedupe()

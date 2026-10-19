@@ -105,8 +105,11 @@ To run training steps, call
 chaining the eight wrappers by hand. It takes one independent step per batch --
 the microbatches of an accumulation window -- and issues them back to back on
 one device, with a single synchronisation for the whole sequence and the two
-independent branches of each step on separate streams. That is **1.8 to 1.9
-times cheaper per step** than the shipped chain and bit-identical to it. All of
+independent branches of each step on separate streams. That is **1.95 times cheaper per step** than
+the shipped chain (828.5 µs against 1617.5 µs at the reference shape) and
+bit-identical to it. Queue the whole accumulation window in one call: four steps
+a call gives only 1.77 times, because every call pays for filling and draining
+the pipeline. All of
 the concurrency is streams within one device; nothing here spans devices, and a
 batch whose tensors are not all on the same device is rejected.
 

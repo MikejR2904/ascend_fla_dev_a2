@@ -988,7 +988,7 @@ def gdr_fwd_train_wy_kernel(
                                   sync_mode=pl.CrossCoreSyncMode.INTRA_BLOCK)
 
 
-def gdr_fwd_train_wy_wrapper(q, k, v, g, beta):
+def gdr_fwd_train_wy_wrapper(q, k, v, g, beta, *, sync=True):
     """Build the WY transform and every residual the pipeline needs, in one launch.
 
     Returns the 17 outputs listed in the module docstring, in that order. The
@@ -1047,7 +1047,8 @@ def gdr_fwd_train_wy_wrapper(q, k, v, g, beta):
         decay_exp, q_de, dfac, attn, a_mat, kbeta_t, kbeta_de,
         u, w, w_t,
         B, T, H, K, V, N, scale)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
 
     return (q_s, k_f32, v_b, g_f32, beta_act, sig, q_t, decay, decay_exp,
             dfac, q_de, attn, a_mat, kbeta_t, u, w, w_t)

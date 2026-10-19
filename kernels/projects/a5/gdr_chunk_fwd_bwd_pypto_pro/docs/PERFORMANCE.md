@@ -125,6 +125,53 @@ float32 inputs, `scale = 1/sqrt(K)`:
 `fla`'s samples at the large shape were 31422 / 32362 / 33488 µs; ours are
 medians of 21 repeats at the production shape and 5 at the large one.
 
+## Composing the step: one synchronisation and two streams
+
+The table above charges each kernel its own `torch.npu.synchronize()`, which is
+what the component wrappers do when called on their own. A training step chains
+eight of them, so that is eight host-device round trips, and the closing note of
+this document observes that at these shapes dispatch is a bigger lever than
+anything inside the kernels. `kernels/gated_delta_rule_train.py` is the
+composition that collects it.
+
+Three things change, none of them inside a kernel. The chain synchronises once
+instead of eight times. The two independent branches -- the forward scan, and
+`dv_local -> reverse_scan` -- are issued on separate streams and rejoined before
+`dqkw`. And the two co-running launches are sized so that their block counts sum
+to the part instead of each claiming all 28 cube cores.
+
+Per step, medians of paired samples interleaved within one run:
+
+| | B=1 T=2048 H=8 | B=1 T=16384 H=16 |
+|---|--:|--:|
+| the eight wrappers chained as they ship | 1638 µs | 14996 µs |
+| one synchronisation, sequential | 1066 | 14428 |
+| + two streams, co-sized | 1028 | 12559 |
+| + steps queued on alternating streams | **860** | **12311** |
+| against the shipped chain | **1.90x** | **1.22x** |
+
+Every row is bit-identical to every other, and to the sequential chain: the
+stream assignment and the core budgets change only how independent item spaces
+fold onto cores, never the arithmetic. `tests/test_train_entry.py` asserts that
+as exact equality over three shapes, four budget pairs including ones that
+over-commit the part, and four steps queued without a per-step synchronisation.
+
+Two of these rows deserve a note.
+
+**Co-sizing is what makes the streams pay, not the streams themselves.** Each
+tiling selector maximises its own core fill assuming it owns the part, and two
+launches that both claim 28 blocks do not overlap -- they serialise. Giving the
+forward scan the cores the backward branch leaves free is what converts the
+concurrency into time, and the optimum is sharp: at the large shape the two
+counts sum to exactly the part, and a pair that over-commits it to 34 costs 26%
+more than the pair that fits.
+
+**The last row is below the device sum.** 860 µs is less than the 911.98 µs of
+the eight kernels' individually measured device times, so queued steps overlap
+device work and not merely host dispatch. This is the figure a training loop
+sees; the 1028 µs row is the latency of one isolated synchronised step. Which
+one to quote depends on the question being asked.
+
 ## What these numbers do and do not license
 
 Four ways they can be overread:
@@ -153,8 +200,9 @@ multiply-accumulate capability actually in use, which on this pipeline is 33–8
 depending on the kernel. The two figures answer different questions and neither
 alone is "utilisation".
 
-**Defensible from the above**: the pipeline runs at 912 µs at the production
-shape; the forward is 2.41 times its float32 arithmetic floor on this part and
+**Defensible from the above**: the pipeline runs at 912 µs of device time at the
+production shape, and a composed step costs 860 µs there with steps queued,
+1.90 times less than chaining the wrappers as they ship; the forward is 2.41 times its float32 arithmetic floor on this part and
 issues 1.61 times the algorithmic minimum of multiply-accumulates; it is 6.0 to
 13.2 times faster than the framework's own reference implementation at the
 shapes stated. **Not defensible**: that it is the fastest implementation of this

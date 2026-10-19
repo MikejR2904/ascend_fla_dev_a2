@@ -40,7 +40,7 @@ Nothing in this repository imports it, so it can be moved without consequence if
 
 | path | contents |
 |---|---|
-| `kernels/` | the nine kernel implementations, each with its host entry point |
+| `kernels/` | the nine kernel implementations, each with its host entry point, plus `gated_delta_rule_train.py`, the composed training step |
 | `tests/` | per-kernel acceptance tests, the end-to-end composition test, the shared precision engine, and a float32 CPU and NPU golden per kernel |
 | `docs/ALGORITHM.md` | the mathematics, the chunked reformulation, and the decomposition |
 | `docs/KERNELS.md` | per-kernel reference: contract, grid, on-chip budget |
@@ -76,6 +76,9 @@ sets it.
 # end to end: all eight operators chained, against the autograd oracle
 python tests/test_composition.py
 
+# the composed training step: concurrent vs sequential vs the shipped chain
+python tests/test_train_entry.py
+
 # the same chain, reporting per-kernel device time
 python tests/test_composition.py --timing --warmup 3 --repeats 1
 
@@ -96,6 +99,14 @@ python tests/fla_npu_baseline.py
 A test imports its kernel from `../kernels` and its goldens from its own
 directory, so the directory is self-contained: copy it anywhere and the commands
 above still work.
+
+To run a training step, call `gated_delta_rule_train.gated_delta_rule_fwd_bwd`
+rather than chaining the eight wrappers by hand. It issues the same eight
+launches with one device synchronisation instead of eight and the two
+independent branches on separate streams, which is 1.90 times cheaper per step
+at the reference shape and bit-identical to the hand-written chain. Its
+docstring states how a training loop should call it; `docs/PERFORMANCE.md` has
+the measurements.
 
 ## Where it stands
 

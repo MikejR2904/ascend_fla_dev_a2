@@ -26,6 +26,12 @@ The budget is 253,952 B of unified buffer, 524,288 B of L1, 65,536 B each of
 L0A and L0B, 262,144 B of L0C, 32 mutex ids and 16 cross-core event ids per
 kernel.
 
+`kernels/gated_delta_rule_train.py` is not a kernel and so has no row above: it
+is the host-side composition of operators 1 to 8 into one training step, issuing
+the two independent branches on separate streams and sizing their grids so that
+the block counts sum to the part. Operators 2 and 4 take a `cube_core_budget`
+for it.
+
 ## Glossary of the intermediate tensors
 
 | name | shape | meaning |
@@ -88,7 +94,8 @@ The forward chunk recurrence; emits the output and the two state trails.
   `s_hist`, `v_new`
 * **grid** `B * H * ceil(V/VT) / streams` items; the chunk axis is serial, the
   `V` columns are independent. Tile width and stream count are chosen on the
-  host from the core count
+  host from the core count, which `cube_core_budget` caps for a caller running
+  this launch concurrently with another
 * **budget** UB 115,968 B; L1 311,296 B; 27 of 32 mutex ids; 7 of 16 events
 * **notes** `s_hist` must be snapshotted before the state update. Matmul and
   fixpipe always run on the full physical tile: a partially valid N axis leaves
@@ -125,7 +132,9 @@ The backward chunk recurrence, the directional dual of operator 2.
 
 * **in** `q_t, w_t, k_f32, grad_o, decay_exp, g_f32, dv_local`
 * **out** `dh [B,H,N,K,V]`, `dv2 [B,H,N,C,V]`, both f32
-* **grid** `B * H * ceil(V/64)` items; chunks are visited in reverse within an item
+* **grid** `B * H * ceil(V/64)` items; chunks are visited in reverse within an
+  item. The kernel strides over the item space, so the block count is a free
+  host-side choice that affects balance only, and `cube_core_budget` sets it
 * **budget** UB 140,032 B; L1 163,840 B; L0A exactly at its 64 KB capacity
 * **notes** `dS` lives in UB as a single persistent buffer and reaches the cube
   through a GM bridge. All vector work runs on sub-block 0, guarded, because the

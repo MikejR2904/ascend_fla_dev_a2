@@ -644,8 +644,16 @@ def _pick_vt_streams(B, H, V, cube_cores):
 
 
 def gdr_fwd_train_scan_wrapper(u, w, q_de, a_mat, k_f32, dfac, decay_exp,
-                               *, _streams=None, _vt=None):
+                               *, _streams=None, _vt=None, sync=True,
+                               cube_core_budget=None):
     """Run the forward state scan in one launch.
+
+    `cube_core_budget` caps the cube cores this launch plans its V tiling for.
+    The default plans for the whole part, which is correct when the launch owns
+    the device. A caller that runs this launch concurrently with another passes
+    the cores the other one leaves free, so that the two block counts sum to the
+    part rather than oversubscribing it. The budget changes only how an
+    independent item space folds onto cores, never the arithmetic.
 
     The wrapper validates the shapes, allocates the three outputs and one GM
     scratch, picks the tiling, and launches once.
@@ -672,6 +680,8 @@ def gdr_fwd_train_scan_wrapper(u, w, q_de, a_mat, k_f32, dfac, decay_exp,
     v_scaled_gm = torch.empty((B, H, C, V), dtype=torch.float32, device=device)
 
     cube_cores = get_platform_info().core_num or 1
+    if cube_core_budget is not None:
+        cube_cores = max(1, min(cube_cores, int(cube_core_budget)))
     cores, streams, vt = _pick_vt_streams(B, H, V, cube_cores)
     if _vt is not None:
         vt = _vt
@@ -686,5 +696,6 @@ def gdr_fwd_train_scan_wrapper(u, w, q_de, a_mat, k_f32, dfac, decay_exp,
         u, w, q_de, a_mat, k_f32, dfac, decay_exp, v_scaled_gm,
         o, s_hist, v_new,
         B, H, K, V, N, vt, vtiles, vpairs, streams)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return o, s_hist, v_new

@@ -395,7 +395,7 @@ def gdr_bwd_wy_reduce_kernel(
             pl.store(dbeta_wy, dbeta_ub, [b, h, n, 0])
 
 
-def gdr_bwd_wy_reduce_wrapper(dkbg, dvb, dkb, dkt, k_f32, beta_act, decay_exp, dk_p, v):
+def gdr_bwd_wy_reduce_wrapper(dkbg, dvb, dkb, dkt, k_f32, beta_act, decay_exp, dk_p, v, *, sync=True):
     """Reduce the WY adjoint to dk, dv, dbeta_wy and dg2 in one launch.
 
     Outputs stay in chunk layout; trimming to the real sequence length is the
@@ -421,5 +421,6 @@ def gdr_bwd_wy_reduce_wrapper(dkbg, dvb, dkb, dkt, k_f32, beta_act, decay_exp, d
         dkbg, dvb, dkb, dkt, k_f32, beta_act, decay_exp, dk_p, v,
         dk, dv, dbeta_wy, dg2, dbeta_partial_gm,
         B, T, H, K, V, N, C)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return dk, dv, dbeta_wy, dg2

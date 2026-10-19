@@ -702,7 +702,7 @@ def gdr_bwd_wy_matmuls_kernel(
                                      sync_mode=pl.CrossCoreSyncMode.INTRA_BLOCK)
 
 
-def gdr_bwd_wy_matmuls_wrapper(attn, k_f32, v_b, kbeta_t, beta_act, decay, dw, dv2):
+def gdr_bwd_wy_matmuls_wrapper(attn, k_f32, v_b, kbeta_t, beta_act, decay, dw, dv2, *, sync=True):
     """Differentiate the WY factor in one launch.
 
     Returns (dkbg, dvb, dkb, dkt, d_a), all float32 in chunk layout. The three
@@ -730,6 +730,7 @@ def gdr_bwd_wy_matmuls_wrapper(attn, k_f32, v_b, kbeta_t, beta_act, decay, dw, d
     gdr_bwd_wy_matmuls_kernel[None, num_cores](
         attn, k_f32, beta_act, decay, v_b, kbeta_t, dw, dv2,
         dkbg, dvb, d_attn_raw, d_attn_masked, d_attn_two_sided, d_a, k_beta, dkb, dkt)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
 
     return dkbg, dvb, dkb, dkt, d_a

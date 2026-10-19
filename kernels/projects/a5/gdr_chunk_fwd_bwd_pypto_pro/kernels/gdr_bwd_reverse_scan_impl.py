@@ -430,8 +430,17 @@ def gdr_bwd_reverse_scan_module1_kernel(
 
 
 def gdr_bwd_reverse_scan_wrapper(q_t, w_t, k_f32, grad_o=None,
-                                 decay_exp=None, g_f32=None, dv_local=None):
+                                 decay_exp=None, g_f32=None, dv_local=None, *,
+                                 sync=True, cube_core_budget=None):
     """Run the reverse dS scan in one launch.
+
+    `cube_core_budget` caps the blocks this launch plans for. The item space is
+    `B * H * ceil(V / TV)` and the kernel strides over it, so any block count
+    computes the same result and the choice is one of balance alone. Taking
+    every core is right when the item count is a multiple of the core count;
+    where it is not, the remainder runs as a near-empty final wave, and asking
+    for the fewest blocks that keep the same wave count costs this launch
+    nothing while holding a constant number of cores throughout it.
 
     The wrapper does pure-Python shape arithmetic, allocates the two outputs and
     the three internal GM bridges, and launches once. No cast, permute,
@@ -454,11 +463,14 @@ def gdr_bwd_reverse_scan_wrapper(q_t, w_t, k_f32, grad_o=None,
     dv2_negated_gm = torch.empty((B, H, v_blocks, C, TV), dtype=torch.float32, device=device)
 
     max_blocks = get_platform_info().core_num or 1
+    if cube_core_budget is not None:
+        max_blocks = max(1, min(max_blocks, int(cube_core_budget)))
     num_cores = max(1, min(B * H * v_blocks, max_blocks))
 
     gdr_bwd_reverse_scan_module1_kernel[None, num_cores](
         q_t, w_t, k_f32, dstate_gm, grad_o_scaled_gm, dv2_negated_gm,
         grad_o, decay_exp, g_f32, dv_local, dh, dv2,
         B, T, H, K, V, N, C, TV)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return dh, dv2

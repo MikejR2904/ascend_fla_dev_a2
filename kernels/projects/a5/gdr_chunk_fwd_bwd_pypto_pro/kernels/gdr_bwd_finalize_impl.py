@@ -308,7 +308,7 @@ def _select_head_group(head_total, bn_tasks, vector_core_num, h_tile_max=H_TILE_
 
 
 def gdr_bwd_finalize_wrapper(grad_o, dq_p, dk_in, dv_in, dg_p, dg2, dbeta_wy, sig,
-                             beta_act=None):
+                             beta_act=None, *, sync=True):
     """Publish the five gradients of the gated delta rule in one vector launch.
 
     `grad_o` supplies the public geometry only -- T and the [B, T, H, *] shape of
@@ -340,5 +340,6 @@ def gdr_bwd_finalize_wrapper(grad_o, dq_p, dk_in, dv_in, dg_p, dg2, dbeta_wy, si
         dq_p, dk_in, dv_in, dg_p, dg2, dbeta_wy, sig,
         dq, dk, dv, dg, dbeta,
         B, T, H, K, V, N, C, heads_per_group, head_groups)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return dq, dk, dv, dg, dbeta

@@ -443,7 +443,7 @@ def gdr_bwd_dv_local_module1_kernel(
         pl.system.wait_cross_core(pipe=_S, event_id=E_L1_OPERANDS_FREE, sync_mode=_IB)
 
 
-def gdr_bwd_dv_local_wrapper(grad_o, k_f32=None, q_t=None, g_f32=None):
+def gdr_bwd_dv_local_wrapper(grad_o, k_f32=None, q_t=None, g_f32=None, *, sync=True):
     """Compute the within-chunk part of dv in one launch.
 
     The wrapper does pure-Python shape arithmetic, one output allocation and one
@@ -462,5 +462,6 @@ def gdr_bwd_dv_local_wrapper(grad_o, k_f32=None, q_t=None, g_f32=None):
 
     gdr_bwd_dv_local_module1_kernel[None, num_cores](
         k_f32, q_t, grad_o, g_f32, dv_local, B, T, H, K, V, N, C)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return dv_local

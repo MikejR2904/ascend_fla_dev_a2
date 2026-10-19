@@ -807,7 +807,7 @@ def gdr_bwd_dqkw_kernel(
 
 
 def gdr_bwd_dqkw_wrapper(grad_o, v_new, k_f32, q_s, s_hist, dh, dv2,
-                         g_f32=None, decay=None):
+                         g_f32=None, decay=None, *, sync=True):
     """Compute dq, dk, dw and the chunk-parallel part of dg in one launch.
 
     `g_f32` is part of the operator's public signature but is not used by this
@@ -839,5 +839,6 @@ def gdr_bwd_dqkw_wrapper(grad_o, v_new, k_f32, q_s, s_hist, dh, dv2,
         grad_o, decay,
         dq_p, dk_p, dw, dg_p,
         B, T, H, K, V, N)
-    torch.npu.synchronize()
+    if sync:
+        torch.npu.synchronize()
     return dq_p, dk_p, dw, dg_p

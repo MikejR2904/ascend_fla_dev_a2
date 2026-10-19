@@ -109,6 +109,24 @@ The thirty boundaries are clean at 1e-8 to 7e-6 relative L2 in float32, with
 five of them exactly zero (`q_s`, `k_f32`, `g_f32`, `q_t` and their derived
 rows), which is what one expects of a reindex and a widen.
 
+## The composed entry point
+
+`tests/test_train_entry.py` gates `kernels/gated_delta_rule_train.py`, and its
+criterion is **exact equality**, not a tolerance. The entry point issues the same
+eight launches as the composition gate chains by hand; only the host-side
+ordering, the stream assignment and the core budgets differ, and none of those
+touches the arithmetic. So anything other than bit-identical output is a defect,
+and the test asserts `torch.equal` on all six public results against the chain
+as the wrappers ship it.
+
+It covers three shapes (`B=1` with `T=128 H=4 K=V=64`, `T=192 H=2 K=V=128`, and
+the production `T=2048 H=8 K=V=128`) across six configurations each: the
+sequential order, the concurrent order at the computed budgets, and four
+`(scan, reverse)` budget pairs that under-commit, exactly commit and
+over-commit the 28 cube cores. It then queues four steps on two alternating
+streams with no per-step synchronisation and requires each of the four to equal
+the same reference. Twenty-two equality checks in total.
+
 ## What is not validated
 
 Three gaps, stated rather than implied:
